@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+   <!--Bootstrap-->
+   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <!--react-js-->
+ <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<title>Quizzard</title>
+<style>
+#challenge{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#quiz_area{
+display : none;
+position: relative;
+}
+#diff_mode{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+</style>
+</head>
+
+
+<body>     <div class = 'container'>
+           <br>
+           <div id = 'challenge'>
+                <div id ="diff_mode"> Difficulty:&nbsp;&nbsp;
+           <div class="dropdown">
+                <button id= 'dropdown'  type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Easy
+                </button>
+                <div class="dropdown-menu" >
+                    <a class="dropdown-item" onclick ="change_diff('easy')">Easy</a>
+                    <a class="dropdown-item" onclick ="change_diff('medium')">Medium</a>
+                    <a class="dropdown-item" onclick ="change_diff('hard')" >Hard</a>
+                </div>
+        </div>
+                </div>
+
+           <div id = 'catg'></div>
+           </div>
+          <div id ="quiz_area">
+          </div>
+          </div>
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyA0fLglP4JmiLvXJp1cqYvnlkXYEv5tzWk",
+    authDomain: "quizzard-aca91.firebaseapp.com",
+    databaseURL: "https://quizzard-aca91-default-rtdb.firebaseio.com",
+    projectId: "quizzard-aca91",
+    storageBucket: "quizzard-aca91.appspot.com",
+    messagingSenderId: "90721554627",
+    appId: "1:90721554627:web:156082b9448b70d2275276",
+    measurementId: "G-7ST4JH00DB"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<script type="text/babel">
+var category = [9,17,21,23];
+var catg ,query;
+var difficulty = 'easy';
+function change_diff(mode)
+{
+   difficulty = mode;
+   document.getElementById('dropdown').innerText= mode;
+
+}
+
+function change_catg(i)
+{
+  catg = category[i];
+   fetch();
+   document.getElementById('challenge').style.display='none';
+   ReactDOM.render(<Quiz />, document.getElementById('quiz_area'));
+   document.getElementById('quiz_area').style.display='block';
+
+}
+
+
+function fetch()
+{   
+    var url = 'https://opentdb.com/api.php?amount=5&category='+catg+'&difficulty='+difficulty+'&type=multiple&encode=url3986';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url,false);
+    xhr.send();
+    var res = JSON.parse(xhr.response);
+    console.log(res.results);
+    query = res.results;
+    document.getElementById('challenge').style.display= 'none';
+    document.getElementById('quiz_area').style.display= 'none';
+
+  }
+</script>
+
+<script type="text/babel">
+     class Category extends React.Component{
+
+        category = ['General Knowledge' ,'Science & Nature' ,'sports','History' ] ;
+        render(){
+         return(
+            <div>
+               { this.category.map((data,i)=>{
+                                    return(
+                                    <div>
+                                    <button onClick={()=>change_catg(i)} className="btn btn-outline-primary">{data}</button>
+                                    </div>
+                                    )
+
+                            })
+                        }
+
+
+
+            </div>
+        )
+        }
+     }
+
+      ReactDOM.render(<Category />, document.getElementById('catg'));
+
+     class Quiz extends React.Component {
+         data = [...query] ;
+         qn_no = 0;
+     constructor(props) {
+          super(props);
+           this.state = {
+          answers: [...this.data[0].incorrect_answers , this.data[0].correct_answer].sort(() => Math.random() - 0.5)
+          }
+
+
+    }
+
+
+    update()
+    {
+        this.qn_no++;
+        this.setState(
+         {
+          answers: [...this.data[this.qn_no].incorrect_answers , this.data[this.qn_no].correct_answer].sort(() => Math.random() - 0.5)
+          });
+
+
+    }
+    validate(user_ans)
+    {
+         if(user_ans === unescape(this.data[this.qn_no].correct_answer))
+         alert('correct');
+         else
+         alert('incorrect');
+    }
+      render(){
+
+        return(
+            <div>
+              <div className="question">{unescape(this.data[this.qn_no].question)}</div>
+              <br />
+              <div className="options">
+                <ul>
+                    {this.state.answers.map((item)=> (
+                        <li onClick={()=> {this.validate(unescape(item))}}>{unescape(item)}</li>
+                                         ))
+                    }
+                </ul>
+               </div>
+               <br />
+               <button onClick={()=> {this.update()} }> Next</button>
+            </div>
+        )
+    }
+}
+
+</script>
+
+
+</html>

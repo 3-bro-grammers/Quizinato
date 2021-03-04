@@ -12,18 +12,30 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-   <!-- update the version number as needed -->
-   <script src="/__/firebase/8.2.9/firebase-app.js"></script>
-   <!-- include only the Firebase features as you need -->
-   <script src="/__/firebase/8.2.9/firebase-auth.js"></script>
-   <script src="/__/firebase/8.2.9/firebase-database.js"></script>
-   <!-- <script src="/__/firebase/8.2.9/firebase-messaging.js"></script>
-   <script src="/__/firebase/8.2.9/firebase-storage.js"></script> -->
-   <script src="/__/firebase/8.2.9/firebase-analytics.js"></script>
-   <!-- <script src="/__/firebase/8.2.9/firebase-remote-config.js"></script>
-   <script src="/__/firebase/8.2.9/firebase-performance.js"></script> -->
-   <!-- initialize the SDK after all desired features are loaded -->
-   <script src="/__/firebase/init.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+   https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig =
+    {
+      apiKey: "AIzaSyA0fLglP4JmiLvXJp1cqYvnlkXYEv5tzWk",
+      authDomain: "quizzard-aca91.firebaseapp.com",
+      databaseURL: "https://quizzard-aca91-default-rtdb.firebaseio.com",
+      projectId: "quizzard-aca91",
+      storageBucket: "quizzard-aca91.appspot.com",
+      messagingSenderId: "90721554627",
+      appId: "1:90721554627:web:156082b9448b70d2275276",
+      measurementId: "G-7ST4JH00DB"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
 
   <!--react-js-->
@@ -65,7 +77,7 @@
   </style>
 </head>
 
-<!--  HOME DIV 
+<!--  HOME DIV
   *******************************************************************************************
   -->
 
@@ -82,7 +94,7 @@
 </div>
 
 
-<!--  LOGIN DIV 
+<!--  LOGIN DIV
   *******************************************************************************************
   -->
 
@@ -99,7 +111,7 @@
       <div class="form-group col-sm|md|lg|xl">
         <label for="password">Password:</label>
         <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
-        <div class="invalid-feedback">
+        <div id="login-feedback" class="invalid-feedback">
           Incorrect username or password.
         </div>
       </div>
@@ -124,7 +136,7 @@
 
     if (logform.checkValidity() == false) {
       event.stopPropagation();
-      document.getElementsByClassName('invalid-feedback')[0].innerHTML = "Required fields cannot be empty";
+      document.getElementById('login-feedback').innerHTML = "Required fields cannot be empty";
       document.getElementById('login-password').classList.add("is-invalid");
       document.getElementById('login-username').classList.add("is-invalid");
       document.getElementById('login-spinner').style.display = 'none';
@@ -161,7 +173,7 @@
 
 </script>
 
-<!--  SIGNIN DIV 
+<!--  SIGNIN DIV
   *******************************************************************************************
   -->
 
@@ -173,13 +185,13 @@
       <div class="form-group col--sm|md|lg|xl">
         <label for="userame">Username:</label>
         <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
-        <div class="invalid-feedback">
+        <div id ='signin-feedback' class="invalid-feedback">
           Username already exists.
         </div>
       </div>
       <div class="form-group col-sm|md|lg|xl">
         <label for="password">Password:</label>
-        <input type="password" class="form-control" id="signin-password" placeholder="Enter password" required="">
+        <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters" required="">
         <div class="invalid-feedback">
           Use a stronger password.
         </div>
@@ -207,7 +219,7 @@
     if (signform.checkValidity() == false) {
       event.preventDefault();
       event.stopPropagation();
-      document.getElementsByClassName('invalid-feedback')[0].innerHTML = "Field cannot be empty";
+      document.getElementById('signin-feedback').innerHTML = "Field cannot be empty";
       document.getElementById('signin-username').classList.add("is-invalid");
       document.getElementById('signin-password').classList.add("is-invalid");
       document.getElementById('signin-spinner').style.display = 'none';
@@ -218,7 +230,8 @@
       if (error) {
 
         event.stopPropagation();
-        document.getElementsByClassName('invalid-feedback')[0].innerHTML = " Username already exists.";
+        document.getElementById('signin-password').classList.remove("is-invalid");
+        document.getElementById('signin-feedback').innerHTML = " Username already exists.";
         document.getElementById('signin-username').classList.add("is-invalid");
       }
       else if (pswd.length < 5) {
@@ -251,7 +264,7 @@
 </script>
 
 
-<!--  QUIZ DIV 
+<!--  QUIZ DIV
   *******************************************************************************************
   -->
 

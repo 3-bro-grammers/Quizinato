@@ -1,4 +1,3 @@
-<!-- nice to work with you guys` -->
 <!DOCTYPE html>
 
 <html>
@@ -80,406 +79,410 @@
   </style>
 </head>
 
-<!--  HOME DIV
+<body>
+
+  <!--  HOME DIV
   *******************************************************************************************
   -->
 
-<div id="home-div">
-  <div class='container'>
-    <h2>Quizzard</h2>
-    needs parallex scroll image and INTRO page....
-    <br>
-    <span onclick="$('#home-div').hide(); $('#signin-div').show();">sign_in</span>
-    <br>
-    <span onclick="$('#home-div').hide(); $('#login-div').show();">Log in</span>
+  <div id="home-div">
+    <div class='container'>
+      <h2>Quizzard</h2>
+      needs parallex scroll image and INTRO page....
+      <br>
+      <span onclick="$('#home-div').hide(); $('#signin-div').show();">sign_in</span>
+      <br>
+      <span onclick="$('#home-div').hide(); $('#login-div').show();">Log in</span>
 
+    </div>
   </div>
-</div>
 
 
-<!--  LOGIN DIV
+  <!--  LOGIN DIV
   *******************************************************************************************
   -->
 
 
-<div id="login-div" style="display: none;">
-  <div class='container'>
-    <br>
-    <h2 style="text-align: center">Login !</h2><br>
-    <form id='login-form' class="needs-validation" novalidate="" name="login-form">
-      <div class="form-group col-sm|md|lg|xl">
-        <label for="username">Username:</label>
-        <input type="text" class="form-control" id="login-username" placeholder="Enter username" required="">
-      </div>
-      <div class="form-group col-sm|md|lg|xl">
-        <label for="password">Password:</label>
-        <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
-        <div id="login-feedback" class="invalid-feedback">
-          Incorrect username or password.
+  <div id="login-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <h2 style="text-align: center">Login !</h2><br>
+      <form id='login-form' class="needs-validation" novalidate="" name="login-form">
+        <div class="form-group col-sm|md|lg|xl">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" id="login-username" placeholder="Enter username" required="">
         </div>
-      </div>
-      <button type="submit" class="btn btn-primary">
-        <span id="login-spinner" class="spinner-border spinner-border-sm"></span>
-        Login</button>
-    </form>
+        <div class="form-group col-sm|md|lg|xl">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
+          <div id="login-feedback" class="invalid-feedback">
+            Incorrect username or password.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span id="login-spinner" class="spinner-border spinner-border-sm"></span>
+          Login</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<script>
-  var db = firebase.database();
-  var pswd, username, opponent;
-  // Disable form submissions if there are invalid fields
-  var logform = document.getElementById("login-form");
-  logform.addEventListener("submit", function (event) {
-    event.preventDefault();
+  <script>
+    var db = firebase.database();
+    var pswd, username, opponent;
+    // Disable form submissions if there are invalid fields
+    var logform = document.getElementById("login-form");
+    logform.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    document.getElementById('login-spinner').style.display = 'inline-block';
-    pswd = document.getElementById('login-password').value;
-    username = document.getElementById('login-username').value;
+      document.getElementById('login-spinner').style.display = 'inline-block';
+      pswd = document.getElementById('login-password').value;
+      username = document.getElementById('login-username').value;
 
-    if (logform.checkValidity() == false) {
-      event.stopPropagation();
-      document.getElementById('login-feedback').innerHTML = "Required fields cannot be empty";
-      document.getElementById('login-password').classList.add("is-invalid");
-      document.getElementById('login-username').classList.add("is-invalid");
-      document.getElementById('login-spinner').style.display = 'none';
-      return 0;
-    }
-
-
-    db.ref("users/" + username + "/pwd").once("value", function (s) {
-      const res = s.val();
-      if (res != pswd) {
+      if (logform.checkValidity() == false) {
         event.stopPropagation();
-        document.getElementsByClassName('invalid-feedback')[0].innerHTML = "Incorrect username or password.";
+        document.getElementById('login-feedback').innerHTML = "Required fields cannot be empty";
         document.getElementById('login-password').classList.add("is-invalid");
         document.getElementById('login-username').classList.add("is-invalid");
-      }
-      if (res == pswd) {
-        $('#login-div').hide();
-        $('#quiz-div').show();
+        document.getElementById('login-spinner').style.display = 'none';
+        return 0;
       }
 
-      document.getElementById('login-spinner').style.display = 'none';
+
+      db.ref("users/" + username + "/pwd").once("value", function (s) {
+        const res = s.val();
+        if (res != pswd) {
+          event.stopPropagation();
+          document.getElementsByClassName('invalid-feedback')[0].innerHTML = "Incorrect username or password.";
+          document.getElementById('login-password').classList.add("is-invalid");
+          document.getElementById('login-username').classList.add("is-invalid");
+        }
+        if (res == pswd) {
+          $('#login-div').hide();
+          $('#quiz-div').show();
+        }
+
+        document.getElementById('login-spinner').style.display = 'none';
+
+      }
+      );
+
+
 
     }
-    );
-
-
-
-  }
-    , false);
+      , false);
 
 
 
 
 
-</script>
+  </script>
 
-<!--  SIGNIN DIV
+  <!--  SIGNIN DIV
   *******************************************************************************************
   -->
 
-<div id="signin-div" style="display: none;">
-  <div class='container'>
-    <br>
-    <h2 style="text-align: center">Sign in!</h2><br>
-    <form id='signin-form' class="needs-validation" novalidate="" name="sign-form">
-      <div class="form-group col--sm|md|lg|xl">
-        <label for="userame">Username:</label>
-        <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
-        <div id='signin-feedback' class="invalid-feedback">
-          Username already exists.
+  <div id="signin-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <h2 style="text-align: center">Sign in!</h2><br>
+      <form id='signin-form' class="needs-validation" novalidate="" name="sign-form">
+        <div class="form-group col--sm|md|lg|xl">
+          <label for="userame">Username:</label>
+          <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
+          <div id='signin-feedback' class="invalid-feedback">
+            Username already exists.
+          </div>
         </div>
-      </div>
-      <div class="form-group col-sm|md|lg|xl">
-        <label for="password">Password:</label>
-        <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters" required="">
-        <div class="invalid-feedback">
-          Use a stronger password.
+        <div class="form-group col-sm|md|lg|xl">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters"
+            required="">
+          <div class="invalid-feedback">
+            Use a stronger password.
+          </div>
         </div>
-      </div>
-      <button type="submit" class="btn btn-primary">
-        <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Signin
-      </button>
-    </form>
+        <button type="submit" class="btn btn-primary">
+          <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Signin
+        </button>
+      </form>
+    </div>
   </div>
-</div>
 
 
-<script>
+  <script>
 
-  var db = firebase.database();
-  var error = 0, res;
-  // Disable form submissions if there are invalid fields
-  var signform = document.getElementById("signin-form");
-  signform.addEventListener("submit", function (event) {
+    var db = firebase.database();
+    var error = 0, res;
+    // Disable form submissions if there are invalid fields
+    var signform = document.getElementById("signin-form");
+    signform.addEventListener("submit", function (event) {
 
-    document.getElementById('signin-spinner').style.display = 'inline-block';
-    var pswd = document.getElementById('signin-password').value;
-    var username = document.getElementById('signin-username').value;
-    event.preventDefault();
-    if (signform.checkValidity() == false) {
+      document.getElementById('signin-spinner').style.display = 'inline-block';
+      var pswd = document.getElementById('signin-password').value;
+      var username = document.getElementById('signin-username').value;
       event.preventDefault();
-      event.stopPropagation();
-      document.getElementById('signin-feedback').innerHTML = "Field cannot be empty";
-      document.getElementById('signin-username').classList.add("is-invalid");
-      document.getElementById('signin-password').classList.add("is-invalid");
-      document.getElementById('signin-spinner').style.display = 'none';
-      return 0;
-    }
-    db.ref("users").once('value', function (s) {
-      error = (s.hasChild(username));
-      if (error) {
-
-        event.stopPropagation();
-        document.getElementById('signin-password').classList.remove("is-invalid");
-        document.getElementById('signin-feedback').innerHTML = " Username already exists.";
-        document.getElementById('signin-username').classList.add("is-invalid");
-      }
-      else if (pswd.length < 5) {
+      if (signform.checkValidity() == false) {
         event.preventDefault();
         event.stopPropagation();
-        document.getElementById('signin-username').classList.remove("is-invalid");
+        document.getElementById('signin-feedback').innerHTML = "Field cannot be empty";
+        document.getElementById('signin-username').classList.add("is-invalid");
         document.getElementById('signin-password').classList.add("is-invalid");
+        document.getElementById('signin-spinner').style.display = 'none';
+        return 0;
       }
+      db.ref("users").once('value', function (s) {
+        error = (s.hasChild(username));
+        if (error) {
 
-      else {
-        db.ref('users/' + username).set({
+          event.stopPropagation();
+          document.getElementById('signin-password').classList.remove("is-invalid");
+          document.getElementById('signin-feedback').innerHTML = " Username already exists.";
+          document.getElementById('signin-username').classList.add("is-invalid");
+        }
+        else if (pswd.length < 5) {
+          event.preventDefault();
+          event.stopPropagation();
+          document.getElementById('signin-username').classList.remove("is-invalid");
+          document.getElementById('signin-password').classList.add("is-invalid");
+        }
 
-          pwd: pswd,
+        else {
+          db.ref('users/' + username).set({
 
-
-        });
-
-        $('#signin-div').hide();
-        $('#quiz-div').show();
-
-
-      }
-      document.getElementById('signin-spinner').style.display = 'none';
-    });
-
-  }, false);
-
-
-
-</script>
+            pwd: pswd,
 
 
-<!--  QUIZ DIV
+          });
+
+          $('#signin-div').hide();
+          $('#quiz-div').show();
+
+
+        }
+        document.getElementById('signin-spinner').style.display = 'none';
+      });
+
+    }, false);
+
+
+
+  </script>
+
+
+  <!--  QUIZ DIV
   *******************************************************************************************
   -->
 
 
-<div id="quiz-div" style="display: none;">
-  <div class='container'>
-    <br>
-    <div class="dropdown">
-      <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
-        data-bs-toggle="dropdown">
-      <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
+  <div id="quiz-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <div class="dropdown">
+        <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
+          data-bs-toggle="dropdown">
+        <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
 
-      </ul>
-    </div>
-    <div id='challenge'>
-      <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
-        <div class="dropdown">
-          <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            Easy
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" onclick="change_diff('easy')">Easy</a>
-            <a class="dropdown-item" onclick="change_diff('medium')">Medium</a>
-            <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
+        </ul>
+      </div>
+      <div id='challenge'>
+        <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
+          <div class="dropdown">
+            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              Easy
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" onclick="change_diff('easy')">Easy</a>
+              <a class="dropdown-item" onclick="change_diff('medium')">Medium</a>
+              <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id='catg'></div>
-    </div>
-    <div id="quiz_area">
+        <div id='catg'></div>
+      </div>
+      <div id="quiz_area">
+      </div>
     </div>
   </div>
-</div>
 
-<script>
+  <script>
 
-  function search_input() {
+    function search_input() {
 
-    var search = search_txt.value.toLowerCase();
-    if (!search) {
-      search_list.innerHTML = "";
-      return;
-    }
-
-    var inn_htm = "";
-
-    db.ref("users").once("value", function (snap) {
-      var all_users = snap.val();
-      for (x in all_users) {
-        if (x != username) {
-          x.indexOf(search) > -1
-          inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
-        }
-      }
-      search_list.innerHTML = inn_htm;
-    })
-
-
-  }
-
-  function set_opponent(opp) {
-    opponent = opp;
-    search_txt.value = opp;
-    search_txt.disabled = true;
-  }
-
-
-
-
-</script>
-
-<script type="text/babel">
-  var category = [9, 17, 21, 23];
-  var catg, query;
-  var difficulty = 'easy';
-  function change_diff(mode) {
-    difficulty = mode;
-    document.getElementById('dropdown').innerText = mode;
-
-  }
-
-  function change_catg(i) {
-    catg = category[i];
-    fetch();
-    document.getElementById('challenge').style.display = 'none';
-    ReactDOM.render(<Quiz />, document.getElementById('quiz_area'));
-    document.getElementById('quiz_area').style.display = 'block';
-
-  }
-
-
-  function fetch() {
-    var url = 'https://opentdb.com/api.php?amount=5&category=' + catg + '&difficulty=' + difficulty + '&type=multiple&encode=url3986';
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
-    xhr.send();
-    var res = JSON.parse(xhr.response);
-    console.log(res.results);
-    query = res.results;
-    document.getElementById('challenge').style.display = 'none';
-    document.getElementById('quiz_area').style.display = 'none';
-
-  }
-
-
-
-</script>
-
-<script type="text/babel">
-  class Category extends React.Component {
-
-    category = ['General Knowledge', 'Science & Nature', 'sports', 'History'];
-    render() {
-      return (
-        <div>
-          { this.category.map((data, i) => {
-            return (
-              <div>
-                <button onClick={() => change_catg(i)} className="btn btn-outline-primary">{data}</button>
-              </div>
-            )
-
-          })
-          }
-
-
-
-        </div>
-      )
-    }
-  }
-
-  ReactDOM.render(<Category />, document.getElementById('catg'));
-
-  class Quiz extends React.Component {
-    data = [...query];
-    options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
-    response = [];
-    constructor(props) {
-      super(props);
-      this.state = {
-        qn_no: 0,
-        cur_ind: -1
-      }
-
-
-    }
-
-
-    update() {
-
-
-      if (this.state.qn_no == 4) {
-        var db = firebase.database();
-        db.ref(`users/${opponent}/active`).push({
-          ques: JSON.stringify(this.data),
-          from: username,
-          resp: JSON.stringify(this.response)
-        });
+      var search = search_txt.value.toLowerCase();
+      if (!search) {
+        search_list.innerHTML = "";
         return;
       }
-      this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
-      this.setState(
-        {
-          qn_no: this.state.qn_no + 1,
-          cur_ind: -1
-        });
 
+      var inn_htm = "";
 
-    }
-    validate(user_ans, index) {
-      if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
-        this.response[this.state.qn_no] = 1;
-      else
-        this.response[this.state.qn_no] = 0;
-      this.setState({
-        cur_ind: index
+      db.ref("users").once("value", function (snap) {
+        var all_users = snap.val();
+        for (x in all_users) {
+          if (x != username) {
+            x.indexOf(search) > -1
+            inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
+          }
+        }
+        search_list.innerHTML = inn_htm;
       })
+
+
     }
-    render() {
 
-      return (
-        <div>
-          <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
-          <br />
-          <div className="options">
-            <ul>
+    function set_opponent(opp) {
+      opponent = opp;
+      search_txt.value = opp;
+      search_txt.disabled = true;
+    }
 
-              {
-                this.options.map((item, index) => {
-                  console.log(index)
-                  return (
-                    <div onClick={() => { this.validate(unescape(item), index) }} >
-                      <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
-                      <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
-                      {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
-                    </div>)
 
-                })
-              }
-            </ul>
+
+
+  </script>
+
+  <script type="text/babel">
+    var category = [9, 17, 21, 23];
+    var catg, query;
+    var difficulty = 'easy';
+    function change_diff(mode) {
+      difficulty = mode;
+      document.getElementById('dropdown').innerText = mode;
+
+    }
+
+    function change_catg(i) {
+      catg = category[i];
+      fetch();
+      document.getElementById('challenge').style.display = 'none';
+      ReactDOM.render(<Quiz />, document.getElementById('quiz_area'));
+      document.getElementById('quiz_area').style.display = 'block';
+
+    }
+
+
+    function fetch() {
+      var url = 'https://opentdb.com/api.php?amount=5&category=' + catg + '&difficulty=' + difficulty + '&type=multiple&encode=url3986';
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, false);
+      xhr.send();
+      var res = JSON.parse(xhr.response);
+      console.log(res.results);
+      query = res.results;
+      document.getElementById('challenge').style.display = 'none';
+      document.getElementById('quiz_area').style.display = 'none';
+
+    }
+
+
+
+  </script>
+
+  <script type="text/babel">
+    class Category extends React.Component {
+
+      category = ['General Knowledge', 'Science & Nature', 'sports', 'History'];
+      render() {
+        return (
+          <div>
+            { this.category.map((data, i) => {
+              return (
+                <div>
+                  <button onClick={() => change_catg(i)} className="btn btn-outline-primary">{data}</button>
+                </div>
+              )
+
+            })
+            }
+
+
+
           </div>
-          <br />
-          <button onClick={() => { this.update() }}> Next</button>
-        </div>
-      )
+        )
+      }
     }
-  }
 
-</script>
+    ReactDOM.render(<Category />, document.getElementById('catg'));
+
+    class Quiz extends React.Component {
+      data = [...query];
+      options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
+      response = [];
+      constructor(props) {
+        super(props);
+        this.state = {
+          qn_no: 0,
+          cur_ind: -1
+        }
 
 
+      }
+
+
+      update() {
+
+
+        if (this.state.qn_no == 4) {
+          var db = firebase.database();
+          db.ref(`users/${opponent}/active`).push({
+            ques: JSON.stringify(this.data),
+            from: username,
+            resp: JSON.stringify(this.response)
+          });
+          return;
+        }
+        this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
+        this.setState(
+          {
+            qn_no: this.state.qn_no + 1,
+            cur_ind: -1
+          });
+
+
+      }
+      validate(user_ans, index) {
+        if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
+          this.response[this.state.qn_no] = 1;
+        else
+          this.response[this.state.qn_no] = 0;
+        this.setState({
+          cur_ind: index
+        })
+      }
+      render() {
+
+        return (
+          <div>
+            <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
+            <br />
+            <div className="options">
+              <ul>
+
+                {
+                  this.options.map((item, index) => {
+                    console.log(index)
+                    return (
+                      <div onClick={() => { this.validate(unescape(item), index) }} >
+                        <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
+                        <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
+                        {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
+                      </div>)
+
+                  })
+                }
+              </ul>
+            </div>
+            <br />
+            <button onClick={() => { this.update() }}> Next</button>
+          </div>
+        )
+      }
+    }
+
+  </script>
+
+
+</body>
 
 </html>

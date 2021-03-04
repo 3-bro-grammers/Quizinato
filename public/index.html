@@ -6,38 +6,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
-  
-  <!-- update the version number as needed -->
-   <script src="/__/firebase/8.2.9/firebase-app.js"></script>
-   <!-- include only the Firebase features as you need -->
-   <script src="/__/firebase/8.2.9/firebase-auth.js"></script>
-   <script src="/__/firebase/8.2.9/firebase-database.js"></script>
-   <!-- <script src="/__/firebase/8.2.9/firebase-messaging.js"></script>
-   <script src="/__/firebase/8.2.9/firebase-storage.js"></script> -->
-   <script src="/__/firebase/8.2.9/firebase-analytics.js"></script>
-   <!-- <script src="/__/firebase/8.2.9/firebase-remote-config.js"></script>
-   <script src="/__/firebase/8.2.9/firebase-performance.js"></script> -->
-   <!-- initialize the SDK after all desired features are loaded -->
-   <script src="/__/firebase/init.js"></script>
+  <!--Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+  crossorigin="anonymous"></script>
 
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
 
-  <!-- update the version number as needed -->
-  <script src="/__/firebase/8.2.9/firebase-app.js"></script>
-  <!-- include only the Firebase features as you need -->
-  <script src="/__/firebase/8.2.9/firebase-auth.js"></script>
-  <script src="/__/firebase/8.2.9/firebase-database.js"></script>
-  <!-- <script src="/__/firebase/8.2.9/firebase-messaging.js"></script>
-  <script src="/__/firebase/8.2.9/firebase-storage.js"></script> -->
-  <script src="/__/firebase/8.2.9/firebase-analytics.js"></script>
-  <!-- <script src="/__/firebase/8.2.9/firebase-remote-config.js"></script>
-  <script src="/__/firebase/8.2.9/firebase-performance.js"></script> -->
-  <!-- initialize the SDK after all desired features are loaded -->
-  <script src="/__/firebase/init.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyC4rGPo9XW56R4rGOXXhmXGuL_eZ0fvAQo",
+    authDomain: "quizinato.firebaseapp.com",
+    databaseURL: "https://quizinato-default-rtdb.firebaseio.com",
+    projectId: "quizinato",
+    storageBucket: "quizinato.appspot.com",
+    messagingSenderId: "823687668145",
+    appId: "1:823687668145:web:bf0d6b69e1f2a0f1f81d90",
+    measurementId: "G-WPV4QGR06F"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
 
   <!--react-js-->
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
@@ -54,7 +55,8 @@
       justify-content: center;
     }
 
-    #login-spinner, #signin-spinner {
+    #login-spinner,
+    #signin-spinner {
       display: none;
     }
 
@@ -125,7 +127,7 @@
 
 <script>
   var db = firebase.database();
-  var pswd, username;
+  var pswd, username, opponent;
   // Disable form submissions if there are invalid fields
   var logform = document.getElementById("login-form");
   logform.addEventListener("submit", function (event) {
@@ -186,7 +188,7 @@
       <div class="form-group col--sm|md|lg|xl">
         <label for="userame">Username:</label>
         <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
-        <div id ='signin-feedback' class="invalid-feedback">
+        <div id='signin-feedback' class="invalid-feedback">
           Username already exists.
         </div>
       </div>
@@ -273,6 +275,13 @@
 <div id="quiz-div" style="display: none;">
   <div class='container'>
     <br>
+    <div class="dropdown">
+      <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
+        data-bs-toggle="dropdown">
+      <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
+
+      </ul>
+    </div>
     <div id='challenge'>
       <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
         <div class="dropdown">
@@ -293,6 +302,40 @@
     </div>
   </div>
 </div>
+
+<script>
+
+  function search_input() {
+
+    var search = search_txt.value.toLowerCase();
+    if (!search) {
+      search_list.innerHTML = "";
+      return;
+    }
+
+    var inn_htm = "";
+
+    db.ref("users").once("value", function (snap) {
+      var all_users = snap.val();
+      for (x in all_users) {
+        if (x != username && x.indexOf(search)>-1) {
+          inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
+        }
+      }
+      search_list.innerHTML = inn_htm;
+    })
+
+    
+  }
+
+  function set_opponent(opp) {
+    opponent = opp;
+  }
+
+
+
+
+</script>
 
 <script type="text/babel">
   var category = [9, 17, 21, 23];
@@ -326,6 +369,9 @@
     document.getElementById('quiz_area').style.display = 'none';
 
   }
+
+
+
 </script>
 
 <script type="text/babel">
@@ -369,6 +415,11 @@
 
     update() {
       this.qn_no++;
+
+      if (this.qn_no == 5) {
+        var db = firebase.database();
+        db.ref("users/opponent/active").push(JSON.stringify(this.data));
+      }
       this.setState(
         {
           answers: [...this.data[this.qn_no].incorrect_answers, this.data[this.qn_no].correct_answer].sort(() => Math.random() - 0.5)

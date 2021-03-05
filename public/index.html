@@ -11,6 +11,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
     crossorigin="anonymous"></script>
+    <!--font-awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -47,35 +49,71 @@
 
   <title>Quiz_app</title>
   <style>
-    form {
+  form
+  {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-    }
+  }
 
-    #login-spinner,
-    #signin-spinner {
+  #login-spinner,
+  #signin-spinner
+  {
       display: none;
-    }
+  }
 
-    #challenge {
+  #challenge
+  {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-    }
+  }
 
-    #quiz_area {
+  #quiz_area
+  {
       display: none;
       position: relative;
-    }
+  }
 
-    #diff_mode {
+  #diff_mode
+  {
       display: flex;
       flex-direction: row;
       justify-content: center;
-    }
+  }
+
+  .navbar
+  {
+      overflow: hidden;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #ecf0f3;
+  }
+
+  .navbar a
+  {
+      float: left;
+      display: block;
+      text-align: center;
+      padding: 14px 16px;
+      font-size: 20px;
+      color: blue;
+  }
+
+  .navbar a:hover
+  {
+      background: #f1f1f1;
+      color: black;
+  }
+
+  .navbar a.active
+  {
+      background-color: skyblue;
+      font-size: 25px;
+  }
   </style>
 </head>
 
@@ -129,6 +167,7 @@
   <script>
     var db = firebase.database();
     var pswd, username, opponent;
+    var challenges=0,wins=0,loss=0,ratio=0.00;
     // Disable form submissions if there are invalid fields
     var logform = document.getElementById("login-form");
     logform.addEventListener("submit", function (event) {
@@ -156,9 +195,24 @@
           document.getElementById('login-password').classList.add("is-invalid");
           document.getElementById('login-username').classList.add("is-invalid");
         }
-        if (res == pswd) {
+        if (res == pswd)
+        {
+           db.ref("users/" + username + "/challenges").on("value", function(s) {
+                    challenges = s.val();
+                    });
+           db.ref("users/" + username + "/wins").on("value" ,function(s) {
+                    wins = s.val();
+                    loss = challenges - wins;
+                    ratio = parseFloat(wins/challenges);
+                    });
+           db.ref("users/" + username + "/xp").on("value", function(s) {
+                    xp = s.val();
+                    });
+
           $('#login-div').hide();
           $('#quiz-div').show();
+          $('#navbar').show();
+
         }
 
         document.getElementById('login-spinner').style.display = 'none';
@@ -250,12 +304,16 @@
           db.ref('users/' + username).set({
 
             pwd: pswd,
+            challenges: 0,
+            wins: 0,
+            xp: 0
 
 
           });
 
           $('#signin-div').hide();
           $('#quiz-div').show();
+          $('#navbar').show();
 
 
         }
@@ -267,6 +325,147 @@
 
 
   </script>
+
+  <!--  LEARN DIV
+  *******************************************************************************************
+  -->
+  <div id="learn-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <div id="learn_page">
+        <div id='learn_catg'>
+        </div>
+      </div>
+      <div id="learn_quiz_area">
+
+      </div>
+    </div>
+  </div>
+
+   <script type="text/babel">
+    var learn_category = [9, 17, 21, 23];
+    var learn_catg, learn_query;
+
+
+    function change_learn_catg(i) {
+      learn_catg = learn_category[i];
+      learn_fetch();
+      ReactDOM.render(<LearnQuiz />, document.getElementById('learn_quiz_area'));
+      document.getElementById('learn_quiz_area').style.display = 'block';
+
+    }
+
+
+    function learn_fetch() {
+      var url = 'https://opentdb.com/api.php?amount=50&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, false);
+      xhr.send();
+      var res = JSON.parse(xhr.response);
+      console.log(res.results);
+      learn_query = res.results;
+      document.getElementById('learn_page').style.display = 'none';
+      document.getElementById('quiz_area').style.display = 'none';
+
+    }
+
+    class LearnCategory extends React.Component {
+
+      category = ['General Knowledge', 'Science & Nature', 'sports', 'History'];
+      render() {
+        return (
+          <div>
+            { this.category.map((data, i) => {
+              return (
+                <div>
+                  <button onClick={() => change_learn_catg(i)} className="btn btn-outline-primary">{data}</button>
+                </div>
+              )
+
+            })
+            }
+
+
+
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<LearnCategory />, document.getElementById('learn_catg'));
+
+     class LearnQuiz extends React.Component {
+      data = [...learn_query];
+      options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
+
+      constructor(props) {
+        super(props);
+        this.state = {
+          qn_no: 0,
+
+        }
+
+
+      }
+
+
+      update() {
+
+
+        if (this.state.qn_no == 49) {
+
+          return;
+        }
+        this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
+        this.setState(
+          {
+            qn_no: this.state.qn_no + 1,
+          });
+
+
+      }
+      validate(user_ans, index) {
+        if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
+          alert('correct');
+        else
+          alert('incoorect');
+
+      }
+      render() {
+
+        return (
+          <div>
+            <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
+            <br />
+            <div className="options">
+              <ul>
+
+                {
+                  this.options.map((item, index) => {
+                    console.log(index)
+                    return (
+                      <div onClick={() => { this.validate(unescape(item), index) }} >
+                        <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
+                        <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
+                        {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
+                      </div>)
+
+                  })
+                }
+              </ul>
+            </div>
+            <br />
+            <button onClick={() => { this.update() }}> Next</button>
+          </div>
+        )
+      }
+    }
+
+
+
+  </script>
+
+
+
 
 
   <!--  QUIZ DIV
@@ -287,7 +486,7 @@
       <div id='challenge'>
         <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
           <div class="dropdown">
-            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
               Easy
             </button>
             <div class="dropdown-menu">
@@ -303,6 +502,8 @@
       <div id="quiz_area">
       </div>
     </div>
+
+
   </div>
 
   <script>
@@ -320,8 +521,8 @@
       db.ref("users").once("value", function (snap) {
         var all_users = snap.val();
         for (x in all_users) {
-          if (x != username) {
-            x.indexOf(search) > -1
+          if (x.toLowerCase() != username) {
+           if(x.toLowerCase().indexOf(search) > -1)
             inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
           }
         }
@@ -356,6 +557,7 @@
       catg = category[i];
       fetch();
       document.getElementById('challenge').style.display = 'none';
+      document.getElementById('navbar').style.display = 'none';
       ReactDOM.render(<Quiz />, document.getElementById('quiz_area'));
       document.getElementById('quiz_area').style.display = 'block';
 
@@ -481,6 +683,76 @@
     }
 
   </script>
+
+  <!--  USER DIV
+  *******************************************************************************************
+  -->
+
+  <div  id ="user-div" style="display: none;">
+    <div id="header">
+      </div>
+    <div class='container'>
+    <div id="stats" class='row'>
+        <div class="col text-center">
+              <span id="challenges"> </span>
+       </div>
+       <div class="col text-center">
+              <span id="wins"> </span>
+       </div>
+       <div class="col text-center">
+              <span id="loss"> </span>
+       </div>
+    </div>
+    </div>
+
+  </div>
+
+  <script>
+     function load_userdata(){
+         document.getElementById('header').innerHTML= username;
+         document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
+         document.getElementById('wins').innerHTML= wins+'<br>wins';
+         document.getElementById('loss').innerHTML= loss+'<br>loss';
+
+
+     }
+
+  </script>
+
+
+
+  <!--  NAV DIV
+  *******************************************************************************************
+  -->
+    <div  id = "navbar" class="navbar" style="display: none" >
+        <a id="nav-learn-div" onclick = "change_screen('learn-div')">
+         <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
+        </a>
+        <a id='nav-quiz-div' onclick = "change_screen('quiz-div')" class="active">
+            <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
+        </a>
+        <a  id='nav-user-div' onclick = "change_screen('user-div');load_userdata();">
+            <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>
+        </a>
+    </div>
+
+    <script>
+       function change_screen(selection){
+           var screens = ['quiz-div' , 'learn-div', 'user-div']
+           for (x of screens)
+           {
+              if(x != selection)
+              {
+               $('#'+x).hide();
+               if(document.getElementById('nav-'+x).classList.contains("active"))
+                 document.getElementById('nav-'+x).classList.remove("active");
+              }
+           }
+           $('#'+selection).show();
+           document.getElementById('nav-'+selection).classList.add("active");
+       }
+    </script>
+
 
 
 </body>

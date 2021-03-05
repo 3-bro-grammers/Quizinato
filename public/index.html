@@ -119,11 +119,29 @@
 
 <body>
 
+  <script>
+
+    var pswd, username, opponent;
+
+    //LOGIN PERSISTANCE
+    window.onload = () =>{
+      username = localStorage.getItem("user_name");
+      pswd = localStorage.getItem("user_pass");
+
+      if(username && pswd){
+        $("#quiz-div").show();
+        $('#navbar').show();
+      }else{
+        $("#home-div").show();
+      }
+    }
+  </script>
+
   <!--  HOME DIV
   *******************************************************************************************
   -->
 
-  <div id="home-div">
+  <div id="home-div" style="display: none;">
     <div class='container'>
       <h2>Quizzard</h2>
       needs parallex scroll image and INTRO page....
@@ -166,7 +184,6 @@
 
   <script>
     var db = firebase.database();
-    var pswd, username, opponent;
     var challenges=0,wins=0,loss=0,ratio=0.00;
     // Disable form submissions if there are invalid fields
     var logform = document.getElementById("login-form");
@@ -197,17 +214,21 @@
         }
         if (res == pswd)
         {
-           db.ref("users/" + username + "/challenges").on("value", function(s) {
+           db.ref("users/" + username + "/challenges").once("value", function(s) {
                     challenges = s.val();
                     });
-           db.ref("users/" + username + "/wins").on("value" ,function(s) {
+           db.ref("users/" + username + "/wins").once("value" ,function(s) {
                     wins = s.val();
                     loss = challenges - wins;
                     ratio = parseFloat(wins/challenges);
                     });
-           db.ref("users/" + username + "/xp").on("value", function(s) {
+           db.ref("users/" + username + "/xp").once("value", function(s) {
                     xp = s.val();
                     });
+
+          localStorage.setItem("user_name", username);
+          localStorage.setItem("user_pass", pswd);
+
 
           $('#login-div').hide();
           $('#quiz-div').show();
@@ -272,8 +293,8 @@
     signform.addEventListener("submit", function (event) {
 
       document.getElementById('signin-spinner').style.display = 'inline-block';
-      var pswd = document.getElementById('signin-password').value;
-      var username = document.getElementById('signin-username').value;
+      pswd = document.getElementById('signin-password').value;
+      username = document.getElementById('signin-username').value;
       event.preventDefault();
       if (signform.checkValidity() == false) {
         event.preventDefault();
@@ -310,6 +331,9 @@
 
 
           });
+
+          localStorage.setItem("user_name", username);
+          localStorage.setItem("user_pass", pswd);
 
           $('#signin-div').hide();
           $('#quiz-div').show();
@@ -713,6 +737,7 @@
               <span id="loss"> </span>
        </div>
     </div>
+    <button class= "btn btn-danger" onclick="logout_user()">LOGOUT</button>
     </div>
 
   </div>
@@ -725,6 +750,14 @@
          document.getElementById('loss').innerHTML= loss+'<br>loss';
 
 
+     }
+
+     function logout_user(){
+       localStorage.removeItem("user_pass");
+       localStorage.removeItem("user_name");
+       $("#navbar").hide();
+       $("#user-div").hide();
+       $("#home-div").show();
      }
 
   </script>

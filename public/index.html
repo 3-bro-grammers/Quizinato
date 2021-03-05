@@ -350,8 +350,8 @@
     function change_learn_catg(i) {
       learn_catg = learn_category[i];
       learn_fetch();
-      ReactDOM.render(<LearnQuiz />, document.getElementById('learn_quiz_area'));
       document.getElementById('learn_quiz_area').style.display = 'block';
+      ReactDOM.render(<LearnQuiz />, document.getElementById('learn_quiz_area'));
 
     }
 
@@ -399,6 +399,7 @@
 
       constructor(props) {
         super(props);
+        this.button = [];
         this.state = {
           qn_no: 0,
 
@@ -410,6 +411,11 @@
 
       update() {
 
+       for(let i=0;i<=3;i++)
+       {
+         this.button[i].className = "btn";
+         this.button[i].disabled = false;
+       }
 
         if (this.state.qn_no == 49) {
 
@@ -425,10 +431,15 @@
       }
       validate(user_ans, index) {
         if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
-          alert('correct');
-        else
-          alert('incoorect');
+         {
+              this.button[index].className = "btn btn-success";
 
+        }
+        else
+          {
+           this.button[index].className = "btn btn-danger";
+           this.button[index].disabled = true;
+           }
       }
       render() {
 
@@ -443,9 +454,8 @@
                   this.options.map((item, index) => {
                     console.log(index)
                     return (
-                      <div onClick={() => { this.validate(unescape(item), index) }} >
-                        <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
-                        <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
+                      <div >
+                        <button ref={a => this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="btn">{unescape(item)}</button>
                         {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
                       </div>)
 

@@ -374,22 +374,21 @@
     function change_learn_catg(i) {
       learn_catg = learn_category[i];
       learn_fetch();
-      document.getElementById('learn_quiz_area').style.display = 'block';
-      ReactDOM.render(<LearnQuiz />, document.getElementById('learn_quiz_area'));
-
     }
 
 
     function learn_fetch() {
-      var url = 'https://opentdb.com/api.php?amount=50&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
+      var url = 'https://opentdb.com/api.php?amount=30&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url, false);
       xhr.send();
       var res = JSON.parse(xhr.response);
       console.log(res.results);
       learn_query = res.results;
+      ReactDOM.render(<LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area'));
       document.getElementById('learn_page').style.display = 'none';
       document.getElementById('quiz_area').style.display = 'none';
+      document.getElementById('learn_quiz_area').style.display = 'block';
 
     }
 
@@ -418,8 +417,7 @@
     ReactDOM.render(<LearnCategory />, document.getElementById('learn_catg'));
 
      class LearnQuiz extends React.Component {
-      data = [...learn_query];
-      options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
+
 
       constructor(props) {
         super(props);
@@ -428,6 +426,8 @@
           qn_no: 0,
 
         }
+        this.data = [...this.props.data];
+        this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
 
 
       }
@@ -488,7 +488,10 @@
               </ul>
             </div>
             <br />
-            <button onClick={() => { this.update() }}> Next</button>
+            <div className="row">
+            <button className="col btn btn-danger" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >Exit</button>
+            <button className="col btn btn-success" onClick={() => { this.update() }}> Next</button>
+            </div>
           </div>
         )
       }

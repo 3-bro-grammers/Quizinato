@@ -129,7 +129,6 @@
       pswd = localStorage.getItem("user_pass");
 
       if(username && pswd){
-        load_challenges();
         $("#quiz-div").show();
         $('#navbar').show();
       }else{
@@ -231,7 +230,6 @@
             localStorage.setItem("user_pass", pswd);
           }
 
-          load_challenges();
           $('#login-div').hide();
           $('#quiz-div').show();
           $('#navbar').show();
@@ -339,7 +337,6 @@
           localStorage.setItem("user_name", username);
           localStorage.setItem("user_pass", pswd);
 
-          load_challenges();
           $('#signin-div').hide();
           $('#quiz-div').show();
           $('#navbar').show();
@@ -425,6 +422,7 @@
 
     function load_challenges(){
       db.ref(`users/${username}/active`).once('value',(snap)=>{
+        ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.render(<ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div"));
       })
@@ -774,39 +772,44 @@
               status:3
             });
 
+          }else{
 
-            return;
+            
+
+            // db.ref(`users/${username}/active`).push({
+            //   ques: JSON.stringify(this.data),
+            //   opp: username,
+            //   resp: JSON.stringify(this.response),
+            //   status:1
+            // })
+
+            var new_key = db.ref(`users/${username}/active`).push().key;
+
+            db.ref(`users/${username}/active/${new_key}`).set({
+              ques: JSON.stringify(this.data),
+              opp: opponent,
+              my_resp: JSON.stringify(this.response),
+              status:1
+            });
+
+            db.ref(`users/${opponent}/active`).push({
+              ques: JSON.stringify(this.data),
+              opp: username,
+              opp_key:new_key,
+              opp_resp: JSON.stringify(this.response),
+              status:2
+            });
+
           }
-
           
+          ReactDOM.unmountComponentAtNode(document.getElementById("quiz_area"))
 
-          // db.ref(`users/${username}/active`).push({
-          //   ques: JSON.stringify(this.data),
-          //   opp: username,
-          //   resp: JSON.stringify(this.response),
-          //   status:1
-          // })
+          $("#challenge").show();
+          $("#navbar").show(); 
+          search_txt.value = "";
+          search_txt.disabled = false;
+          change_screen('notif-div');load_challenges();
 
-          var new_key = db.ref(`users/${username}/active`).push().key;
-
-          db.ref(`users/${username}/active/${new_key}`).set({
-            ques: JSON.stringify(this.data),
-            opp: opponent,
-            my_resp: JSON.stringify(this.response),
-            status:1
-          });
-
-          db.ref(`users/${opponent}/active`).push({
-            ques: JSON.stringify(this.data),
-            opp: username,
-            opp_key:new_key,
-            opp_resp: JSON.stringify(this.response),
-            status:2
-          });
-
-          
-          
-          
           return;
         }
         this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
@@ -938,7 +941,7 @@
         <a id="nav-learn-div" onclick = "change_screen('learn-div')">
          <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
         </a>
-        <a  id='nav-notif-div' onclick = "change_screen('notif-div');load_userdata();">
+        <a  id='nav-notif-div' onclick = "change_screen('notif-div');load_challenges();">
             <i class="fa fa-bell" style="font-size: inherit; color: inherit"></i>
         </a>
         <a id='nav-quiz-div' onclick = "change_screen('quiz-div')" class="active">

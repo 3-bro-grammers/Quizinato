@@ -129,6 +129,7 @@
       pswd = localStorage.getItem("user_pass");
 
       if(username && pswd){
+        load_challenges();
         $("#quiz-div").show();
         $('#navbar').show();
       }else{
@@ -223,24 +224,14 @@
         }
         if (res == pswd)
         {
-           db.ref("users/" + username + "/challenges").once("value", function(s) {
-                    challenges = s.val();
-                    });
-           db.ref("users/" + username + "/wins").once("value" ,function(s) {
-                    wins = s.val();
-                    loss = challenges - wins;
-                    ratio = parseFloat(wins/challenges);
-                    });
-           db.ref("users/" + username + "/xp").once("value", function(s) {
-                    xp = s.val();
-                    });
-
+           
           if(document.getElementById("login-check").checked == true)
           {
             localStorage.setItem("user_name", username);
             localStorage.setItem("user_pass", pswd);
           }
 
+          load_challenges();
           $('#login-div').hide();
           $('#quiz-div').show();
           $('#navbar').show();
@@ -348,6 +339,7 @@
           localStorage.setItem("user_name", username);
           localStorage.setItem("user_pass", pswd);
 
+          load_challenges();
           $('#signin-div').hide();
           $('#quiz-div').show();
           $('#navbar').show();
@@ -369,10 +361,78 @@
   <div id="notif-div" style="display: none;">
       <div class='container'>
           <h2>Active Challenges</h2>
-
+          <div id = "active-chal-div"></div>
+          <div id = "answer-chal-div"></div>
       </div>
 
   </div>
+  <script type="text/babel">
+
+    class ActiveChallenges extends React.Component {
+
+      constructor(props){
+        super(props);
+        if(props.data)
+          this.keys = Object.keys(props.data);
+          this.data=Object.values(props.data);
+          console.log(this.data);
+      }
+
+      accept_chal(chal_obj, key){
+        ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
+        ReactDOM.render(<Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} />, document.getElementById("answer-chal-div"))
+      }
+
+      decline_chal(chal_obj, key){
+        db.ref("users").update({
+          [username+"/active/"+key+"/status"]:4,
+          [chal_obj.opp+"/active/"+chal_obj.opp_key+"/status"]:4
+        }).then(load_challenges());
+      }
+
+      win_or_lose(my_resp, opp_resp){
+        var my_resp_arr = JSON.parse(my_resp);
+        var opp_resp_arr = JSON.parse(opp_resp);
+        var my_score = my_resp_arr.reduce((s,e)=>s+e);
+        var opp_score = opp_resp_arr.reduce((s,e)=>s+e);
+        if(my_score>opp_score){
+          return (`YOU WON (${my_score} : ${opp_score}  )`)
+        }else if(my_score<opp_score){
+          return (`YOU LOOSE (${my_score} : ${opp_score}  )`)
+        }else{
+          return (`TIE (${my_score} : ${opp_score}  )`)
+        }
+      }
+      
+      render() {
+        return (
+          <table class="table table-success">
+            { this.data.map((e,i)=>(
+              <tr>
+              <td>{e.opp}</td>
+              <td>{e.status==1?"YOU SENT"
+                  :(e.status==2?<div><button onClick={()=>this.accept_chal(e,this.keys[i])}>ACCEPT</button> <button onClick={()=>this.decline_chal(e,this.keys[i])}>DECLINE</button></div>
+                  :(e.status==3?this.win_or_lose(e.my_resp,e.opp_resp)
+                  :"DECLINED"))}</td>
+            </tr>
+            ))
+            
+            }
+          </table>
+        )
+      }
+    }
+
+    function load_challenges(){
+      db.ref(`users/${username}/active`).once('value',(snap)=>{
+        ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
+        ReactDOM.render(<ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div"));
+      })
+    } 
+
+    
+    
+  </script>
 
   <!--  LEARN DIV
   *******************************************************************************************
@@ -622,7 +682,7 @@
       document.getElementById('challenge').style.display = 'none';
       document.getElementById('navbar').style.display = 'none';
       ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
-      ReactDOM.render(<Quiz />, document.getElementById('quiz_area'));
+      ReactDOM.render(<Quiz data={query} />, document.getElementById('quiz_area'));
       document.getElementById('quiz_area').style.display = 'block';
 
     }
@@ -672,8 +732,8 @@
     ReactDOM.render(<Category />, document.getElementById('catg'));
 
     class Quiz extends React.Component {
-      data = [...query];
-      options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
+      
+      
       response = [];
       constructor(props) {
         super(props);
@@ -681,7 +741,15 @@
           qn_no: 0,
           cur_ind: -1
         }
+        this.accepted = props.accepted;
+        if(this.accepted){
+          this.my_key = props.my_key;
+          this.opp = props.opp;
+          this.opp_key = props.opp_key;
 
+        }
+        this.data = [...props.data];
+        this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
 
       }
 
@@ -690,12 +758,55 @@
 
 
         if (this.state.qn_no == 4) {
+
           var db = firebase.database();
+
+
+          if(this.accepted){
+
+            db.ref(`users/${username}/active/${this.my_key}`).update({
+              my_resp: JSON.stringify(this.response),
+              status:3
+            });
+
+            db.ref(`users/${this.opp}/active/${this.opp_key}`).update({
+              opp_resp: JSON.stringify(this.response),
+              status:3
+            });
+
+
+            return;
+          }
+
+          
+
+          // db.ref(`users/${username}/active`).push({
+          //   ques: JSON.stringify(this.data),
+          //   opp: username,
+          //   resp: JSON.stringify(this.response),
+          //   status:1
+          // })
+
+          var new_key = db.ref(`users/${username}/active`).push().key;
+
+          db.ref(`users/${username}/active/${new_key}`).set({
+            ques: JSON.stringify(this.data),
+            opp: opponent,
+            my_resp: JSON.stringify(this.response),
+            status:1
+          });
+
           db.ref(`users/${opponent}/active`).push({
             ques: JSON.stringify(this.data),
-            from: username,
-            resp: JSON.stringify(this.response)
+            opp: username,
+            opp_key:new_key,
+            opp_resp: JSON.stringify(this.response),
+            status:2
           });
+
+          
+          
+          
           return;
         }
         this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
@@ -785,10 +896,27 @@
 
   <script>
      function load_userdata(){
+
+          db.ref("users/" + username + "/challenges").once("value", function(s) {
+                    challenges = s.val();
+                    document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
+                    });
+          db.ref("users/" + username + "/wins").once("value" ,function(s) {
+                    wins = s.val();
+                    loss = challenges - wins;
+                    ratio = parseFloat(wins/challenges);
+                    document.getElementById('wins').innerHTML= wins+'<br>wins';
+                    document.getElementById('loss').innerHTML= loss+'<br>loss';
+                    });
+          db.ref("users/" + username + "/xp").once("value", function(s) {
+                    xp = s.val();
+                    
+                    });
+
          document.getElementById('header').innerHTML= username;
-         document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
-         document.getElementById('wins').innerHTML= wins+'<br>wins';
-         document.getElementById('loss').innerHTML= loss+'<br>loss';
+         
+         
+         
 
 
      }

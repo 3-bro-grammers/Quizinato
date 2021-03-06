@@ -385,6 +385,7 @@
       var res = JSON.parse(xhr.response);
       console.log(res.results);
       learn_query = res.results;
+      ReactDOM.unmountComponentAtNode(document.getElementById('learn_quiz_area'));
       ReactDOM.render(<LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area'));
       document.getElementById('learn_page').style.display = 'none';
       document.getElementById('quiz_area').style.display = 'none';
@@ -426,6 +427,7 @@
           qn_no: 0,
 
         }
+        console.log(props);
         this.data = [...this.props.data];
         this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
 

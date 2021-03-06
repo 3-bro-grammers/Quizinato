@@ -98,7 +98,7 @@
       float: left;
       display: block;
       text-align: center;
-      padding: 14px 16px;
+      padding: 12px 14px;
       font-size: 20px;
       color: blue;
   }
@@ -112,7 +112,7 @@
   .navbar a.active
   {
       background-color: skyblue;
-      font-size: 25px;
+      font-size: 22px;
   }
   </style>
 </head>
@@ -349,6 +349,17 @@
 
 
   </script>
+
+  <!--  NOTIFICATION DIV
+  *******************************************************************************************
+  -->
+  <div id="notif-div" style="display: none;">
+      <div class='container'>
+          <h2>Active Challenges</h2>
+
+      </div>
+
+  </div>
 
   <!--  LEARN DIV
   *******************************************************************************************
@@ -597,6 +608,7 @@
       fetch();
       document.getElementById('challenge').style.display = 'none';
       document.getElementById('navbar').style.display = 'none';
+      ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
       ReactDOM.render(<Quiz />, document.getElementById('quiz_area'));
       document.getElementById('quiz_area').style.display = 'block';
 
@@ -723,6 +735,17 @@
 
   </script>
 
+   <!--  LEADER_BOARDDIV
+  *******************************************************************************************
+  -->
+  <div id="leader_board-div" style="display: none;">
+      <div class='container'>
+          <h2>Leaderboard</h2>
+
+      </div>
+
+  </div>
+
   <!--  USER DIV
   *******************************************************************************************
   -->
@@ -767,8 +790,6 @@
 
   </script>
 
-
-
   <!--  NAV DIV
   *******************************************************************************************
   -->
@@ -776,8 +797,14 @@
         <a id="nav-learn-div" onclick = "change_screen('learn-div')">
          <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
         </a>
+        <a  id='nav-notif-div' onclick = "change_screen('notif-div');load_userdata();">
+            <i class="fa fa-bell" style="font-size: inherit; color: inherit"></i>
+        </a>
         <a id='nav-quiz-div' onclick = "change_screen('quiz-div')" class="active">
             <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
+        </a>
+        <a  id='nav-leader_board-div' onclick = "change_screen('leader_board-div');load_userdata();">
+            <i class="fa fa-signal" style="font-size: inherit; color: inherit"></i>
         </a>
         <a  id='nav-user-div' onclick = "change_screen('user-div');load_userdata();">
             <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>
@@ -786,7 +813,7 @@
 
     <script>
        function change_screen(selection){
-           var screens = ['quiz-div' , 'learn-div', 'user-div']
+           var screens = [ 'learn-div' , 'notif-div' , 'quiz-div' ,'leader_board-div' ,'user-div']
            for (x of screens)
            {
               if(x != selection)

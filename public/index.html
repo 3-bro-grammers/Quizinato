@@ -164,17 +164,26 @@
       <br>
       <h2 style="text-align: center">Login !</h2><br>
       <form id='login-form' class="needs-validation" novalidate="" name="login-form">
-        <div class="form-group col-sm|md|lg|xl">
-          <label for="username">Username:</label>
+        <div class="form-floating col-sm|md|lg|xl">
           <input type="text" class="form-control" id="login-username" placeholder="Enter username" required="">
+          <label for="login-username">Username</label>
         </div>
-        <div class="form-group col-sm|md|lg|xl">
-          <label for="password">Password:</label>
+         <br>
+        <div class="form-floating col-sm|md|lg|xl">
           <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
+          <label for="login-password">Password</label>
           <div id="login-feedback" class="invalid-feedback">
             Incorrect username or password.
           </div>
         </div>
+        <br>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="login-check">
+            <label class="form-check-label" for="login-check">
+                Keep me logged in.
+            </label>
+        </div>
+        <br>
         <button type="submit" class="btn btn-primary">
           <span id="login-spinner" class="spinner-border spinner-border-sm"></span>
           Login</button>
@@ -226,9 +235,11 @@
                     xp = s.val();
                     });
 
-          localStorage.setItem("user_name", username);
-          localStorage.setItem("user_pass", pswd);
-
+          if(document.getElementById("login-check").checked == true)
+          {
+            localStorage.setItem("user_name", username);
+            localStorage.setItem("user_pass", pswd);
+          }
 
           $('#login-div').hide();
           $('#quiz-div').show();
@@ -261,21 +272,23 @@
       <br>
       <h2 style="text-align: center">Sign in!</h2><br>
       <form id='signin-form' class="needs-validation" novalidate="" name="sign-form">
-        <div class="form-group col--sm|md|lg|xl">
-          <label for="userame">Username:</label>
+        <div class="form-floating col-sm|md|lg|xl">
           <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
+          <label for="signin-userame">Username:</label>
           <div id='signin-feedback' class="invalid-feedback">
             Username already exists.
           </div>
         </div>
-        <div class="form-group col-sm|md|lg|xl">
-          <label for="password">Password:</label>
+        <br>
+        <div class="form-floating col-sm|md|lg|xl">
           <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters"
             required="">
+          <label for="signin-password">Password:</label>
           <div class="invalid-feedback">
             Use a stronger password.
           </div>
         </div>
+        <br>
         <button type="submit" class="btn btn-primary">
           <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Signin
         </button>

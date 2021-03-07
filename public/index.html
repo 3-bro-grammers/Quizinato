@@ -908,6 +908,9 @@
   function leaderboard(){
    ReactDOM.unmountComponentAtNode(document.getElementById('leaderboard'));
     db.ref('users').orderByChild('xp').once("value", function (s) {
+
+        leaderboard_user = [];
+        leaderboard_xp =[];
         s.forEach(function (child) {
             leaderboard_user.push(child.key);
             leaderboard_xp.push(child.val().xp);

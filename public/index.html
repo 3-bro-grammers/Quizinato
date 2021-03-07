@@ -125,6 +125,7 @@
   .board_data :hover
   {
     background-color: skyblue;
+    z-index: -1;
   }
 
   </style>
@@ -549,11 +550,11 @@
 
        for(let i=0;i<=3;i++)
        {
-         this.button[i].className = "btn";
+         this.button[i].className = "shadow p-2 mb-2 rounded";
          this.button[i].disabled = false;
        }
 
-        if (this.state.qn_no == 49) {
+        if (this.state.qn_no == 29) {
 
           return;
         }
@@ -568,12 +569,12 @@
       validate(user_ans, index) {
         if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
          {
-              this.button[index].className = "btn btn-success";
+              this.button[index].className= "shadow p-2 mb-2 rounded text-white bg-success bg-gradient";
 
         }
         else
           {
-           this.button[index].className = "btn btn-danger";
+           this.button[index].className= "shadow-none p-2 mb-2 rounded text-white bg-danger bg-gradient";
            this.button[index].disabled = true;
            }
       }
@@ -584,25 +585,22 @@
             <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
             <br />
             <div className="options">
-              <ul>
-
                 {
                   this.options.map((item, index) => {
-                    console.log(index)
+                    //console.log(index)
                     return (
                       <div >
-                        <button ref={a => this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="btn">{unescape(item)}</button>
+                        <div ref={a => this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="shadow p-2 mb-2 rounded">{unescape(item)}</div>
                         {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
                       </div>)
 
                   })
                 }
-              </ul>
             </div>
             <br />
             <div className="row">
-            <button className="col btn btn-danger" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >Exit</button>
-            <button className="col btn btn-success" onClick={() => { this.update() }}> Next</button>
+            <button className="col btn btn-danger text-white" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >Exit</button>
+            <button className="col btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == 29}> Next</button>
             </div>
           </div>
         )
@@ -909,10 +907,8 @@
    leaderboard_user = [];
    leaderboard_xp =[];
    ReactDOM.unmountComponentAtNode(document.getElementById('leaderboard'));
-    db.ref('users').orderByChild('xp').once("value", function (s) {
 
-        leaderboard_user = [];
-        leaderboard_xp =[];
+    db.ref('users').orderByChild('xp').once("value", function (s) {
         s.forEach(function (child) {
             leaderboard_user.push(child.key);
             leaderboard_xp.push(child.val().xp);

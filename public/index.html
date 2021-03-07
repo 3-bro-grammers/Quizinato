@@ -3,107 +3,53 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
     <!--font-awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
+  <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
 
-    <script>
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        var firebaseConfig = {
-            apiKey: "AIzaSyC4rGPo9XW56R4rGOXXhmXGuL_eZ0fvAQo",
-            authDomain: "quizinato.firebaseapp.com",
-            databaseURL: "https://quizinato-default-rtdb.firebaseio.com",
-            projectId: "quizinato",
-            storageBucket: "quizinato.appspot.com",
-            messagingSenderId: "823687668145",
-            appId: "1:823687668145:web:bf0d6b69e1f2a0f1f81d90",
-            measurementId: "G-WPV4QGR06F"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-    </script>
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyC4rGPo9XW56R4rGOXXhmXGuL_eZ0fvAQo",
+      authDomain: "quizinato.firebaseapp.com",
+      databaseURL: "https://quizinato-default-rtdb.firebaseio.com",
+      projectId: "quizinato",
+      storageBucket: "quizinato.appspot.com",
+      messagingSenderId: "823687668145",
+      appId: "1:823687668145:web:bf0d6b69e1f2a0f1f81d90",
+      measurementId: "G-WPV4QGR06F"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 
-    <!--react-js-->
-    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!--react-js-->
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <title>Quiz_app</title>
-    <style>
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        #login-spinner,
-        #signin-spinner {
-            display: none;
-        }
-        
-        #challenge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        #quiz_area {
-            display: none;
-            position: relative;
-        }
-        
-        #diff_mode {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-        
-        .navbar {
-            overflow: hidden;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: #ecf0f3;
-        }
-        
-        .navbar a {
-            float: left;
-            display: block;
-            text-align: center;
-            padding: 12px 14px;
-            font-size: 20px;
-            color: blue;
-        }
-        
-        .navbar a:hover {
-            background: #f1f1f1;
-            color: black;
-        }
-        
-        .navbar a.active {
-            background-color: skyblue;
-            font-size: 22px;
-        }
-        
-        .parallax {
+  <title>Quiz_app</title>
+  <style>
+  .parallax {
             background-image: url("https://wallpaperaccess.com/full/2384073.jpg");
             min-height: 500px;
             background-attachment: fixed;
@@ -111,34 +57,106 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
-    </style>
+  form
+  {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+
+  #login-spinner,
+  #signin-spinner
+  {
+      display: none;
+  }
+
+  #challenge
+  {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  }
+
+  #quiz_area
+  {
+      display: none;
+      position: relative;
+  }
+
+  #diff_mode
+  {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+  }
+
+  .navbar
+  {
+      overflow: hidden;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #ecf0f3;
+  }
+
+  .navbar a
+  {
+      float: left;
+      display: block;
+      text-align: center;
+      padding: 12px 14px;
+      font-size: 20px;
+      color: blue;
+  }
+
+  .navbar a:hover
+  {
+      background: #f1f1f1;
+      color: black;
+  }
+
+  .navbar a.active
+  {
+      border-radius: 15px;
+      background-color: skyblue;
+  }
+  .board_data :hover
+  {
+    background-color: skyblue;
+  }
+
+  </style>
 </head>
 
 <body>
 
-    <script>
-        var pswd, username, opponent;
+  <script>
 
-        //LOGIN PERSISTANCE
-        window.onload = () => {
-            username = localStorage.getItem("user_name");
-            pswd = localStorage.getItem("user_pass");
+    var pswd, username, opponent;
 
-            if (username && pswd) {
-                $("#quiz-div").show();
-                $('#navbar').show();
-            } else {
-                $("#home-div").show();
-            }
-        }
-    </script>
+    //LOGIN PERSISTANCE
+    window.onload = () =>{
+      username = localStorage.getItem("user_name");
+      pswd = localStorage.getItem("user_pass");
 
-    <!--  HOME DIV
+      if(username && pswd){
+        $("#quiz-div").show();
+        $('#navbar').show();
+        change_screen('quiz-div');
+      }else{
+        $("#home-div").show();
+      }
+    }
+  </script>
+
+  <!--  HOME DIV
   *******************************************************************************************
   -->
 
-    <div id="home-div" style="display: none;">
-        <figure class="text-center">
+  <div id="home-div" style="display: none;">
+   <figure class="text-center">
             <h1 class="text-center text-danger bg-secondary">
                 Quizinato
             </h1>
@@ -160,524 +178,869 @@
 
         <br>
         <div class="parallax"></div>
-    </div>
+  </div>
 
 
-    <!--  LOGIN DIV
+  <!--  LOGIN DIV
   *******************************************************************************************
   -->
 
 
-    <div id="login-div" style="display: none;">
-        <div class='container'>
-            <br>
-            <h2 style="text-align: center">Login !</h2><br>
-            <form id='login-form' class="needs-validation" novalidate="" name="login-form">
-                <div class="form-floating col-sm|md|lg|xl">
-                    <input type="text" class="form-control" id="login-username" placeholder="Enter username" required="">
-                    <label for="login-username">Username</label>
-                </div>
-                <br>
-                <div class="form-floating col-sm|md|lg|xl">
-                    <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
-                    <label for="login-password">Password</label>
-                    <div id="login-feedback" class="invalid-feedback">
-                        Incorrect username or password.
-                    </div>
-                </div>
-                <br>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="login-check">
-                    <label class="form-check-label" for="login-check">
+  <div id="login-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <h2 style="text-align: center">Welcome Back!</h2><br>
+      <form id='login-form' class="needs-validation" novalidate="" name="login-form">
+        <div class="form-floating col-sm|md|lg|xl">
+          <input type="text" class="form-control" id="login-username" placeholder="Enter username" required="">
+          <label for="login-username">Username</label>
+        </div>
+         <br>
+        <div class="form-floating col-sm|md|lg|xl">
+          <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
+          <label for="login-password">Password</label>
+          <div id="login-feedback" class="invalid-feedback">
+            Incorrect username or password.
+          </div>
+        </div>
+        <br>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="login-check">
+            <label class="form-check-label" for="login-check">
                 Keep me logged in.
             </label>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">
           <span id="login-spinner" class="spinner-border spinner-border-sm"></span>
           Login</button>
-            </form>
-        </div>
+      </form>
     </div>
+  </div>
 
-    <script>
-        var db = firebase.database();
-        var challenges = 0,
-            wins = 0,
-            loss = 0,
-            ratio = 0.00;
-        // Disable form submissions if there are invalid fields
-        var logform = document.getElementById("login-form");
-        logform.addEventListener("submit", function(event) {
-            event.preventDefault();
+  <script>
+    var db = firebase.database();
+    var challenges=0,wins=0,loss=0,ratio=0.00;
+    // Disable form submissions if there are invalid fields
+    var logform = document.getElementById("login-form");
+    logform.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-            document.getElementById('login-spinner').style.display = 'inline-block';
-            pswd = document.getElementById('login-password').value;
-            username = document.getElementById('login-username').value;
+      document.getElementById('login-spinner').style.display = 'inline-block';
+      pswd = document.getElementById('login-password').value;
+      username = document.getElementById('login-username').value;
 
-            if (logform.checkValidity() == false) {
-                event.stopPropagation();
-                document.getElementById('login-feedback').innerHTML = "Required fields cannot be empty";
-                document.getElementById('login-password').classList.add("is-invalid");
-                document.getElementById('login-username').classList.add("is-invalid");
-                document.getElementById('login-spinner').style.display = 'none';
-                return 0;
-            }
+      if (logform.checkValidity() == false) {
+        event.stopPropagation();
+        document.getElementById('login-feedback').innerHTML = "Required fields cannot be empty";
+        document.getElementById('login-password').classList.add("is-invalid");
+        document.getElementById('login-username').classList.add("is-invalid");
+        document.getElementById('login-spinner').style.display = 'none';
+        return 0;
+      }
 
 
-            db.ref("users/" + username + "/pwd").once("value", function(s) {
-                const res = s.val();
-                if (res != pswd) {
-                    event.stopPropagation();
-                    document.getElementsByClassName('invalid-feedback')[0].innerHTML = "Incorrect username or password.";
-                    document.getElementById('login-password').classList.add("is-invalid");
-                    document.getElementById('login-username').classList.add("is-invalid");
-                }
-                if (res == pswd) {
+      db.ref("users/" + username + "/pwd").once("value", function (s) {
+        const res = s.val();
+        if (res != pswd) {
+          event.stopPropagation();
+          document.getElementsByClassName('invalid-feedback')[0].innerHTML = "Incorrect username or password.";
+          document.getElementById('login-password').classList.add("is-invalid");
+          document.getElementById('login-username').classList.add("is-invalid");
+        }
+        if (res == pswd)
+        {
 
-                    if (document.getElementById("login-check").checked == true) {
-                        localStorage.setItem("user_name", username);
-                        localStorage.setItem("user_pass", pswd);
-                    }
+          if(document.getElementById("login-check").checked == true)
+          {
+            localStorage.setItem("user_name", username);
+            localStorage.setItem("user_pass", pswd);
+          }
 
-                    $('#login-div').hide();
-                    $('#quiz-div').show();
-                    $('#navbar').show();
+          $('#login-div').hide();
+          $('#quiz-div').show();
+          change_screen('quiz-div');
+          $('#navbar').show();
 
-                }
+        }
 
-                document.getElementById('login-spinner').style.display = 'none';
+        document.getElementById('login-spinner').style.display = 'none';
 
-            });
+      }
+      );
 
 
 
-        }, false);
-    </script>
+    }
+      , false);
 
-    <!--  SIGNIN DIV
+
+
+
+
+  </script>
+
+  <!--  SIGNIN DIV
   *******************************************************************************************
   -->
 
-    <div id="signin-div" style="display: none;">
-        <div class='container'>
-            <br>
-            <h2 style="text-align: center">Sign in!</h2><br>
-            <form id='signin-form' class="needs-validation" novalidate="" name="sign-form">
-                <div class="form-floating col-sm|md|lg|xl">
-                    <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
-                    <label for="signin-userame">Username:</label>
-                    <div id='signin-feedback' class="invalid-feedback">
-                        Username already exists.
-                    </div>
-                </div>
-                <br>
-                <div class="form-floating col-sm|md|lg|xl">
-                    <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters" required="">
-                    <label for="signin-password">Password:</label>
-                    <div class="invalid-feedback">
-                        Use a stronger password.
-                    </div>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary">
+  <div id="signin-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <h2 style="text-align: center">Create an account..</h2><br>
+      <form id='signin-form' class="needs-validation" novalidate="" name="sign-form">
+        <div class="form-floating col-sm|md|lg|xl">
+          <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
+          <label for="signin-userame">Username:</label>
+          <div id='signin-feedback' class="invalid-feedback">
+            Username already exists.
+          </div>
+        </div>
+        <br>
+        <div class="form-floating col-sm|md|lg|xl">
+          <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters"
+            required="">
+          <label for="signin-password">Password:</label>
+          <div class="invalid-feedback">
+            Use a stronger password.
+          </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">
           <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Signin
         </button>
-            </form>
-        </div>
+      </form>
     </div>
+  </div>
 
 
-    <script>
-        var db = firebase.database();
-        var error = 0,
-            res;
-        // Disable form submissions if there are invalid fields
-        var signform = document.getElementById("signin-form");
-        signform.addEventListener("submit", function(event) {
+  <script>
 
-            document.getElementById('signin-spinner').style.display = 'inline-block';
-            pswd = document.getElementById('signin-password').value;
-            username = document.getElementById('signin-username').value;
-            event.preventDefault();
-            if (signform.checkValidity() == false) {
-                event.preventDefault();
-                event.stopPropagation();
-                document.getElementById('signin-feedback').innerHTML = "Field cannot be empty";
-                document.getElementById('signin-username').classList.add("is-invalid");
-                document.getElementById('signin-password').classList.add("is-invalid");
-                document.getElementById('signin-spinner').style.display = 'none';
-                return 0;
-            }
-            db.ref("users").once('value', function(s) {
-                error = (s.hasChild(username));
-                if (error) {
+    var db = firebase.database();
+    var error = 0, res;
+    // Disable form submissions if there are invalid fields
+    var signform = document.getElementById("signin-form");
+    signform.addEventListener("submit", function (event) {
 
-                    event.stopPropagation();
-                    document.getElementById('signin-password').classList.remove("is-invalid");
-                    document.getElementById('signin-feedback').innerHTML = " Username already exists.";
-                    document.getElementById('signin-username').classList.add("is-invalid");
-                } else if (pswd.length < 5) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    document.getElementById('signin-username').classList.remove("is-invalid");
-                    document.getElementById('signin-password').classList.add("is-invalid");
-                } else {
-                    db.ref('users/' + username).set({
+      document.getElementById('signin-spinner').style.display = 'inline-block';
+      pswd = document.getElementById('signin-password').value;
+      username = document.getElementById('signin-username').value;
+      event.preventDefault();
+      if (signform.checkValidity() == false) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.getElementById('signin-feedback').innerHTML = "Field cannot be empty";
+        document.getElementById('signin-username').classList.add("is-invalid");
+        document.getElementById('signin-password').classList.add("is-invalid");
+        document.getElementById('signin-spinner').style.display = 'none';
+        return 0;
+      }
+      db.ref("users").once('value', function (s) {
+        error = (s.hasChild(username));
+        if (error) {
 
-                        pwd: pswd,
-                        challenges: 0,
-                        wins: 0,
-                        xp: 0
+          event.stopPropagation();
+          document.getElementById('signin-password').classList.remove("is-invalid");
+          document.getElementById('signin-feedback').innerHTML = " Username already exists.";
+          document.getElementById('signin-username').classList.add("is-invalid");
+        }
+        else if (pswd.length < 5) {
+          event.preventDefault();
+          event.stopPropagation();
+          document.getElementById('signin-username').classList.remove("is-invalid");
+          document.getElementById('signin-password').classList.add("is-invalid");
+        }
 
+        else {
+          db.ref('users/' + username).set({
 
-                    });
-
-                    localStorage.setItem("user_name", username);
-                    localStorage.setItem("user_pass", pswd);
-
-                    $('#signin-div').hide();
-                    $('#quiz-div').show();
-                    $('#navbar').show();
+            pwd: pswd,
+            challenges: 0,
+            wins: 0,
+            xp: 0
 
 
-                }
-                document.getElementById('signin-spinner').style.display = 'none';
-            });
+          });
 
-        }, false);
-    </script>
+          localStorage.setItem("user_name", username);
+          localStorage.setItem("user_pass", pswd);
 
-    <!--  NOTIFICATION DIV
+          $('#signin-div').hide();
+          $('#quiz-div').show();
+          $('#navbar').show();
+
+
+        }
+        document.getElementById('signin-spinner').style.display = 'none';
+      });
+
+    }, false);
+
+
+
+  </script>
+
+  <!--  NOTIFICATION DIV
   *******************************************************************************************
   -->
-    <div id="notif-div" style="display: none;">
-        <div class='container'>
-            <h2>Active Challenges</h2>
-            <div id="active-chal-div"></div>
-            <div id="answer-chal-div"></div>
-        </div>
+  <div id="notif-div" style="display: none;">
+      <div class='container'>
+          <h2>Active Challenges</h2>
+          <div id = "active-chal-div"></div>
+          <div id = "answer-chal-div"></div>
+      </div>
 
-    </div>
-    <script type="text/babel">
+  </div>
+  <script type="text/babel">
 
-        class ActiveChallenges extends React.Component { constructor(props){ super(props); if(props.data) this.keys = Object.keys(props.data); this.data=Object.values(props.data); console.log(this.data); } accept_chal(chal_obj, key){ ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
-        ReactDOM.render(
-        <Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} />, document.getElementById("answer-chal-div")) } decline_chal(chal_obj, key){ db.ref("users").update({ [username+"/active/"+key+"/status"]:4, [chal_obj.opp+"/active/"+chal_obj.opp_key+"/status"]:4 }).then(load_challenges()); } win_or_lose(my_resp,
-        opp_resp){ var my_resp_arr = JSON.parse(my_resp); var opp_resp_arr = JSON.parse(opp_resp); var my_score = my_resp_arr.reduce((s,e)=>s+e); var opp_score = opp_resp_arr.reduce((s,e)=>s+e); if(my_score>opp_score){ return (`YOU WON (${my_score} :
-        ${opp_score} )`) }else if(my_score
-        <opp_score){ return (`YOU LOOSE (${my_score} : ${opp_score} )`) }else{ return (`TIE (${my_score} : ${opp_score} )`) } } render() { return ( <table class="table table-success">
+    class ActiveChallenges extends React.Component {
+
+      constructor(props){
+        super(props);
+        if(props.data)
+          this.keys = Object.keys(props.data);
+          this.data=Object.values(props.data);
+          console.log(this.data);
+      }
+
+      accept_chal(chal_obj, key){
+        ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
+        ReactDOM.render(<Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} />, document.getElementById("answer-chal-div"))
+      }
+
+      decline_chal(chal_obj, key){
+        db.ref("users").update({
+          [username+"/active/"+key+"/status"]:4,
+          [chal_obj.opp+"/active/"+chal_obj.opp_key+"/status"]:4
+        }).then(load_challenges());
+      }
+
+      win_or_lose(my_resp, opp_resp){
+        var my_resp_arr = JSON.parse(my_resp);
+        var opp_resp_arr = JSON.parse(opp_resp);
+        var my_score = my_resp_arr.reduce((s,e)=>s+e);
+        var opp_score = opp_resp_arr.reduce((s,e)=>s+e);
+        if(my_score>opp_score){
+          return (`YOU WON (${my_score} : ${opp_score}  )`)
+        }else if(my_score<opp_score){
+          return (`YOU LOOSE (${my_score} : ${opp_score}  )`)
+        }else{
+          return (`TIE (${my_score} : ${opp_score}  )`)
+        }
+      }
+
+      render() {
+        return (
+          <table class="table table-success">
             { this.data.map((e,i)=>(
-            <tr>
-                <td>{e.opp}</td>
-                <td>{e.status==1?"YOU SENT" :(e.status==2?
-                    <div><button onClick={()=>this.accept_chal(e,this.keys[i])}>ACCEPT</button> <button onClick={()=>this.decline_chal(e,this.keys[i])}>DECLINE</button></div>
-                    :(e.status==3?this.win_or_lose(e.my_resp,e.opp_resp) :"DECLINED"))}
-                </td>
+              <tr>
+              <td>{e.opp}</td>
+              <td>{e.status==1?"YOU SENT"
+                  :(e.status==2?<div><button onClick={()=>this.accept_chal(e,this.keys[i])}>ACCEPT</button> <button onClick={()=>this.decline_chal(e,this.keys[i])}>DECLINE</button></div>
+                  :(e.status==3?this.win_or_lose(e.my_resp,e.opp_resp)
+                  :"DECLINED"))}</td>
             </tr>
-            )) }
-            </table>
-            ) } } function load_challenges(){ db.ref(`users/${username}/active`).once('value',(snap)=>{ ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div")); ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div")); ReactDOM.render(
-            <ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div")); }) }
+            ))
+
+            }
+          </table>
+        )
+      }
+    }
+
+    function load_challenges(){
+      db.ref(`users/${username}/active`).once('value',(snap)=>{
+        ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
+        ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
+        ReactDOM.render(<ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div"));
+      })
+    }
 
 
 
-    </script>
+  </script>
 
-    <!--  LEARN DIV
+  <!--  LEARN DIV
   *******************************************************************************************
   -->
-    <div id="learn-div" style="display: none;">
-        <div class='container'>
-            <br>
-            <div id="learn_page">
-                <div id='learn_catg'>
-                </div>
-            </div>
-            <div id="learn_quiz_area">
-
-            </div>
+  <div id="learn-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <div id="learn_page">
+        <div id='learn_catg'>
         </div>
+      </div>
+      <div id="learn_quiz_area">
+
+      </div>
     </div>
+  </div>
 
-    <script type="text/babel">
-        var learn_category = [9, 17, 21, 23]; var learn_catg, learn_query; function change_learn_catg(i) { learn_catg = learn_category[i]; learn_fetch(); } function learn_fetch() { var url = 'https://opentdb.com/api.php?amount=30&category=' + learn_catg + '&difficulty=easy'+
-        '&type=multiple&encode=url3986'; var xhr = new XMLHttpRequest(); xhr.open('GET', url, false); xhr.send(); var res = JSON.parse(xhr.response); console.log(res.results); learn_query = res.results; ReactDOM.unmountComponentAtNode(document.getElementById('learn_quiz_area'));
-        ReactDOM.render(
-        <LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area')); document.getElementById('learn_page').style.display = 'none'; document.getElementById('quiz_area').style.display = 'none'; document.getElementById('learn_quiz_area').style.display = 'block'; } class
-        LearnCategory extends React.Component { category = ['General Knowledge', 'Science & Nature', 'sports', 'History']; render() { return (
-        <div>
-            { this.category.map((data, i) => { return (
-            <div>
-                <button onClick={()=> change_learn_catg(i)} className="btn btn-outline-primary">{data}</button>
-            </div>
-            ) }) }
+   <script type="text/babel">
+    var learn_category = [9, 17, 21, 23];
+    var learn_catg, learn_query;
 
 
+    function change_learn_catg(i) {
+      learn_catg = learn_category[i];
+      learn_fetch();
+    }
 
-        </div>
-        ) } } ReactDOM.render(
-        <LearnCategory />, document.getElementById('learn_catg')); class LearnQuiz extends React.Component { constructor(props) { super(props); this.button = []; this.state = { qn_no: 0, } console.log(props); this.data = [...this.props.data]; this.options = [...this.data[0].incorrect_answers,
-        this.data[0].correct_answer].sort(() => Math.random() - 0.5); } update() { for(let i=0;i
-        <=3;i++) { this.button[i].className="btn" ; this.button[i].disabled=f alse; } if (this.state.qn_no==4 9) { return; } this.options=[ ...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(()=> Math.random() - 0.5) this.setState( { qn_no: this.state.qn_no + 1, }); } validate(user_ans, index) { if (user_ans === unescape(this.data[this.state.qn_no].correct_answer)) { this.button[index].className = "btn btn-success"; } else { this.button[index].className
-            = "btn btn-danger"; this.button[index].disabled = true; } } render() { return (
-            <div>
-                <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
-                <br />
-                <div className="options">
-                    <ul>
 
-                        { this.options.map((item, index) => { console.log(index) return (
-                        <div>
-                            <button ref={a=> this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="btn">{unescape(item)}</button> {/*
-                            <li onClick={()=> { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
-                        </div>) }) }
-                    </ul>
+    function learn_fetch() {
+      var url = 'https://opentdb.com/api.php?amount=30&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, false);
+      xhr.send();
+      var res = JSON.parse(xhr.response);
+      console.log(res.results);
+      learn_query = res.results;
+      ReactDOM.unmountComponentAtNode(document.getElementById('learn_quiz_area'));
+      ReactDOM.render(<LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area'));
+      document.getElementById('learn_page').style.display = 'none';
+      document.getElementById('quiz_area').style.display = 'none';
+      document.getElementById('learn_quiz_area').style.display = 'block';
+
+    }
+
+    class LearnCategory extends React.Component {
+
+      category = ['General Knowledge', 'Science & Nature', 'sports', 'History'];
+      render() {
+        return (
+          <div>
+            { this.category.map((data, i) => {
+              return (
+                <div>
+                  <button onClick={() => change_learn_catg(i)} className="btn btn-outline-primary">{data}</button>
                 </div>
-                <br />
-                <div className="row">
-                    <button className="col btn btn-danger" onClick={()=> {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >Exit</button>
-                    <button className="col btn btn-success" onClick={()=> { this.update() }}> Next</button>
-                </div>
-            </div>
-            ) } }
+              )
 
-
-
-    </script>
-
-
-
-
-
-    <!--  QUIZ DIV
-  *******************************************************************************************
-  -->
-
-
-    <div id="quiz-div" style="display: none;">
-        <div class='container'>
-            <br>
-            <div class="dropdown">
-                <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt" data-bs-toggle="dropdown">
-                <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
-
-                </ul>
-            </div>
-            <div id='challenge'>
-                <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
-                    <div class="dropdown">
-                        <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-              Easy
-            </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" onclick="change_diff('easy')">Easy</a>
-                            <a class="dropdown-item" onclick="change_diff('medium')">Medium</a>
-                            <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id='catg'></div>
-            </div>
-            <div id="quiz_area">
-            </div>
-        </div>
-
-
-    </div>
-
-    <script>
-        function search_input() {
-
-            var search = search_txt.value.toLowerCase();
-            if (!search) {
-                search_list.innerHTML = "";
-                return;
+            })
             }
 
-            var inn_htm = "";
 
-            db.ref("users").once("value", function(snap) {
-                var all_users = snap.val();
-                for (x in all_users) {
-                    if (x.toLowerCase() != username) {
-                        if (x.toLowerCase().indexOf(search) > -1)
-                            inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
-                    }
-                }
-                search_list.innerHTML = inn_htm;
-            })
 
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<LearnCategory />, document.getElementById('learn_catg'));
+
+     class LearnQuiz extends React.Component {
+
+
+      constructor(props) {
+        super(props);
+        this.button = [];
+        this.state = {
+          qn_no: 0,
 
         }
+        console.log(props);
+        this.data = [...this.props.data];
+        this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
 
-        function set_opponent(opp) {
-            opponent = opp;
-            search_txt.value = opp;
-            search_txt.disabled = true;
+
+      }
+
+
+      update() {
+
+       for(let i=0;i<=3;i++)
+       {
+         this.button[i].className = "btn";
+         this.button[i].disabled = false;
+       }
+
+        if (this.state.qn_no == 49) {
+
+          return;
         }
-    </script>
-
-    <script type="text/babel">
-        var category = [9, 17, 21, 23]; var catg, query; var difficulty = 'easy'; function change_diff(mode) { difficulty = mode; document.getElementById('dropdown').innerText = mode; } function change_catg(i) { catg = category[i]; fetch(); document.getElementById('challenge').style.display
-        = 'none'; document.getElementById('navbar').style.display = 'none'; ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area')); ReactDOM.render(
-        <Quiz data={query} />, document.getElementById('quiz_area')); document.getElementById('quiz_area').style.display = 'block'; } function fetch() { var url = 'https://opentdb.com/api.php?amount=5&category=' + catg + '&difficulty=' + difficulty + '&type=multiple&encode=url3986';
-        var xhr = new XMLHttpRequest(); xhr.open('GET', url, false); xhr.send(); var res = JSON.parse(xhr.response); console.log(res.results); query = res.results; document.getElementById('challenge').style.display = 'none'; document.getElementById('quiz_area').style.display
-        = 'none'; }
+        this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
+        this.setState(
+          {
+            qn_no: this.state.qn_no + 1,
+          });
 
 
+      }
+      validate(user_ans, index) {
+        if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
+         {
+              this.button[index].className = "btn btn-success";
 
-    </script>
+        }
+        else
+          {
+           this.button[index].className = "btn btn-danger";
+           this.button[index].disabled = true;
+           }
+      }
+      render() {
 
-    <script type="text/babel">
-        class Category extends React.Component { category = ['General Knowledge', 'Science & Nature', 'sports', 'History']; render() { return (
-        <div>
-            { this.category.map((data, i) => { return (
-            <div>
-                <button onClick={()=> change_catg(i)} className="btn btn-outline-primary">{data}</button>
-            </div>
-            ) }) }
-
-
-
-        </div>
-        ) } } ReactDOM.render(
-
-        <Category />, document.getElementById('catg')); class Quiz extends React.Component { response = []; constructor(props) { super(props); this.state = { qn_no: 0, cur_ind: -1 } this.accepted = props.accepted; if(this.accepted){ this.my_key = props.my_key; this.opp
-        = props.opp; this.opp_key = props.opp_key; } this.data = [...props.data]; this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5); } update() { if (this.state.qn_no == 4) { var db = firebase.database();
-        if(this.accepted){ db.ref(`users/${username}/active/${this.my_key}`).update({ my_resp: JSON.stringify(this.response), status:3 }); db.ref(`users/${this.opp}/active/${this.opp_key}`).update({ opp_resp: JSON.stringify(this.response), status:3 });
-        }else{ // db.ref(`users/${username}/active`).push({ // ques: JSON.stringify(this.data), // opp: username, // resp: JSON.stringify(this.response), // status:1 // }) var new_key = db.ref(`users/${username}/active`).push().key; db.ref(`users/${username}/active/${new_key}`).set({
-        ques: JSON.stringify(this.data), opp: opponent, my_resp: JSON.stringify(this.response), status:1 }); db.ref(`users/${opponent}/active`).push({ ques: JSON.stringify(this.data), opp: username, opp_key:new_key, opp_resp: JSON.stringify(this.response),
-        status:2 }); } ReactDOM.unmountComponentAtNode(document.getElementById("quiz_area")) $("#challenge").show(); $("#navbar").show(); search_txt.value = ""; search_txt.disabled = false; change_screen('notif-div');load_challenges(); return; } this.options
-        = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5) this.setState( { qn_no: this.state.qn_no + 1, cur_ind: -1 }); } validate(user_ans, index) { if (user_ans ===
-        unescape(this.data[this.state.qn_no].correct_answer)) this.response[this.state.qn_no] = 1; else this.response[this.state.qn_no] = 0; this.setState({ cur_ind: index }) } render() { return (
-        <div>
+        return (
+          <div>
             <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
             <br />
             <div className="options">
-                <ul>
+              <ul>
 
-                    { this.options.map((item, index) => { console.log(index) return (
-                    <div onClick={()=> { this.validate(unescape(item), index) }} >
-                        <input checked={index==t his.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
-                        <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span> {/*
-                        <li onClick={()=> { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
-                    </div>) }) }
-                </ul>
+                {
+                  this.options.map((item, index) => {
+                    console.log(index)
+                    return (
+                      <div >
+                        <button ref={a => this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="btn">{unescape(item)}</button>
+                        {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
+                      </div>)
+
+                  })
+                }
+              </ul>
             </div>
             <br />
-            <button onClick={()=> { this.update() }}> Next</button>
-        </div>
-        ) } }
-
-    </script>
-
-    <!--  LEADER_BOARDDIV
-  *******************************************************************************************
-  -->
-    <div id="leader_board-div" style="display: none;">
-        <div class='container'>
-            <h2>Leaderboard</h2>
-
-        </div>
-
-    </div>
-
-    <!--  USER DIV
-  *******************************************************************************************
-  -->
-
-    <div id="user-div" style="display: none;">
-        <div id="header">
-        </div>
-        <div class='container'>
-            <div id="stats" class='row'>
-                <div class="col text-center">
-                    <span id="challenges"> </span>
-                </div>
-                <div class="col text-center">
-                    <span id="wins"> </span>
-                </div>
-                <div class="col text-center">
-                    <span id="loss"> </span>
-                </div>
+            <div className="row">
+            <button className="col btn btn-danger" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >Exit</button>
+            <button className="col btn btn-success" onClick={() => { this.update() }}> Next</button>
             </div>
-            <button class="btn btn-danger" onclick="logout_user()">LOGOUT</button>
-        </div>
+          </div>
+        )
+      }
+    }
 
-    </div>
 
-    <script>
-        function load_userdata() {
 
-            db.ref("users/" + username + "/challenges").once("value", function(s) {
-                challenges = s.val();
-                document.getElementById('challenges').innerHTML = challenges + '<br>challenges';
-            });
-            db.ref("users/" + username + "/wins").once("value", function(s) {
-                wins = s.val();
-                loss = challenges - wins;
-                ratio = parseFloat(wins / challenges);
-                document.getElementById('wins').innerHTML = wins + '<br>wins';
-                document.getElementById('loss').innerHTML = loss + '<br>loss';
-            });
-            db.ref("users/" + username + "/xp").once("value", function(s) {
-                xp = s.val();
-
-            });
-
-            document.getElementById('header').innerHTML = username;
+  </script>
 
 
 
 
 
-        }
-
-        function logout_user() {
-            localStorage.removeItem("user_pass");
-            localStorage.removeItem("user_name");
-            $("#navbar").hide();
-            $("#user-div").hide();
-            $("#home-div").show();
-        }
-    </script>
-
-    <!--  NAV DIV
+  <!--  QUIZ DIV
   *******************************************************************************************
   -->
-    <div id="navbar" class="navbar" style="display: none">
-        <a id="nav-learn-div" onclick="change_screen('learn-div')">
-            <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
+
+
+  <div id="quiz-div" style="display: none;">
+    <div class='container'>
+      <br>
+      <div class="dropdown">
+        <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
+          data-bs-toggle="dropdown">
+        <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
+
+        </ul>
+      </div>
+      <div id='challenge'>
+        <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
+          <div class="dropdown">
+            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+              Easy
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" onclick="change_diff('easy')">Easy</a>
+              <a class="dropdown-item" onclick="change_diff('medium')">Medium</a>
+              <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
+            </div>
+          </div>
+        </div>
+
+        <div id='catg'></div>
+      </div>
+      <div id="quiz_area">
+      </div>
+    </div>
+
+
+  </div>
+
+  <script>
+
+    function search_input() {
+
+      var search = search_txt.value.toLowerCase();
+      if (!search) {
+        search_list.innerHTML = "";
+        return;
+      }
+
+      var inn_htm = "";
+
+      db.ref("users").once("value", function (snap) {
+        var all_users = snap.val();
+        for (x in all_users) {
+          if (x.toLowerCase() != username) {
+           if(x.toLowerCase().indexOf(search) > -1)
+            inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
+          }
+        }
+        search_list.innerHTML = inn_htm;
+      })
+
+
+    }
+
+    function set_opponent(opp) {
+      opponent = opp;
+      search_txt.value = opp;
+      search_txt.disabled = true;
+    }
+
+
+
+
+  </script>
+
+  <script type="text/babel">
+    var category = [9, 17, 21, 23];
+    var catg, query;
+    var difficulty = 'easy';
+    function change_diff(mode) {
+      difficulty = mode;
+      document.getElementById('dropdown').innerText = mode;
+
+    }
+
+    function change_catg(i) {
+      catg = category[i];
+      fetch();
+      document.getElementById('challenge').style.display = 'none';
+      document.getElementById('navbar').style.display = 'none';
+      ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
+      ReactDOM.render(<Quiz data={query} />, document.getElementById('quiz_area'));
+      document.getElementById('quiz_area').style.display = 'block';
+
+    }
+
+
+    function fetch() {
+      var url = 'https://opentdb.com/api.php?amount=5&category=' + catg + '&difficulty=' + difficulty + '&type=multiple&encode=url3986';
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, false);
+      xhr.send();
+      var res = JSON.parse(xhr.response);
+      console.log(res.results);
+      query = res.results;
+      document.getElementById('challenge').style.display = 'none';
+      document.getElementById('quiz_area').style.display = 'none';
+
+    }
+
+
+
+  </script>
+
+  <script type="text/babel">
+    class Category extends React.Component {
+
+      category = ['General Knowledge', 'Science & Nature', 'sports', 'History'];
+      render() {
+        return (
+          <div>
+            { this.category.map((data, i) => {
+              return (
+                <div>
+                  <button onClick={() => change_catg(i)} className="btn btn-outline-primary">{data}</button>
+                </div>
+              )
+
+            })
+            }
+
+
+
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Category />, document.getElementById('catg'));
+
+    class Quiz extends React.Component {
+
+
+      response = [];
+      constructor(props) {
+        super(props);
+        this.state = {
+          qn_no: 0,
+          cur_ind: -1
+        }
+        this.accepted = props.accepted;
+        if(this.accepted){
+          this.my_key = props.my_key;
+          this.opp = props.opp;
+          this.opp_key = props.opp_key;
+
+        }
+        this.data = [...props.data];
+        this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
+
+      }
+
+
+      update() {
+
+
+        if (this.state.qn_no == 4) {
+
+          var db = firebase.database();
+
+
+          if(this.accepted){
+
+            db.ref(`users/${username}/active/${this.my_key}`).update({
+              my_resp: JSON.stringify(this.response),
+              status:3
+            });
+
+            db.ref(`users/${this.opp}/active/${this.opp_key}`).update({
+              opp_resp: JSON.stringify(this.response),
+              status:3
+            });
+
+          }else{
+
+
+
+            // db.ref(`users/${username}/active`).push({
+            //   ques: JSON.stringify(this.data),
+            //   opp: username,
+            //   resp: JSON.stringify(this.response),
+            //   status:1
+            // })
+
+            var new_key = db.ref(`users/${username}/active`).push().key;
+
+            db.ref(`users/${username}/active/${new_key}`).set({
+              ques: JSON.stringify(this.data),
+              opp: opponent,
+              my_resp: JSON.stringify(this.response),
+              status:1
+            });
+
+            db.ref(`users/${opponent}/active`).push({
+              ques: JSON.stringify(this.data),
+              opp: username,
+              opp_key:new_key,
+              opp_resp: JSON.stringify(this.response),
+              status:2
+            });
+
+          }
+
+          ReactDOM.unmountComponentAtNode(document.getElementById("quiz_area"))
+
+          $("#challenge").show();
+          $("#navbar").show();
+          search_txt.value = "";
+          search_txt.disabled = false;
+          change_screen('notif-div');load_challenges();
+
+          return;
+        }
+        this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
+        this.setState(
+          {
+            qn_no: this.state.qn_no + 1,
+            cur_ind: -1
+          });
+
+
+      }
+      validate(user_ans, index) {
+        if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
+          this.response[this.state.qn_no] = 1;
+        else
+          this.response[this.state.qn_no] = 0;
+        this.setState({
+          cur_ind: index
+        })
+      }
+      render() {
+
+        return (
+          <div>
+            <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
+            <br />
+            <div className="options">
+              <ul>
+
+                {
+                  this.options.map((item, index) => {
+                    console.log(index)
+                    return (
+                      <div onClick={() => { this.validate(unescape(item), index) }} >
+                        <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
+                        <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
+                        {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
+                      </div>)
+
+                  })
+                }
+              </ul>
+            </div>
+            <br />
+            <button onClick={() => { this.update() }}> Next</button>
+          </div>
+        )
+      }
+    }
+
+  </script>
+
+   <!--  LEADER_BOARDDIV
+  *******************************************************************************************
+  -->
+  <div id="leader_board-div" style="display: none;">
+      <div class='container' >
+          <h2  style="text-align: center">Leaderboard</h2>
+           <div id="leaderboard" style="overflow: auto">
+
+           </div>
+      </div>
+
+  </div>
+  <script type='text/babel'>
+  var leaderboard_user = [];
+  var leaderboard_xp =[];
+  function leaderboard(){
+   ReactDOM.unmountComponentAtNode(document.getElementById('leaderboard'));
+    db.ref('users').orderByChild('xp').once("value", function (s) {
+        s.forEach(function (child) {
+            leaderboard_user.push(child.key);
+            leaderboard_xp.push(child.val().xp);
+        });
+
+    ReactDOM.render(<Leaderboard />, document.getElementById('leaderboard'));
+    });
+
+    }
+    class Leaderboard extends React.Component {
+     length = leaderboard_user.length-1;
+     render() {
+        return (
+          <div className="board_data">
+            { leaderboard_user.map((value,index) => {
+              return (
+                  <div className="shadow-sm p-3 mb-3 rounded">
+                      <span >{leaderboard_user[this.length-index]}</span>
+                      <span className="float-end" >{leaderboard_xp[this.length-index]}</span>
+                  </div>
+              )
+
+            })
+            }
+
+
+
+          </div>
+        )
+      }
+
+    }
+
+
+  </script>
+
+  <!--  USER DIV
+  *******************************************************************************************
+  -->
+
+  <div  id ="user-div" style="display: none;">
+    <div id="header">
+      </div>
+    <div class='container'>
+    <div id="stats" class='row'>
+        <div class="col text-center">
+              <span id="challenges"> </span>
+       </div>
+       <div class="col text-center">
+              <span id="wins"> </span>
+       </div>
+       <div class="col text-center">
+              <span id="loss"> </span>
+       </div>
+    </div>
+    <button class= "btn btn-danger" onclick="logout_user()">LOGOUT</button>
+    </div>
+
+  </div>
+
+  <script>
+     function load_userdata(){
+
+          db.ref("users/" + username + "/challenges").once("value", function(s) {
+                    challenges = s.val();
+                    document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
+                    });
+          db.ref("users/" + username + "/wins").once("value" ,function(s) {
+                    wins = s.val();
+                    loss = challenges - wins;
+                    ratio = parseFloat(wins/challenges);
+                    document.getElementById('wins').innerHTML= wins+'<br>wins';
+                    document.getElementById('loss').innerHTML= loss+'<br>loss';
+                    });
+          db.ref("users/" + username + "/xp").once("value", function(s) {
+                    xp = s.val();
+
+                    });
+
+         document.getElementById('header').innerHTML= username;
+
+
+
+
+
+     }
+
+     function logout_user(){
+       localStorage.removeItem("user_pass");
+       localStorage.removeItem("user_name");
+       $("#navbar").hide();
+       $("#user-div").hide();
+       $("#home-div").show();
+     }
+
+  </script>
+
+  <!--  NAV DIV
+  *******************************************************************************************
+  -->
+    <div  id = "navbar" class="navbar" style="display: none" >
+        <a id="nav-learn-div" onclick = "change_screen('learn-div')">
+         <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
         </a>
-        <a id='nav-notif-div' onclick="change_screen('notif-div');load_challenges();">
+        <a  id='nav-notif-div' onclick = "change_screen('notif-div');load_challenges();">
             <i class="fa fa-bell" style="font-size: inherit; color: inherit"></i>
         </a>
-        <a id='nav-quiz-div' onclick="change_screen('quiz-div')" class="active">
+        <a id='nav-quiz-div' onclick = "change_screen('quiz-div')" class="active">
             <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
         </a>
-        <a id='nav-leader_board-div' onclick="change_screen('leader_board-div');load_userdata();">
+        <a  id='nav-leader_board-div' onclick = "change_screen('leader_board-div');leaderboard();">
             <i class="fa fa-signal" style="font-size: inherit; color: inherit"></i>
         </a>
-        <a id='nav-user-div' onclick="change_screen('user-div');load_userdata();">
+        <a  id='nav-user-div' onclick = "change_screen('user-div');load_userdata();">
             <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>
         </a>
     </div>
 
     <script>
-        function change_screen(selection) {
-            var screens = ['learn-div', 'notif-div', 'quiz-div', 'leader_board-div', 'user-div']
-            for (x of screens) {
-                if (x != selection) {
-                    $('#' + x).hide();
-                    if (document.getElementById('nav-' + x).classList.contains("active"))
-                        document.getElementById('nav-' + x).classList.remove("active");
-                }
-            }
-            $('#' + selection).show();
-            document.getElementById('nav-' + selection).classList.add("active");
-        }
+       function change_screen(selection){
+           var screens = [ 'learn-div' , 'notif-div' , 'quiz-div' ,'leader_board-div' ,'user-div']
+           for (x of screens)
+           {
+              if(x != selection)
+              {
+               $('#'+x).hide();
+               if(document.getElementById('nav-'+x).classList.contains("active"))
+                 document.getElementById('nav-'+x).classList.remove("active");
+              }
+           }
+           $('#'+selection).show();
+           document.getElementById('nav-'+selection).classList.add("active");
+       }
     </script>
 
 

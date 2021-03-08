@@ -387,24 +387,100 @@
   <div id="notif-div" style="display: none;">
       <div class='container'>
           <h2>Active Challenges</h2>
-          <div id = "active-chal-div"></div>
+          <div id = "active-chal-div" style="max-height:80vh; overflow:auto"></div>
           <div id = "answer-chal-div"></div>
       </div>
 
   </div>
   <script type="text/babel">
 
+
+    const ChallengeDiv = ({op_name, date, my_resp, op_resp, status, accept_chal, decline_chal, show_chal})=>{
+      
+      if(status==3){
+      var my_resp_arr = JSON.parse(my_resp);
+      var op_resp_arr = JSON.parse(op_resp);
+      var my_score = my_resp_arr.reduce((s,e)=>s+e);
+      var op_score = op_resp_arr.reduce((s,e)=>s+e);
+      }
+      return(
+        <div onClick={show_chal} style={{display:"flex",alignItems:"center",minHeight:"75px", borderRadius:"15px", border:"2px solid black", margin:"5px", padding:"5px 15px"}}>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:"bold"}}>{op_name}</div>
+            <div style={{fontSize:"small"}}>{new Date(date||1615221254809).toLocaleDateString("en-IN")}</div>
+          </div>
+          { status==3?
+            <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+              <div> 
+                {my_score>op_score?<span className="badge bg-success">WON</span>:null}
+                {my_score<op_score?<span className="badge bg-danger">LOST</span>:null}
+                {my_score==op_score?<span className="badge bg-secondary">TIED</span>:null}
+              </div>
+              <div style={{fontSize:"x-large"}}>
+                <span>{my_score}</span>:<span>{op_score}</span>
+              </div>
+            </div>
+          :null}
+
+          { status==1?
+            <div>
+              {<span className="badge bg-secondary">WAITING</span>}
+            </div>
+          :null}
+
+          { status==4?
+            <div>
+              {<span className="badge bg-warning">DECLINED</span>}
+            </div>
+          :null}
+
+          { status==2?
+            <div>
+              <button className="btn btn-primary btn-sm" onClick={accept_chal}>ACCEPT</button>
+              <button className="btn btn-danger btn-sm" onClick={decline_chal}>DECLINE</button>
+            </div>
+          :null}
+
+        </div>
+      );
+    }
+
+
+    const ChallengeSummary = ({curr_chal,hide_chal})=>{
+      return(
+        <div style={{display:curr_chal?"block":"none"}} class="modal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">SUMMARY</h5>
+                <button type="button" class="btn-close" onClick={hide_chal}></button>
+              </div>
+              <div class="modal-body">
+                question and answer
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     class ActiveChallenges extends React.Component {
 
       constructor(props){
         super(props);
-        if(props.data)
+        if(props.data){
           this.keys = Object.keys(props.data);
           this.data=Object.values(props.data);
-          console.log(this.data);
+        }
+        //console.log(this.data);
+
+        this.state={
+          curr_chal:null
+        }
       }
 
       accept_chal(chal_obj, key){
+        ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
         ReactDOM.render(<Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} />, document.getElementById("answer-chal-div"))
       }
@@ -415,36 +491,37 @@
           [chal_obj.opp+"/active/"+chal_obj.opp_key+"/status"]:4
         }).then(load_challenges());
       }
+      
+      show_chal_summary(e){
+        this.setState({curr_chal:e});
+      }
 
-      win_or_lose(my_resp, opp_resp){
-        var my_resp_arr = JSON.parse(my_resp);
-        var opp_resp_arr = JSON.parse(opp_resp);
-        var my_score = my_resp_arr.reduce((s,e)=>s+e);
-        var opp_score = opp_resp_arr.reduce((s,e)=>s+e);
-        if(my_score>opp_score){
-          return (`YOU WON (${my_score} : ${opp_score}  )`)
-        }else if(my_score<opp_score){
-          return (`YOU LOOSE (${my_score} : ${opp_score}  )`)
-        }else{
-          return (`TIE (${my_score} : ${opp_score}  )`)
-        }
+      hide_chal_summary(){
+        this.setState({curr_chal:null});
       }
 
       render() {
         return (
-          <table class="table table-success">
-            { this.data.map((e,i)=>(
-              <tr>
-              <td>{e.opp}</td>
-              <td>{e.status==1?"YOU SENT"
-                  :(e.status==2?<div><button onClick={()=>this.accept_chal(e,this.keys[i])}>ACCEPT</button> <button onClick={()=>this.decline_chal(e,this.keys[i])}>DECLINE</button></div>
-                  :(e.status==3?this.win_or_lose(e.my_resp,e.opp_resp)
-                  :"DECLINED"))}</td>
-            </tr>
-            ))
+          <div>
+            {this.data.map((e,i)=>(
+              <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp} 
+                accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} />
+            ))}
+            <ChallengeSummary curr_chal={this.state.curr_chal} hide_chal={()=>this.hide_chal_summary()} />
+          </div>
+          
+          // this.data.map((e,i)=>(
+          //   <tr>
+          //   <td>{e.opp}</td>
+          //   <td>{e.status==1?"YOU SENT"
+          //       :(e.status==2?<div><button onClick={()=>this.accept_chal(e,this.keys[i])}>ACCEPT</button> <button onClick={()=>this.decline_chal(e,this.keys[i])}>DECLINE</button></div>
+          //       :(e.status==3?this.win_or_lose(e.my_resp,e.opp_resp)
+          //       :"DECLINED"))}</td>
+          // </tr>
+          // ))
 
-            }
-          </table>
+            
+          
         )
       }
     }
@@ -815,7 +892,8 @@
               ques: JSON.stringify(this.data),
               opp: opponent,
               my_resp: JSON.stringify(this.response),
-              status:1
+              status:1,
+              date:Date.now()
             });
 
             db.ref(`users/${opponent}/active`).push({
@@ -823,7 +901,8 @@
               opp: username,
               opp_key:new_key,
               opp_resp: JSON.stringify(this.response),
-              status:2
+              status:2,
+              date:Date.now()
             });
 
           }

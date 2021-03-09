@@ -700,14 +700,14 @@
   <div id="quiz-div" style="display: none;">
     <div class='container'>
       <br>
-      <div class="dropdown">
-        <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
-          data-bs-toggle="dropdown">
-        <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
-
-        </ul>
-      </div>
       <div id='challenge'>
+        <div class="dropdown">
+          <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
+            data-bs-toggle="dropdown">
+          <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
+          </ul>
+        </div>
+        <br>
         <div id="diff_mode"> Difficulty:&nbsp;&nbsp;
           <div class="dropdown">
             <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
@@ -722,6 +722,17 @@
         </div>
 
         <div id='catg'></div>
+        <br>
+       <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+         <div class="toast-header">
+            <strong class="me-auto">Quizinato</strong>
+            <small>Justnow</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+         </div>
+         <div class="toast-body">
+            Please choose your opponent..
+         </div>
+       </div>
       </div>
       <div id="quiz_area">
       </div>
@@ -745,7 +756,7 @@
       db.ref("users").once("value", function (snap) {
         var all_users = snap.val();
         for (x in all_users) {
-          if (x.toLowerCase() != username) {
+          if (x!= username) {
            if(x.toLowerCase().indexOf(search) > -1)
             inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
           }
@@ -778,6 +789,11 @@
     }
 
     function change_catg(i) {
+      if(search_txt.value =='')
+      {
+           $('.toast').toast('show');
+          return;
+      }
       catg = category[i];
       fetch();
       document.getElementById('challenge').style.display = 'none';

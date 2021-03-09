@@ -402,7 +402,7 @@
   <script type="text/babel">
 
 
-    const ChallengeDiv = ({op_name, date, my_resp, op_resp, status, accept_chal, decline_chal, show_chal})=>{
+    const ChallengeDiv = ({op_name, date, my_resp, op_resp, status, accept_chal, decline_chal, show_chal, category})=>{
       
       if(status==3){
       var my_resp_arr = JSON.parse(my_resp);
@@ -414,7 +414,8 @@
         <div onClick={show_chal} style={{display:"flex",alignItems:"center",minHeight:"75px", borderRadius:"15px", border:"2px solid black", margin:"5px", padding:"5px 15px"}}>
           <div style={{flex:1}}>
             <div style={{fontWeight:"bold"}}>{op_name}</div>
-            <div style={{fontSize:"small"}}>{new Date(date||1615221254809).toLocaleDateString("en-IN")}</div>
+            {/*<div style={{fontSize:"small"}}>{new Date(date||1615221254809).toLocaleDateString("en-IN")}</div>*/}
+            <div style={{fontSize:"small"}}>{category || "No TOPIC"}</div>
           </div>
           { status==3?
             <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
@@ -454,21 +455,59 @@
 
 
     const ChallengeSummary = ({curr_chal,hide_chal})=>{
-      return(
-        <div style={{display:curr_chal?"block":"none"}} class="modal" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">SUMMARY</h5>
-                <button type="button" class="btn-close" onClick={hide_chal}></button>
-              </div>
-              <div class="modal-body">
-                question and answer
+      
+      if(curr_chal && curr_chal.status ==3){
+        var ques_details = JSON.parse(curr_chal.ques);
+        var my_resp_arr = JSON.parse(curr_chal.my_resp);
+        var op_resp_arr = JSON.parse(curr_chal.opp_resp);
+        var my_scr = my_resp_arr.reduce((s,e)=>s+e);
+        var op_scr = op_resp_arr.reduce((s,e)=>s+e);
+      
+        return(
+          <div style={{display:curr_chal && curr_chal.status==3?"block":"none"}} class="modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">CHALLENGE SUMMARY</h5>
+                  <button type="button" class="btn-close" onClick={hide_chal}></button>
+                </div>
+                <div class="modal-body">
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-around', marginBottom:'10px'}}>
+                    <span style={{fontSize:'x-large'}} className="badge bg-success">{my_scr}</span>
+                    <span style={{fontSize:'large', fontWeight:'bold', width:'25%', overflowWrap:'anywhere', textAlign:'right'}}>{username}</span>
+                    <span>vs</span>
+                    <span style={{fontSize:'large', fontWeight:'bold', width:'25%', overflowWrap:'anywhere'}}>{curr_chal.opp}</span>
+                    <span style={{fontSize:'x-large'}} className="badge bg-danger">{op_scr}</span>
+                  </div>
+                  <div style={{display:'flex', justifyContent:'space-between', marginBottom:'5px'}}>
+                    <span className="badge bg-primary">{curr_chal.category || "NO TOPIC"}</span>
+                    <span className="badge bg-info">{new Date(curr_chal.date || 1635456451).toLocaleDateString('en-IN')}</span>
+                  </div>
+                  <div style={{maxHeight:'65vh', overflow:'auto'}}>
+                    {
+                      ques_details.map((e,i)=>(
+                        <div style={{borderTop:'2px solid', padding:'2px', background:i%2?'lightblue':'lightskyblue'}}>
+                          <div style={{display:'flex'}}>
+                            <span style={{fontWeight:'bold', marginRight:'2px'}}>{(i+1) + ". "}</span> 
+                            <span>{unescape(e.question)}</span>
+                          </div>
+                          <div style={{display:'flex', alignItems:'center'}}>
+                            <div style={{display:'inline-block', width:'10%', margin:'10px'}}>{my_resp_arr[i]==1? "✔" : "❌"}</div>
+                            <div style={{display:'inline-block', width:'80%', textAlign:'center', fontWeight:'bold', color:'green'}}>{unescape(e.correct_answer)}</div>
+                            <div style={{display:'inline-block', width:'10%', margin:'10px'}}>{op_resp_arr[i]==1? "✔" : "❌"}</div>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )
+        )
+      }else{
+        return null;
+      }
     }
 
     class ActiveChallenges extends React.Component {
@@ -512,7 +551,7 @@
           <div>
             {this.data.map((e,i)=>(
               <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp} 
-                accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} />
+                accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} category={e.category} />
             ))}
             <ChallengeSummary curr_chal={this.state.curr_chal} hide_chal={()=>this.hide_chal_summary()} />
           </div>
@@ -728,7 +767,7 @@
           </div>
         </div>
         <br>  
-        <div id='catg' style="max-height: 65vh; overflow: auto;"></div>
+        <div id='catg' style="max-height: 60vh; overflow: hidden auto;"></div>
         <br>
       </div>
       <div id="quiz_area">
@@ -916,6 +955,7 @@
               opp: opponent,
               my_resp: JSON.stringify(this.response),
               status:1,
+              category:unescape(this.data[0].category),
               date:Date.now()
             });
 
@@ -925,6 +965,7 @@
               opp_key:new_key,
               opp_resp: JSON.stringify(this.response),
               status:2,
+              category:unescape(this.data[0].category),
               date:Date.now()
             });
 

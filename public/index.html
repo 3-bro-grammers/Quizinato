@@ -96,6 +96,7 @@
 
   .navbar
   {
+      height: 10vh;
       overflow: hidden;
       position: fixed;
       bottom: 0;
@@ -394,7 +395,7 @@
   <div id="notif-div" style="display: none;">
       <div class='container'>
           <h2>Active Challenges</h2>
-          <div id = "active-chal-div" style="max-height:80vh; overflow:auto"></div>
+          <div id = "active-chal-div" style="max-height:75vh; overflow:auto"></div>
           <div id = "answer-chal-div"></div>
       </div>
 
@@ -472,16 +473,16 @@
                   <button type="button" class="btn-close" onClick={hide_chal}></button>
                 </div>
                 <div class="modal-body">
+                  <div style={{display:'flex', justifyContent:'space-between', marginBottom:'5px'}}>
+                    <span className="badge bg-primary">{curr_chal.category || "NO TOPIC"}</span>
+                    <span className="badge bg-info">{new Date(curr_chal.date || 1635456451).toLocaleDateString('en-IN')}</span>
+                  </div>
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'space-around', marginBottom:'10px'}}>
                     <span style={{fontSize:'x-large'}} className="badge bg-success">{my_scr}</span>
                     <span style={{fontSize:'large', fontWeight:'bold', width:'25%', overflowWrap:'anywhere', textAlign:'right'}}>{username}</span>
                     <span>vs</span>
                     <span style={{fontSize:'large', fontWeight:'bold', width:'25%', overflowWrap:'anywhere'}}>{curr_chal.opp}</span>
                     <span style={{fontSize:'x-large'}} className="badge bg-danger">{op_scr}</span>
-                  </div>
-                  <div style={{display:'flex', justifyContent:'space-between', marginBottom:'5px'}}>
-                    <span className="badge bg-primary">{curr_chal.category || "NO TOPIC"}</span>
-                    <span className="badge bg-info">{new Date(curr_chal.date || 1635456451).toLocaleDateString('en-IN')}</span>
                   </div>
                   <div style={{maxHeight:'65vh', overflow:'auto'}}>
                     {

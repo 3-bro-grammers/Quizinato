@@ -96,7 +96,6 @@
 
   .navbar
   {
-      height: 10vh;
       overflow: hidden;
       position: fixed;
       bottom: 0;
@@ -395,7 +394,7 @@
   <div id="notif-div" style="display: none;">
       <div class='container'>
           <h2>Active Challenges</h2>
-          <div id = "active-chal-div" style="max-height:75vh; overflow:auto"></div>
+          <div id = "active-chal-div" style="max-height:80vh; overflow:auto"></div>
           <div id = "answer-chal-div"></div>
       </div>
 
@@ -473,16 +472,16 @@
                   <button type="button" class="btn-close" onClick={hide_chal}></button>
                 </div>
                 <div class="modal-body">
-                  <div style={{display:'flex', justifyContent:'space-between', marginBottom:'5px'}}>
-                    <span className="badge bg-primary">{curr_chal.category || "NO TOPIC"}</span>
-                    <span className="badge bg-info">{new Date(curr_chal.date || 1635456451).toLocaleDateString('en-IN')}</span>
-                  </div>
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'space-around', marginBottom:'10px'}}>
                     <span style={{fontSize:'x-large'}} className="badge bg-success">{my_scr}</span>
                     <span style={{fontSize:'large', fontWeight:'bold', width:'25%', overflowWrap:'anywhere', textAlign:'right'}}>{username}</span>
                     <span>vs</span>
                     <span style={{fontSize:'large', fontWeight:'bold', width:'25%', overflowWrap:'anywhere'}}>{curr_chal.opp}</span>
                     <span style={{fontSize:'x-large'}} className="badge bg-danger">{op_scr}</span>
+                  </div>
+                  <div style={{display:'flex', justifyContent:'space-between', marginBottom:'5px'}}>
+                    <span className="badge bg-primary">{curr_chal.category || "NO TOPIC"}</span>
+                    <span className="badge bg-info">{new Date(curr_chal.date || 1635456451).toLocaleDateString('en-IN')}</span>
                   </div>
                   <div style={{maxHeight:'65vh', overflow:'auto'}}>
                     {
@@ -1094,21 +1093,71 @@
   -->
 
   <div  id ="user-div" style="display: none;">
-    <div id="header">
-      </div>
+    
+    <style>
+      h1 {
+  text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+            }
+            #effect:hover {
+              color: rgb(245, 9, 9);
+              box-shadow: 0 5px 15px rgba(238, 4, 4, 0.4);
+            }
+            #effect span:after {
+              content: '\00bb';
+              position: absolute;
+              opacity: 0;
+              top: 0;
+              right: -20px;
+              transition: 0.5s;
+            }
+            #effect span {
+              cursor: pointer;
+              display: inline-block;
+              position: relative;
+              transition: 0.5s;
+            }
+
+            #effect:hover span {
+              padding-right: 25px;
+            }
+            #effect:hover span:after {
+              opacity: 1;
+              right: 0;
+            }
+    </style>
+    <h1 class="text-center" id="account-summary">Account Summary</h1>
+    <br>
     <div class='container'>
-    <div id="stats" class='row'>
-        <div class="col text-center">
-              <span id="challenges"> </span>
-       </div>
-       <div class="col text-center">
-              <span id="wins"> </span>
-       </div>
-       <div class="col text-center">
-              <span id="loss"> </span>
-       </div>
-    </div>
-    <button class= "btn btn-danger" onclick="logout_user()">LOGOUT</button>
+      <table class="table">
+        <thead>
+          <tr class="table-warning">
+            <th scope="col">UserName</th>
+            <th scope="col">No Of Challenges</th>
+            <th scope="col">Total Wins</th>
+            <th scope="col">Total Losses</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-primary">
+            <td><span id="header"></span></td>
+            <td><span id="challenges"> </span></td>
+            <td><span id="wins"> </span></td>
+            <td><span id="loss"> </span></td>
+          </tr>
+        </tbody>
+      </table>
+    <button id="effect" class= "btn btn-danger" onclick="logout_user()"><span>Logout</span></button>
     </div>
 
   </div>

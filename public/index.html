@@ -134,6 +134,52 @@
     background-color: #ecf0f3;
     color: blue !important;
   }
+  
+  .text_effect
+  {
+    text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+  }
+  #effect:hover 
+  {
+    color: rgb(255,255 ,255 );
+    box-shadow: 0 5px 15px rgba(238, 4, 4, 0.4);
+  }
+  #effect span:after 
+  {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;          
+    transition: 0.5s;
+  }
+  #effect span 
+  {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  #effect:hover span 
+  {
+    padding-right: 25px;
+  }
+  #effect:hover span:after 
+  {
+    opacity: 1;
+    right: 0;
+  }
 
   </style>
 </head>
@@ -629,15 +675,21 @@
 
     class LearnCategory extends React.Component {
 
-      category = ['General Knowledge', 'Science & Nature', 'sports', 'History'];
+      category = ['GK', 'Science', 'Sports', 'History'];
+      icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' ,'fa fa-university'];
       render() {
         return (
-          <div>
+          <div className="row row-cols-2 row-cols-md-4 g-3">
             { this.category.map((data, i) => {
               return (
-                <div>
-                  <button onClick={() => change_learn_catg(i)} className="btn btn-outline-primary">{data}</button>
+                <div onClick={() => change_learn_catg(i)} className="col" >
+                <div className="card  h-100 shadow-sm rounded catg_cards" >
+                  <div className="card-body fs-4 d-flex flex-column align-items-center justify-content-center ">
+                    <i  className={this.icons[i]}  aria-hidden="true"></i>
+                    <div  className="card-title fs-6 p-2">{data}</div>
+                  </div>
                 </div>
+              </div>
               )
 
             })
@@ -721,9 +773,17 @@
                 }
             </div>
             <br />
-            <div className="row">
-            <button className="col btn btn-danger text-white" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >Exit</button>
-            <button className="col btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == 29}> Next</button>
+            <div className="row ">
+              <div className="col text-center"> 
+                <button className="btn btn-outline-warning" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >
+                  <i class="fa fa-times-circle-o" aria-hidden="true"></i> Exit 
+                </button>
+              </div>
+              <div className="col text-center">
+                <button className="btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == 29}>
+                  Next <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
           </div>
         )
@@ -865,8 +925,8 @@
   <script type="text/babel">
     class Category extends React.Component {
 
-      category = ['GK', 'Nature', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
-      icons =[ 'fa fa-globe ','fa fa-pagelines','fa fa-futbol-o' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fa fa-list-ol']
+      category = ['GK', 'Science', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
+      icons =[ 'fa fa-globe ','fa fa-flask','fa fa-futbol-o' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fa fa-list-ol']
       render() {
         return (
           <div className="row row-cols-2 row-cols-md-4 g-3">
@@ -1036,7 +1096,7 @@
   -->
   <div id="leader_board-div" style="display: none;">
       <div class='container' >
-          <h2  style="text-align: center">Leaderboard</h2>
+          <h2  style="text-align: center" class="text_effect">Leaderboard</h2>
            <div id="leaderboard" style="overflow: auto">
 
            </div>
@@ -1046,15 +1106,23 @@
   <script type='text/babel'>
   var leaderboard_user = [];
   var leaderboard_xp =[];
+  var leaderboard_ratio =[];
+  var leaderboard_challenges =[];
   function leaderboard(){
    leaderboard_user = [];
    leaderboard_xp =[];
+   leaderboard_ratio =[];
+   leaderboard_challenges =[];
    ReactDOM.unmountComponentAtNode(document.getElementById('leaderboard'));
 
     db.ref('users').orderByChild('xp').once("value", function (s) {
         s.forEach(function (child) {
             leaderboard_user.push(child.key);
             leaderboard_xp.push(child.val().xp);
+            let a = parseFloat(child.val().wins/child.val().challenges*100); 
+            a = a?a.toFixed(2):0;
+            leaderboard_ratio.push(a);
+            leaderboard_challenges.push(child.val().challenges);
         });
 
     ReactDOM.render(<Leaderboard />, document.getElementById('leaderboard'));
@@ -1065,21 +1133,34 @@
      length = leaderboard_user.length-1;
      render() {
         return (
-          <div className="board_data">
+          <table class="table table-hover  table-striped">
+            <thead>
+              <tr class="table-warning">
+                <th scope="col">Rank</th>
+                <th scope="col">Username</th>
+                <th scope="col" className="text-center">Xp</th>
+                <th scope="col" className="text-center">Challenges</th>
+                <th scope="col" className="text-center">Win-Ratio</th>
+              </tr>
+            </thead>
+            <tbody>
             { leaderboard_user.map((value,index) => {
               return (
-                  <div className="shadow-sm p-3 mb-3 rounded">
-                      <span >{leaderboard_user[this.length-index]}</span>
-                      <span className="float-end" >{leaderboard_xp[this.length-index]}</span>
-                  </div>
+                <tr class="table-info">
+                  <th scope="row">#{index+1}</th>     
+            <td>{leaderboard_user[this.length-index]}</td>
+            <td className="text-center">{leaderboard_xp[this.length-index]}</td>
+            <td className="text-center">{leaderboard_challenges[this.length-index]}</td>
+            <td className="text-center">{leaderboard_ratio[this.length-index]}%</td>
+          </tr>                 
               )
 
             })
             }
 
 
-
-          </div>
+            </tbody>
+          </table>
         )
       }
 
@@ -1093,71 +1174,29 @@
   -->
 
   <div  id ="user-div" style="display: none;">
-    
-    <style>
-      h1 {
-  text-shadow: 0 1px 0 #ccc,
-               0 2px 0 #c9c9c9,
-               0 3px 0 #bbb,
-               0 4px 0 #b9b9b9,
-               0 5px 0 #aaa,
-               0 6px 1px rgba(0,0,0,.1),
-               0 0 5px rgba(0,0,0,.1),
-               0 1px 3px rgba(0,0,0,.3),
-               0 3px 5px rgba(0,0,0,.2),
-               0 5px 10px rgba(0,0,0,.25),
-               0 10px 10px rgba(0,0,0,.2),
-               0 20px 20px rgba(0,0,0,.15);
-            }
-            #effect:hover {
-              color: rgb(245, 9, 9);
-              box-shadow: 0 5px 15px rgba(238, 4, 4, 0.4);
-            }
-            #effect span:after {
-              content: '\00bb';
-              position: absolute;
-              opacity: 0;
-              top: 0;
-              right: -20px;
-              transition: 0.5s;
-            }
-            #effect span {
-              cursor: pointer;
-              display: inline-block;
-              position: relative;
-              transition: 0.5s;
-            }
-
-            #effect:hover span {
-              padding-right: 25px;
-            }
-            #effect:hover span:after {
-              opacity: 1;
-              right: 0;
-            }
-    </style>
-    <h1 class="text-center" id="account-summary">Account Summary</h1>
+    <h1 class="text-center text_effect">Account Summary</h1>
     <br>
     <div class='container'>
-      <table class="table">
-        <thead>
-          <tr class="table-warning">
-            <th scope="col">UserName</th>
-            <th scope="col">No Of Challenges</th>
-            <th scope="col">Total Wins</th>
-            <th scope="col">Total Losses</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="table-primary">
-            <td><span id="header"></span></td>
-            <td><span id="challenges"> </span></td>
-            <td><span id="wins"> </span></td>
-            <td><span id="loss"> </span></td>
-          </tr>
-        </tbody>
-      </table>
-    <button id="effect" class= "btn btn-danger" onclick="logout_user()"><span>Logout</span></button>
+      <div id="header">
+      </div>   
+      <div id="stats" class='row'>
+        <div class="col text-center">
+              <span id="challenges"> </span>
+       </div>
+       <div class="col text-center">
+              <span id="wins"> </span>
+       </div>
+       <div class="col text-center">
+              <span id="loss"> </span>
+       </div>
+      </div>  
+         
+      
+    <button id="effect" class= "btn btn-danger" onclick="logout_user()">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+      <span>Logout  
+      </span>
+    </button>
     </div>
 
   </div>
@@ -1213,7 +1252,7 @@
             <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
         </a>
         <a  id='nav-leader_board-div' onclick = "change_screen('leader_board-div');leaderboard();">
-            <i class="fa fa-signal" style="font-size: inherit; color: inherit"></i>
+            <i class="fa fa-bar-chart" style="font-size: inherit; color: inherit"></i>
         </a>
         <a  id='nav-user-div' onclick = "change_screen('user-div');load_userdata();">
             <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>

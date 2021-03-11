@@ -248,16 +248,18 @@
             $("#quiz-div").show();
             $('#navbar').show();
             change_screen('quiz-div');
+            
+            var url = new URLSearchParams(location.search);
+            if (url.get("notif")){
+              change_screen('notif-div');
+              load_challenges();
+            }
         });
       }else{
         $("#home-div").show();
       }
-
-      var url = new URLSearchParams(location.search);
-      if (url.get("notif")){
-        change_screen('notif-div');
-        load_challenges();
-      }
+      
+      
         
 
     }
@@ -1372,6 +1374,7 @@
 
     <script>
        function change_screen(selection){
+         
            var screens = [ 'learn-div' , 'notif-div' , 'quiz-div' ,'leader_board-div' ,'user-div']
            for (x of screens)
            {

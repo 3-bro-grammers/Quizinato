@@ -23,8 +23,8 @@ messaging.setBackgroundMessageHandler(function (payload) {
             (notification.user + " has completed your challenge in " + notification.categ),
         icon: "https://quizinato.web.app/icons/logo-small.png",
         actions: [
-            { action: 'b', title: 'VIEW👍' },
-            { action: 'a', title: 'LATER⏰' }
+            { action: 'a', title: 'VIEW👍' },
+            { action: 'b', title: 'LATER⏰' }
         ]
     };
 

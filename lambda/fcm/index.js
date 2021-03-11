@@ -38,7 +38,7 @@ exports.handler = async (event) => {
     var fcm_token = (await db.ref(`users/${opp}/fcm_token`).once("value")).val()
 
     if (fcm_token) {
-        admin.messaging().sendToDevice(fcm_token,
+        await admin.messaging().sendToDevice(fcm_token,
         {
             "data": {
                 "notification": JSON.stringify({

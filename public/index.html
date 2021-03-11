@@ -51,6 +51,9 @@
 
   <title>Quiz_app</title>
   <style>
+   *{
+     user-select: none;
+   } 
   .parallax {
             background-image: url("https://wallpaperaccess.com/full/2384073.jpg");
             min-height: 500px;
@@ -130,6 +133,11 @@
     background-color: skyblue;
     z-index: -1;
   }
+  .catg_cards
+  {
+    background-color: #f2f2 ;
+    color: #676788 !important;
+  }
   .catg_cards :hover
   {
     background-color: #ecf0f3;
@@ -181,6 +189,10 @@
     opacity: 1;
     right: 0;
   }
+  #notif_badge{
+    display: none;
+    font-size: 0.75rem !important;
+  }
 
   </style>
 </head>
@@ -197,9 +209,17 @@
       pswd = localStorage.getItem("user_pass");
 
       if(username && pswd){
-        $("#quiz-div").show();
-        $('#navbar').show();
-        change_screen('quiz-div');
+        db.ref("users/" + username + "/notif").once("value", function(s) {
+            if(s.val()>0)
+            {
+              $("#notif_badge").show(); 
+              let a = (s.val>9)?'9+':s.val();
+              document.getElementById('notif_badge').innerHTML=a;
+            }
+            $("#quiz-div").show();
+            $('#navbar').show();
+            change_screen('quiz-div');
+        });
       }else{
         $("#home-div").show();
       }
@@ -311,11 +331,20 @@
             localStorage.setItem("user_name", username);
             localStorage.setItem("user_pass", pswd);
           }
+          db.ref("users/" + username + "/notif").once("value", function(s) {
+            if(s.val()>0)
+            {
+              $("#notif_badge").show(); 
+              let a = (s.val>9)?'9+':s.val();
+              document.getElementById('notif_badge').innerHTML=a;
+            }
+            $('#login-div').hide();
+            $('#quiz-div').show();
+            change_screen('quiz-div');
+            $('#navbar').show();
+        });
 
-          $('#login-div').hide();
-          $('#quiz-div').show();
-          change_screen('quiz-div');
-          $('#navbar').show();
+         
 
         }
 
@@ -410,6 +439,7 @@
           db.ref('users/' + username).set({
 
             pwd: pswd,
+            notif: 0,
             challenges: 0,
             wins: 0,
             xp: 0
@@ -624,7 +654,11 @@
         ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.render(<ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div"));
-      })
+        $("#notif_badge").hide();
+      });
+      db.ref(`users/${username}`).update({
+                notif : 0
+              });
     }
 
 
@@ -684,7 +718,7 @@
             { this.category.map((data, i) => {
               return (
                 <div onClick={() => change_learn_catg(i)} className="col" >
-                <div className="card  h-100 shadow-sm rounded catg_cards" >
+                <div className="card  h-100 shadow rounded catg_cards" >
                   <div className="card-body fs-4 d-flex flex-column align-items-center justify-content-center ">
                     <i  className={this.icons[i]}  aria-hidden="true"></i>
                     <div  className="card-title fs-6 p-2">{data}</div>
@@ -758,7 +792,7 @@
 
         return (
           <div>
-            <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
+            <div className="question">{this.state.qn_no+1}){unescape(this.data[this.state.qn_no].question)}</div>
             <br />
             <div className="options">
                 {
@@ -924,6 +958,17 @@
   </script>
 
   <script type="text/babel">
+
+    function notif_update(user)
+    {
+      db.ref(`users/${user}/notif`).once("value", function (s) {
+              db.ref(`users/${user}`).update({
+                notif: s.val()+1
+              });
+            });
+            alert(user);     
+    }  
+    
     class Category extends React.Component {
 
       category = ['GK', 'Science', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
@@ -987,18 +1032,17 @@
 
 
           if(this.accepted){
-
             db.ref(`users/${username}/active/${this.my_key}`).update({
               my_resp: JSON.stringify(this.response),
               status:3
             });
-
             db.ref(`users/${this.opp}/active/${this.opp_key}`).update({
               opp_resp: JSON.stringify(this.response),
               status:3
             });
-
-          }else{
+            notif_update(this.opp);
+          }
+          else{
 
 
 
@@ -1029,9 +1073,8 @@
               category:unescape(this.data[0].category),
               date:Date.now()
             });
-
-          }
-
+            notif_update(opponent);
+          }    
           ReactDOM.unmountComponentAtNode(document.getElementById("quiz_area"))
 
           $("#challenge").show();
@@ -1246,8 +1289,10 @@
         <a id="nav-learn-div" onclick = "change_screen('learn-div')">
          <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
         </a>
-        <a  id='nav-notif-div' onclick = "change_screen('notif-div');load_challenges();">
-            <i class="fa fa-bell" style="font-size: inherit; color: inherit"></i>
+        <a  id='nav-notif-div'class="position-relative" onclick = "change_screen('notif-div');load_challenges();">
+            <i class="fa fa-bell" style="font-size: inherit; color: inherit">
+              <span id="notif_badge" class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger"></span>
+            </i>
         </a>
         <a id='nav-quiz-div' onclick = "change_screen('quiz-div')" class="active">
             <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>

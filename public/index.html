@@ -20,6 +20,7 @@
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-messaging.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
@@ -203,6 +204,34 @@
 
     var pswd, username, opponent;
 
+    const messaging = firebase.messaging();
+
+    navigator.serviceWorker.register('firebase-messaging-sw.js', {
+        scope: '.'
+    });
+
+    messaging.onMessage(function (payload) {
+        console.log(payload)
+        var notification = JSON.parse(payload.data.notification);
+        const notificationTitle = notification.stat == 0 ? "Challenge RECEIVED" : "Challenge RESULTS";
+        const notificationOptions = {
+          body: notification.stat == 0 ? (notification.user + " has challenged you in " + notification.categ) :
+            (notification.user + " has completed your challenge in " + notification.categ),
+          icon: "https://quizinato.web.app/icons/logo-small.png",
+          actions: [
+            { action: 'b', title: 'VIEW👍' },
+            { action: 'a', title: 'LATER⏰' }
+          ]
+      };
+        navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(notificationTitle, notificationOptions);
+        });
+
+    });
+
+
+    
+
     //LOGIN PERSISTANCE
     window.onload = () =>{
       username = localStorage.getItem("user_name");
@@ -223,6 +252,14 @@
       }else{
         $("#home-div").show();
       }
+
+      var url = new URLSearchParams(location.search);
+      if (url.get("notif")){
+        change_screen('notif-div');
+        load_challenges();
+      }
+        
+
     }
   </script>
 
@@ -277,6 +314,12 @@
           <div id="login-feedback" class="invalid-feedback">
             Incorrect username or password.
           </div>
+        </div>
+        <br>
+        <div class="form-check">
+          <input class="form-check-input"  type="checkbox" checked="true" id="notif_option_login" >
+          
+          <label for="notif_option_login">Receive Challenge Notifications</label>
         </div>
         <br>
         <div class="form-check">
@@ -344,6 +387,13 @@
             $('#navbar').show();
         });
 
+        if(notif_option_login.checked){
+          messaging.getToken().then((token)=>{
+            db.ref("users/" + username + "/fcm_token").set(token);
+          })
+          
+        }
+
          
 
         }
@@ -389,9 +439,17 @@
             Use a stronger password.
           </div>
         </div>
+
+        <br>
+        <div class="form-check">
+          <input class="form-check-input"  type="checkbox" checked="true" id="notif_option" >
+          
+          <label for="notif_option">Receive Challenge Notifications</label>
+        </div>
+
         <br>
         <button type="submit" class="btn btn-primary">
-          <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Signin
+          <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in
         </button>
       </form>
     </div>
@@ -404,7 +462,7 @@
     var error = 0, res;
     // Disable form submissions if there are invalid fields
     var signform = document.getElementById("signin-form");
-    signform.addEventListener("submit", function (event) {
+    signform.addEventListener("submit",  function (event) {
 
       document.getElementById('signin-spinner').style.display = 'inline-block';
       pswd = document.getElementById('signin-password').value;
@@ -419,7 +477,7 @@
         document.getElementById('signin-spinner').style.display = 'none';
         return 0;
       }
-      db.ref("users").once('value', function (s) {
+      db.ref("users").once('value', async function (s) {
         error = (s.hasChild(username));
         if (error) {
 
@@ -436,14 +494,19 @@
         }
 
         else {
+          var fcm_token=null;
+          if (notif_option.checked) {
+            fcm_token = await messaging.getToken();
+        }
+
           db.ref('users/' + username).set({
 
             pwd: pswd,
             notif: 0,
             challenges: 0,
             wins: 0,
-            xp: 0
-
+            xp: 0,
+            fcm_token: fcm_token
 
           });
 
@@ -592,8 +655,8 @@
       constructor(props){
         super(props);
         if(props.data){
-          this.keys = Object.keys(props.data);
-          this.data=Object.values(props.data);
+          this.keys = Object.keys(props.data).reverse();
+          this.data=Object.values(props.data).reverse();
         }
         //console.log(this.data);
 
@@ -930,7 +993,7 @@
           return;
       }
       catg = category[i];
-      fetch();
+      quiz_fetch();
       document.getElementById('challenge').style.display = 'none';
       document.getElementById('navbar').style.display = 'none';
       ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
@@ -940,7 +1003,7 @@
     }
 
 
-    function fetch() {
+    function quiz_fetch() {
       var url = 'https://opentdb.com/api.php?amount=5&category=' + catg + '&difficulty=' + difficulty + '&type=multiple&encode=url3986';
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url, false);
@@ -966,7 +1029,7 @@
                 notif: s.val()+1
               });
             });
-            alert(user);     
+            //alert(user);     
     }  
     
     class Category extends React.Component {
@@ -1041,6 +1104,7 @@
               status:3
             });
             notif_update(this.opp);
+            fetch(`https://oq63h3en4g.execute-api.us-east-2.amazonaws.com/default/quizinato-fcm?user=${username}&opp=${this.opp}&categ=${this.data[0].category}&stat=1`)
           }
           else{
 
@@ -1074,6 +1138,7 @@
               date:Date.now()
             });
             notif_update(opponent);
+            fetch(`https://oq63h3en4g.execute-api.us-east-2.amazonaws.com/default/quizinato-fcm?user=${username}&opp=${opponent}&categ=${this.data[0].category}&stat=0`)
           }    
           ReactDOM.unmountComponentAtNode(document.getElementById("quiz_area"))
 

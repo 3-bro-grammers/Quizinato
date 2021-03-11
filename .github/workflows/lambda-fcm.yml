@@ -37,6 +37,6 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-2
-          function_name: gmail-read-receipt
+          function_name: quizinato-fcm
           zip_file: ./lambda/fcm/bundle.zip
           timeout: 10

@@ -1061,7 +1061,7 @@
                 xp: s.val().xp+opp_xp
               });
               //prevent update when tied 
-              (user_xp!=opp_xp) && db.ref(`users/${loss}/stats`).update({
+              (user_xp!=opp_xp) && db.ref(`users/${loser}/stats`).update({
                 loss: s.val().loss+1
               });  
             }); 

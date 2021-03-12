@@ -195,6 +195,17 @@
     font-size: 0.75rem !important;
   }
 
+  .live_status_badge{
+    height: 10px;
+    width: 10px;
+    background: green;
+    display: inline-block;
+    border-radius: 50%;
+    position: relative;
+    bottom: 5px;
+    left: 2px
+  }
+
   </style>
 </head>
 
@@ -238,6 +249,11 @@
       pswd = localStorage.getItem("user_pass");
 
       if(username && pswd){
+
+        db.ref("userlist/"+username).set(true);
+
+        db.ref('userlist/'+username).onDisconnect().set(false);
+
         db.ref("users/" + username + "/notif").once("value", function(s) {
             if(s.val()>0)
             {
@@ -396,6 +412,9 @@
           
         }
 
+        db.ref("userlist/"+username).set(true);
+        db.ref('userlist/'+username).onDisconnect().set(false);
+
          
 
         }
@@ -515,10 +534,10 @@
           });
 
           db.ref('userlist').update({
-             [username]:1
+             [username]:true
           });
 
-
+          db.ref('userlist/'+username).onDisconnect().set(false);
 
           localStorage.setItem("user_name", username);
           localStorage.setItem("user_pass", pswd);
@@ -944,6 +963,12 @@
 
   <script>
 
+    var all_users;
+
+    db.ref("userlist").on("value", function (snap) {
+      all_users = snap.val();      
+    })
+
     function search_input() {
 
       var search = search_txt.value.toLowerCase();
@@ -954,16 +979,15 @@
 
       var inn_htm = "";
 
-      db.ref("userlist").once("value", function (snap) {
-        var all_users = snap.val();
-        for (x in all_users) {
-          if (x!= username) {
-           if(x.toLowerCase().indexOf(search) > -1)
-            inn_htm += `<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}</a></li>`
-          }
+
+      for (x in all_users) {
+        if (x!= username) {
+          if(x.toLowerCase().indexOf(search) > -1)
+          inn_htm += (`<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}`
+            +(all_users[x]?`<span class="live_status_badge"></span>`:"")+`</a></li>`);
         }
-        search_list.innerHTML = inn_htm;
-      })
+      }
+      search_list.innerHTML = inn_htm;
 
 
     }

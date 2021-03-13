@@ -15,7 +15,8 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!--font-awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <!--google-charts-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -1345,50 +1346,90 @@
   -->
 
   <div  id ="user-div" style="display: none;">
-    <h1 class="text-center text_effect">Account Summary</h1>
-    <br>
     <div class='container'>
-      <div id="header">
-      </div>   
-      <div id="stats" class='row'>
-        <div class="col text-center">
+        <h1 class="text-center text_effect">Account Summary</h1>
+        <br>
+        <div id="header"></div>
+        <button id="effect" class= "btn btn-danger" onclick="logout_user()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <span>Logout</span>
+        </button> 
+        <div id="stats" class='row'>
+          <div class="col text-center">
               <span id="challenges"> </span>
-       </div>
-       <div class="col text-center">
+          </div>
+          <div class="col text-center">
               <span id="wins"> </span>
-       </div>
-       <div class="col text-center">
+          </div>
+          <div class="col text-center">
             <span id="tie"> </span>
-        </div>
-       <div class="col text-center">
+          </div>
+          <div class="col text-center">
               <span id="loss"> </span>
-       </div>
-      </div>  
-         
-      
-    <button id="effect" class= "btn btn-danger" onclick="logout_user()">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-      <span>Logout  
-      </span>
-    </button>
+          </div>
+        </div>
+        <br>
+        <div class="row align-items-center ">
+          <div id="min_lvl" class="col text-center"></div>
+          <div class="col">
+          <div class="progress" style="margin: 0 auto;">
+            <div id="xp_progress"class="progress-bar bg-info" role="progressbar" style="width: 0%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+          </div>
+        </div>
+        <div id="max_lvl" class="col text-center"></div>
+        </div>     
+        <div id="stats_chart" >
+          <div id="donutchart" style="width: 50vw; height: 50vw; display:block;margin: 0 auto;"></div>
+        </div>
     </div>
-
   </div>
 
   <script>
      function load_userdata(){
 
           db.ref("users/" + username + "/stats").once("value", function(s) {
+                   
+                    var lvl,progress;
+                    google.charts.load("current", {packages:["corechart"]});
+                    google.charts.setOnLoadCallback(drawChart);
                     challenges = s.val().challenges;
-                    document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
                     wins = s.val().wins;
                     loss = s.val().loss;
                     tie = challenges-(wins+loss);
                     ratio = parseFloat(wins/challenges);
+                    xp = s.val().xp;
+                    lvl= Math.floor(xp/10)==0?1:Math.floor(xp/10);
+                    progress=xp%10;
+                    
+                    document.getElementById('xp_progress').setAttribute('aria-valuenow',progress);
+                    document.getElementById('xp_progress').setAttribute('style','width:'+Number(progress*10)+'%');
+                    document.getElementById('xp_progress').innerHTML= `${xp}xp`;
                     document.getElementById('wins').innerHTML= wins+'<br>wins';
                     document.getElementById('tie').innerHTML= tie+'<br>tied';
                     document.getElementById('loss').innerHTML= loss+'<br>loss';
-                    xp = s.val();
+                    document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
+                    document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl)*10}xp`;
+                    document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl+1)*10}xp`;
+
+                   
+                    function drawChart() 
+                    {
+                        var data = google.visualization.arrayToDataTable([
+                        ['stats', 'Value'],
+                        ['Wins',  wins],
+                        ['Loss',  loss],
+                        ['Tie',  tie]
+                        ]);
+
+                        var options = {
+                            title: username+'\'s Stats',
+                            pieHole: 0.4,
+                        };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                    chart.draw(data, options);
+                  }
+                   
                     });
 
          document.getElementById('header').innerHTML= username;

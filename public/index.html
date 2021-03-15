@@ -467,7 +467,14 @@
             Use a stronger password.
           </div>
         </div>
-
+        <br>
+        <div class="form-floating col-sm|md|lg|xl">
+          <input type="text" class="form-control" id="signin-email" placeholder="Email">
+          <label for="signin-email">Email (optional): </label>
+          <div class="invalid-feedback">
+            Inappropriate Email ID
+          </div>
+        </div>
         <br>
         <div class="form-check">
           <input class="form-check-input"  type="checkbox" checked="true" id="notif_option" >
@@ -495,6 +502,7 @@
       document.getElementById('signin-spinner').style.display = 'inline-block';
       pswd = document.getElementById('signin-password').value;
       username = document.getElementById('signin-username').value;
+      mail = document.getElementById('signin-email').value;
       event.preventDefault();
       if (signform.checkValidity() == false) {
         event.preventDefault();
@@ -521,6 +529,13 @@
           document.getElementById('signin-password').classList.add("is-invalid");
         }
 
+        else if(mail && !(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        .test(mail.toLowerCase()))){
+          event.preventDefault();
+          event.stopPropagation();
+          document.getElementById('signin-email').classList.add("is-invalid");
+        }
+
         else {
           var fcm_token=null;
           if (notif_option.checked) {
@@ -530,6 +545,7 @@
           db.ref('users/' + username).set({
             pwd: pswd,
             notif: 0,
+            mail: mail?mail:null,
             fcm_token: fcm_token
           });
 

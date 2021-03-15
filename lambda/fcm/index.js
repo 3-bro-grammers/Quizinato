@@ -2,6 +2,8 @@
 var admin = require("firebase-admin");
 //process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
+const nodemailer = require("nodemailer");
+
 var serviceAccount = {
     "type": "service_account",
     "project_id": "quizinato",
@@ -32,27 +34,69 @@ stat
 */
 
 exports.handler = async (event) => {
-    var { user,opp, categ, stat } = event.queryStringParameters;
+    var { user, opp, categ, stat } = event.queryStringParameters;
     //var { sourceIp, userAgent } = event.requestContext.identity;
 
-    var fcm_token = (await db.ref(`users/${opp}/fcm_token`).once("value")).val()
+    var fcm_token = (await db.ref(`users/${opp}/fcm_token`).once("value")).val();
 
     if (fcm_token) {
         await admin.messaging().sendToDevice(fcm_token,
-        {
-            "data": {
-                "notification": JSON.stringify({
-                    "user": user,
-                    "categ":categ,
-                    "stat":stat
-                })
-            }
-        })
+            {
+                "data": {
+                    "notification": JSON.stringify({
+                        "user": user,
+                        "categ": categ,
+                        "stat": stat
+                    })
+                }
+            })
     }
 
+    var mail = (await db.ref(`users/${opp}/mail`).once("value")).val();
+
+    if (mail) {
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'quizzard.webapp@gmail.com',
+                pass: 'aykdplktfrzdeaky'
+            }
+        });
+
+
+
+        var mailOptions = {
+            from: 'quizzard.webapp@gmail.com',
+            to: mail,
+            subject: 'QUIZINATO Notification',
+            html: 
+            `<center>
+            <div style="font-size:larger">${user} has Challenged you in ${categ}.<br><br></div>
+            <a style="display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            border-radius: .25rem;
+            color: #fff;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            " href="https://quizinato.web.app?notif=1" >View</a>
+            </center>`
+        };
+        await transporter.sendMail(mailOptions);
+    }
 
     return ({
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        },
         statusCode: 200,
-        body: fcm_token?"DONE":"notif-disabled",
+        body: (fcm_token ? "FCM_DONE " : "notif-disabled") + (mail ? "Mail_SENT" : "mail-disabled"),
     });
 };

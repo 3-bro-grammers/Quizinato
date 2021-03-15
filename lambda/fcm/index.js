@@ -90,7 +90,7 @@ exports.handler = async (event) => {
             </center>`
         };
         await transporter.sendMail(mailOptions);
-    }
+    } 
 
     return ({
         headers: {

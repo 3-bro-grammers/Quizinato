@@ -71,22 +71,15 @@ exports.handler = async (event) => {
             subject: 'QUIZINATO Notification',
             html: 
             `<center>
-            <div style="font-size:larger">${user} has Challenged you in ${categ}.<br><br></div>
-            <a style="display: inline-block;
-            font-weight: 400;
-            line-height: 1.5;
-            text-align: center;
-            text-decoration: none;
-            vertical-align: middle;
-            cursor: pointer;
-            border: 1px solid transparent;
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            border-radius: .25rem;
-            color: #fff;
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-            " href="https://quizinato.web.app?notif=1" >View</a>
+            <div style="font-size:larger; font-weight:bold; text-decoration:underline">QUIZINATO Notification</div><br><br>
+            <div style="font-size:larger"><b>${user}</b><br> has ${stat==0?"Challenged you":"completed your challenge"} in<br><b>${categ}</b><br><br></div>
+            <a 
+            style="display: inline-block;font-weight: 400;line-height: 1.5;text-align: center;
+            text-decoration: none;vertical-align: middle;border: 1px solid transparent;padding: .375rem .75rem;
+            font-size: 1rem;border-radius: .25rem;color: #fff;background-color: #0d6efd;border-color: #0d6efd;"
+            
+            href="https://quizinato.web.app?notif=1" >View ${stat==0?"CHALLENGE":"RESULTS"}</a><br><br>
+            <img src="https://quizinato.web.app/icons/logo-small.png">
             </center>`
         };
         await transporter.sendMail(mailOptions);

@@ -897,7 +897,7 @@
         }
         else
           {
-           this.button[index].className= "shadow-none p-2 mb-2 rounded text-white bg-danger bg-gradient";
+           this.button[index].className= "shadow-none p-2 mb-2 rounded text-white invisible";
            this.button[index].disabled = true;
            }
       }
@@ -905,7 +905,7 @@
 
         return (
           <div>
-            <div className="question">{this.state.qn_no+1}){unescape(this.data[this.state.qn_no].question)}</div>
+            <div className="question">{this.state.qn_no+1}) {unescape(this.data[this.state.qn_no].question)}</div>
             <br />
             <div className="options">
                 {
@@ -1085,7 +1085,7 @@
             //alert(user);     
     } 
     
-    function data_update(user,user_xp,opp,opp_xp)
+    function data_update(user,user_xp,opp,opp_xp,mode)
     {
       var winner = (user_xp>opp_xp)?user:opp;
       var loser = (user_xp>opp_xp)?opp:user;
@@ -1093,7 +1093,7 @@
       db.ref(`users/${winner}/stats`).once("value", function (s) {
               db.ref(`users/${winner}/stats`).update({
                 challenges: s.val().challenges+1,
-                xp: s.val().xp+user_xp
+                xp: s.val().xp+(user_xp*mode)
               });
               //prevent update when tied 
               (user_xp!=opp_xp) && db.ref(`users/${winner}/stats`).update({
@@ -1105,7 +1105,7 @@
       db.ref(`users/${loser}/stats`).once("value", function (s) {
               db.ref(`users/${loser}/stats`).update({
                 challenges: s.val().challenges+1,
-                xp: s.val().xp+opp_xp
+                xp: s.val().xp+(opp_xp*mode)
               });
               //prevent update when tied 
               (user_xp!=opp_xp) && db.ref(`users/${loser}/stats`).update({
@@ -1188,7 +1188,8 @@
               status:3
             });
             let xp = this.response.reduce((s,e)=>s+e);
-            data_update(username,xp,this.opp,this.opp_xp);
+            let mode = this.data[0].difficulty=='easy'?1:this.data[0].difficulty=='medium'?2:3;
+            data_update(username,xp,this.opp,this.opp_xp,mode);
             notif_update(this.opp);
             fetch(`https://oq63h3en4g.execute-api.us-east-2.amazonaws.com/default/quizinato-fcm?user=${username}&opp=${this.opp}&categ=${this.data[0].category}&stat=1`)
           }
@@ -1395,7 +1396,7 @@
           <div id="min_lvl" class="col text-center"></div>
           <div class="col">
           <div class="progress" style="margin: 0 auto;">
-            <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="10"></div>
+            <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
           </div>
         </div>
         <div id="max_lvl" class="col text-center"></div>
@@ -1420,18 +1421,18 @@
                     tie = challenges-(wins+loss);
                     ratio = parseFloat(wins/challenges);
                     xp = s.val().xp;
-                    lvl= Math.floor(xp/10)==0?1:Math.floor(xp/10);
-                    progress=xp%10;
+                    lvl= Math.floor(xp/20)==0?1:Math.floor(xp/20);
+                    progress=xp%20;
                     
                     document.getElementById('xp_progress').setAttribute('aria-valuenow',progress);
-                    document.getElementById('xp_progress').setAttribute('style','width:'+Number(progress*10)+'%');
+                    document.getElementById('xp_progress').setAttribute('style','width:'+Number(progress*5)+'%');
                     document.getElementById('xp_progress').innerHTML= `${xp}xp`;
                     document.getElementById('wins').innerHTML= wins+'<br>wins';
                     document.getElementById('tie').innerHTML= tie+'<br>tied';
                     document.getElementById('loss').innerHTML= loss+'<br>loss';
                     document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
-                    document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl)*10}xp`;
-                    document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl+1)*10}xp`;
+                    document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl)*20}xp`;
+                    document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl+1)*20}xp`;
 
                    
                     function drawChart() 

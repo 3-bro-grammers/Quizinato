@@ -51,6 +51,9 @@
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+  <!--react-transition-group-->
+  <script src="https://unpkg.com/react-transition-group@4.4.1/dist/react-transition-group.js"></script>
+
   <title>Quizinato</title>
   <style>
    *{
@@ -213,6 +216,26 @@
     font-weight: bold;
   }
 
+  .fade-enter {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  .fade-exit {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  .fade-enter-active,
+  .fade-exit-active {
+    transition: all 1000ms ease-in;
+  }
   </style>
 </head>
 
@@ -904,35 +927,48 @@
       render() {
 
         return (
-          <div>
-            <div className="question">{this.state.qn_no+1}) {unescape(this.data[this.state.qn_no].question)}</div>
-            <br />
-            <div className="options">
-                {
-                  this.options.map((item, index) => {
-                    return (
-                      <div >
-                        <div ref={a => this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="shadow p-2 mb-2 rounded">{unescape(item)}</div>
-                        {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
-                      </div>)
+          
+              <div>
+                <ReactTransitionGroup.SwitchTransition>
+                  <ReactTransitionGroup.CSSTransition
+                    key={this.state.qn_no}
+                    addEndListener={(node, done) => {
+                      node.addEventListener("transitionend", done, false);
+                    }}
+                    classNames="fade"
+                    >
+                    <div>
+                        <div className="question">{this.state.qn_no+1}) {unescape(this.data[this.state.qn_no].question)}</div>
+                        <br />
+                        <div className="options">
+                            {
+                              this.options.map((item, index) => {
+                                return (
+                                  <div >
+                                    <div ref={a => this.button[index] = a} onClick={() => { this.validate(unescape(item), index) }} className="shadow p-2 mb-2 rounded">{unescape(item)}</div>
+                                    {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
+                                  </div>)
 
-                  })
-                }
-            </div>
-            <br />
-            <div className="row ">
-              <div className="col text-center"> 
-                <button className="btn btn-outline-warning" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >
-                  <i class="fa fa-times-circle-o" aria-hidden="true"></i> Exit 
-                </button>
+                              })
+                            }
+                        </div>
+                    </div>
+                  </ReactTransitionGroup.CSSTransition>
+                </ReactTransitionGroup.SwitchTransition>
+              <br />
+              <div className="row ">
+                <div className="col text-center"> 
+                  <button className="btn btn-outline-warning" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >
+                    <i class="fa fa-times-circle-o" aria-hidden="true"></i> Exit 
+                  </button>
+                </div>
+                <div className="col text-center">
+                  <button className="btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == 29}>
+                    Next <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
-              <div className="col text-center">
-                <button className="btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == 29}>
-                  Next <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                </button>
-              </div>
             </div>
-          </div>
         )
       }
     }

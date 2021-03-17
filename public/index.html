@@ -236,6 +236,14 @@
   .fade-exit-active {
     transition: all 1000ms ease-in;
   }
+  .validate{
+    position: absolute;
+    top: 90vh;
+    display: none;
+    font-size: larger;
+    font-weight: bolder;
+    left: 45%;
+  }
   </style>
 </head>
 
@@ -1209,7 +1217,7 @@
       update() {
 
 
-        if (this.state.qn_no == 0) {
+        if (this.state.qn_no == 4) {
 
           var db = firebase.database();
 
@@ -1283,38 +1291,50 @@
 
       }
       validate(user_ans, index) {
-        if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
-          this.response[this.state.qn_no] = 1;
+        if (user_ans == unescape(this.data[this.state.qn_no].correct_answer))
+            this.response[this.state.qn_no] = 1;
         else
           this.response[this.state.qn_no] = 0;
         this.setState({
-          cur_ind: index
-        })
+            cur_ind: index
+        });
+        $('.question_container').hide();
+        $(".validate").css( "top", "90vh" );
+        $('.validate').show();
+        $(".validate").animate({ "top": "50vh" },1000);
+        setTimeout(()=> {
+            $('.validate').hide();
+            this.update();
+            $('.question_container').show();
+          },1500);
       }
       render() {
 
         return (
           <div>
+            <div className="question_container">
             <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
             <br />
             <div className="options">
-              <ul>
 
                 {
                   this.options.map((item, index) => {
                     return (
-                      <div onClick={() => { this.validate(unescape(item), index) }} >
-                        <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" />
+                      <div>
+                        <input class="form-check-input" type="radio" name="option" id="flexRadioDefault1" value={unescape(item)} />
                         <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
-                        {/*<li onClick={() => { this.validate(unescape(item)) }}>{unescape(item)}</li>*/}
                       </div>)
 
                   })
                 }
-              </ul>
+  
             </div>
             <br />
-            <button onClick={() => { this.update() }}> Next</button>
+            <button onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val(),$(":radio[name='option']").index($(":radio[name='option']:checked"))) }}> Next</button>
+          </div>
+          <div className="validate" style={{color:this.response[this.state.qn_no]?'green':'red'}}>
+            { this.response[this.state.qn_no]?<span>Correct &#10004;</span>:<span>Wrong &#x274C;</span>}
+          </div>
           </div>
         )
       }

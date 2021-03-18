@@ -242,7 +242,11 @@
     display: none;
     font-size: larger;
     font-weight: bolder;
-    left: 35vw;
+    left: 50%;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+
   }
   </style>
 </head>
@@ -1192,13 +1196,13 @@
 
     class Quiz extends React.Component {
 
-
       response = [];
       constructor(props) {
         super(props);
         this.state = {
           qn_no: 0,
-          cur_ind: -1
+          cur_ind: -1,
+          progress: 100
         }
         this.accepted = props.accepted;
         if(this.accepted){
@@ -1210,9 +1214,21 @@
         }
         this.data = [...props.data];
         this.options = [...this.data[0].incorrect_answers, this.data[0].correct_answer].sort(() => Math.random() - 0.5);
-
+        this.timer(20);
+        this.clear=0;
       }
 
+
+     timer(time) {
+        var interval = setInterval(()=> {
+        let seconds = time; 
+        this.setState({ progress: seconds*100/20});      
+        if (--time < 0 || this.clear) {
+          --time < 0 && this.validate($("input[type='radio'][name='option']:checked").val(),$(":radio[name='option']").index($(":radio[name='option']:checked")));   
+          clearInterval(interval);
+        }
+          }, 1000);
+        }
 
       update() {
 
@@ -1287,9 +1303,8 @@
             qn_no: this.state.qn_no + 1,
             cur_ind: -1
           });
-
-
       }
+
       validate(user_ans, index) {
         if (user_ans == unescape(this.data[this.state.qn_no].correct_answer))
             this.response[this.state.qn_no] = 1;
@@ -1298,14 +1313,18 @@
         this.setState({
             cur_ind: index
         });
+        this.clear=1;
         $('.question_container').hide();
         $(".validate").css( "top", "90vh" );
         $('.validate').show();
         $(".validate").animate({ "top": "50vh" },1000);
         setTimeout(()=> {
+            this.setState({ progress: 100});
+            this.clear=0;
             $('.validate').hide();
             this.update();
             $('.question_container').show();
+            this.timer(20); 
           },1500);
       }
       render() {
@@ -1313,6 +1332,12 @@
         return (
           <div>
             <div className="question_container">
+              <div>
+                Header
+                <div className="progress mx-auto mb-2" >
+                    <div className= {`progress-bar ${this.state.progress>75? ' bg-success' :this.state.progress>30?'bg-warning':'bg-danger'}`} role="progressbar"  style={{width: this.state.progress+"%"}} aria-valuenow={30} aria-valuemin={0} aria-valuemax={30}></div>
+                </div>
+              </div>
             <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
             <br />
             <div className="options">
@@ -1333,7 +1358,7 @@
             <button onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val(),$(":radio[name='option']").index($(":radio[name='option']:checked"))) }}> Next</button>
           </div>
           <div className="validate" style={{color:this.response[this.state.qn_no]?'green':'red'}}>
-            { this.response[this.state.qn_no]?<span>Correct &#10004;</span>:<span>Wrong &#x274C;</span>}
+            { this.response[this.state.qn_no]?<span>Correct &#10004;</span>:$(":radio[name='option']").index($(":radio[name='option']:checked"))>-1?<span>Wrong &#x274C;</span>:<span>Time up!!</span>}
           </div>
           </div>
         )
@@ -1341,7 +1366,7 @@
     }
 
   </script>
-
+ 
    <!--  LEADER_BOARDDIV
   *******************************************************************************************
   -->

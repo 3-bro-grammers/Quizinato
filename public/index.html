@@ -1239,7 +1239,7 @@
         if (this.state.qn_no == 4) {
 
           var db = firebase.database();
-
+           this.clear=1;
 
           if(this.accepted){
             db.ref(`users/${username}/active/${this.my_key}`).update({

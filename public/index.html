@@ -254,7 +254,7 @@
   }
   .fade-enter-active .question,
   .fade-exit-active .question{
-    transition: all 2000ms ease-in;
+    transition: all 1000ms ease-in;
   }
 
   .fade-enter-active .options div:nth-child(1),
@@ -973,7 +973,7 @@
         if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
          {
               this.button[index].className= "shadow p-2 mb-2 rounded text-white bg-success bg-gradient";
-              setTimeout(()=>this.update(),1000);
+              setTimeout(()=>this.update(),800);
 
         }
         else
@@ -990,7 +990,7 @@
                 <ReactTransitionGroup.SwitchTransition>
                   <ReactTransitionGroup.CSSTransition
                     key={this.state.qn_no}
-                    timeout={2000}
+                    timeout={1400}
                     classNames="fade"
                     >
                     <div>

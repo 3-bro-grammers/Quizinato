@@ -236,30 +236,42 @@
     font-weight: bold;
   }
 
-  .fade-enter>*  {
+  .fade-enter>.question, .fade-enter>.options>div  {
     opacity: 0;
     transform: translateX(-100%);
   }
-  .fade-enter-active>* {
+  .fade-enter-active>.question, .fade-enter-active>.options>div {
     opacity: 1;
     transform: translateX(0%);
   }
-  .fade-exit>* {
+  .fade-exit>.question, .fade-exit>.options>div {
     opacity: 1;
     transform: translateX(0%);
   }
-  .fade-exit-active>* {
+  .fade-exit-active>.question, .fade-exit-active>.options>div {
     opacity: 0;
     transform: translateX(100%);
   }
   .fade-enter-active .question,
   .fade-exit-active .question{
-    transition: all 1000ms ease-in;
+    transition: all 2000ms ease-in;
   }
 
-  .fade-enter-active .options,
-  .fade-exit-active .options{
+  .fade-enter-active .options div:nth-child(1),
+  .fade-exit-active .options div:nth-child(1){
+    transition: all 1000ms ease-in 100ms;
+  }
+  .fade-enter-active .options div:nth-child(2),
+  .fade-exit-active .options div:nth-child(2){
     transition: all 1000ms ease-in 200ms;
+  }
+  .fade-enter-active .options div:nth-child(3),
+  .fade-exit-active .options div:nth-child(3){
+    transition: all 1000ms ease-in 300ms;
+  }
+  .fade-enter-active .options div:nth-child(4),
+  .fade-exit-active .options div:nth-child(4){
+    transition: all 1000ms ease-in 400ms;
   }
   .validate{
     position: absolute;
@@ -961,11 +973,12 @@
         if (user_ans === unescape(this.data[this.state.qn_no].correct_answer))
          {
               this.button[index].className= "shadow p-2 mb-2 rounded text-white bg-success bg-gradient";
+              setTimeout(()=>this.update(),1000);
 
         }
         else
           {
-           this.button[index].className= "shadow-none p-2 mb-2 rounded text-white invisible";
+           this.button[index].className= "shadow-none p-2 mb-2 rounded text-white bg-danger text-decoration-line-through";
            this.button[index].disabled = true;
            }
       }
@@ -977,9 +990,7 @@
                 <ReactTransitionGroup.SwitchTransition>
                   <ReactTransitionGroup.CSSTransition
                     key={this.state.qn_no}
-                    addEndListener={(node, done) => {
-                      node.addEventListener("transitionend", done, false);
-                    }}
+                    timeout={2000}
                     classNames="fade"
                     >
                     <div>

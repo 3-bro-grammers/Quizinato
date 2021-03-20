@@ -236,25 +236,30 @@
     font-weight: bold;
   }
 
-  .fade-enter {
+  .fade-enter>*  {
     opacity: 0;
     transform: translateX(-100%);
   }
-  .fade-enter-active {
+  .fade-enter-active>* {
     opacity: 1;
     transform: translateX(0%);
   }
-  .fade-exit {
+  .fade-exit>* {
     opacity: 1;
     transform: translateX(0%);
   }
-  .fade-exit-active {
+  .fade-exit-active>* {
     opacity: 0;
     transform: translateX(100%);
   }
-  .fade-enter-active,
-  .fade-exit-active {
+  .fade-enter-active .question,
+  .fade-exit-active .question{
     transition: all 1000ms ease-in;
+  }
+
+  .fade-enter-active .options,
+  .fade-exit-active .options{
+    transition: all 1000ms ease-in 200ms;
   }
   .validate{
     position: absolute;
@@ -355,17 +360,18 @@
   -->
 
   <div id="home-div" style="display: none;">
-   <figure class="text-center">
-            <h1 class="text-center text-danger bg-secondary">
-                Quizinato
+        <figure class="text-center">
+            <h1 class="text-center text-danger" style="font-family: Cooper;">
+                QUIZINATO
             </h1>
-            <figcaption class="blockquote-footer text-dark bg-secondary">
+            <figcaption class="blockquote-footer text-dark">
                 <cite title="Source Title">Breaking Brain</cite>
             </figcaption>
         </figure>
 
-        <div class="parallax"></div>
+        <!-- <div class="parallax"></div>  -->
         <br>
+        
         <div>
             <div class="d-grid gap-2 col-6 mx-auto">
                 <span class="btn btn-info" type="button" onclick="$('#home-div').hide(); $('#signin-div').show();">
@@ -376,7 +382,7 @@
         </div>
 
         <br>
-        <div class="parallax"></div>
+        <!-- <div class="parallax"></div> -->
   </div>
 
 

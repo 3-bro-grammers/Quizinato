@@ -79,6 +79,38 @@
      user-select: none;
      scroll-behavior: smooth;
    } 
+
+   .home_flex{
+     display: flex;
+     justify-content: center;
+     flex-wrap: wrap;
+     margin-top: 20px;
+     height: 50vh;
+     align-items: center;
+   }
+
+   .home_flex_icon {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 30px;
+    border-radius: 50%;
+    padding: 10px;
+    border: 2px solid blue;
+    width:50px;
+    height:50px;
+   }
+
+   .home_flex>div {
+    border: 2px dashed blue;
+    padding: 10px;
+    width: 200px; 
+    border-radius: 10px;
+    position: relative;
+    margin: 20px;
+
+   }
+
   .parallax {
             background-image: url("https://wallpaperaccess.com/full/2384073.jpg");
             min-height: 500px;
@@ -292,6 +324,10 @@
    margin-right: 0 !important;
    margin-left: 0 !important;
  }
+
+
+
+
   </style>
 </head>
 
@@ -372,15 +408,39 @@
   -->
 
   <div id="home-div" style="display: none;">
-        <figure class="text-center">
-            <h1 class="text-center text-danger" style="font-family: Cooper;">
+    <div class="container">
+        
+      <div style="display:flex; justify-content: center; margin: 20px 0;">
+          <img style="height: 80px; margin-right: 10px;" src="icons/logo-small.png">
+          <div style="display: flex; flex-direction: column;">
+            <h1 class="text-center text-danger" style="font-family: Cooper; font-size:2.5rem; margin-bottom: 0;">
                 QUIZINATO
             </h1>
-            <figcaption class="blockquote-footer text-dark">
-                <cite title="Source Title">Breaking Brain</cite>
-            </figcaption>
-        </figure>
-
+            <div style="font-family: monospace; font-size: 1.8rem; font-style: oblique; text-align: center;">Breaking Brain</div>
+          </div>
+      </div>
+            
+        
+        <div class="home_flex" >
+          <div style="background-color: greenyellow;">
+            <div>
+              <span style="font-weight: bold; font-size: 1.2rem;">LEARN</span>
+              <i class="fa fa-book home_flex_icon text-center" style="background-color: yellow;"></i>
+            </div>
+            <div>
+              Hone your <span style="font-weight: bold; font-style: oblique;">SKILLS</span> by practicing Quiz from your genre of interest
+            </div>
+          </div>
+          <div style="background-color: lightskyblue;">
+            <div>
+              <span style="font-weight: bold; font-size:1.2rem">CHALLENGE</span>
+              <i class="fa fa-flash home_flex_icon text-center" style="background-color: royalblue;"></i> 
+            </div>
+            <div>
+              Prove your <span style="font-weight: bold; font-style: oblique;">MIGHT</span> by shooting your pals with Quiz challenges
+            </div>
+          </div>
+        </div>
         <!-- <div class="parallax"></div>  -->
         <br>
         
@@ -395,6 +455,7 @@
 
         <br>
         <!-- <div class="parallax"></div> -->
+    </div>
   </div>
 
 

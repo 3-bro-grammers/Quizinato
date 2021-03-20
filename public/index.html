@@ -5,7 +5,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--Bootstrap-->
+
+  <!-- Primary Meta Tags -->
+<title>Quizinato</title>
+<meta name="title" content="Quizinato">
+<meta name="description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://quizinato.web.app">
+<meta property="og:title" content="Quizinato">
+<meta property="og:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+<meta property="og:image" content="https://quizinato.web.app/icons/logo-small.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://quizinato.web.app">
+<meta property="twitter:title" content="Quizinato">
+<meta property="twitter:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+<meta property="twitter:image" content="https://quizinato.web.app/icons/logo-small.png">
+
+<!--Bootstrap-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -54,10 +74,10 @@
   <!--react-transition-group-->
   <script src="https://unpkg.com/react-transition-group@4.4.1/dist/react-transition-group.js"></script>
 
-  <title>Quizinato</title>
   <style>
    *{
      user-select: none;
+     scroll-behavior: smooth;
    } 
   .parallax {
             background-image: url("https://wallpaperaccess.com/full/2384073.jpg");
@@ -249,6 +269,11 @@
   }
   .progress-bar {
   transition: width 2s ease !important;
+ }
+ #stats,
+ #lvl{
+   margin-right: 0 !important;
+   margin-left: 0 !important;
  }
   </style>
 </head>
@@ -1459,39 +1484,54 @@
     <div class='container'>
         <h1 class="text-center text_effect">Account Summary</h1>
         <br>
-        <div id="header"></div>
-        <button id="effect" class= "btn btn-danger" onclick="logout_user()">
-          <i class="fa fa-sign-out" aria-hidden="true"></i>
-          <span>Logout</span>
-        </button> 
-        <div id="stats" class='row'>
-          <div class="col text-center">
-              <span id="challenges"> </span>
-          </div>
-          <div class="col text-center">
-              <span id="wins"> </span>
-          </div>
-          <div class="col text-center">
-            <span id="tie"> </span>
-          </div>
-          <div class="col text-center">
-              <span id="loss"> </span>
-          </div>
+        <div class='row justify-content-end '>
+          <div id="header" class="col" style="position: relative;left: 5%;"></div>
+          <div class="col ">
+              <button id="effect" class= "btn btn-danger float-end ml-3" onclick="logout_user()">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+              <span>Logout</span>
+            </button>
+          </div> 
         </div>
         <br>
-        <div class="row align-items-center ">
-          <div id="min_lvl" class="col text-center"></div>
-          <div class="col">
-          <div class="progress" style="margin: 0 auto;">
-            <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
+        <div style="max-height: 65vh; overflow: auto" class="p-3"> 
+          <div id="stats" class="row shadow rounded p-2 mt-2 " >
+            <div class="col text-center">
+              <span id="challenges"> </span>
+            </div>
+            <div class="col text-center">
+              <span id="wins"> </span>
+            </div>
+            <div class="col text-center">
+              <span id="tie"> </span>
+            </div>
+            <div class="col text-center">
+              <span id="loss"> </span>
+            </div>
           </div>
-        </div>
-        <div id="max_lvl" class="col text-center"></div>
-        </div>     
-        <div id="stats_chart" >
-          <div id="donutchart" style="width: 80vw; height: 50vh; display:block;margin: 0 auto;"></div>
-        </div>
-    </div>
+          <br>
+          <div id="lvl" class="row align-items-center shadow rounded p-2">
+            <div id="min_lvl" class="col text-center"></div>
+            <div class="col">
+            <div class="progress" style="margin: 0 auto;">
+              <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
+            </div>
+          </div>
+          <div id="max_lvl" class="col text-center"></div>
+          </div> 
+          <br>    
+          <div id="stats_chart" class="shadow rounded " >
+            <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto;"></div>
+          </div>
+          <br>
+          <div id="share" class="shadow rounded p-3">
+            Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges.
+            <span class="float-end p-1" onclick="share()" >
+              <i class="fa fa-share-alt"  style="color: skyblue;font-size: 16px;" aria-hidden="true"></i>
+            </span>
+          </div>
+      </div>
+    </div>  
   </div>
 
   <script>
@@ -1508,18 +1548,18 @@
                     tie = challenges-(wins+loss);
                     ratio = parseFloat(wins/challenges);
                     xp = s.val().xp;
-                    lvl= Math.floor(xp/20)==0?1:Math.floor(xp/20);
+                    lvl= Math.floor(xp/20)==0?1:Math.floor(xp/20)+1;
                     progress=xp%20;
                     
                     document.getElementById('xp_progress').setAttribute('aria-valuenow',progress);
                     document.getElementById('xp_progress').setAttribute('style','width:'+Number(progress*5)+'%');
                     document.getElementById('xp_progress').innerHTML= `${xp}xp`;
-                    document.getElementById('wins').innerHTML= wins+'<br>wins';
-                    document.getElementById('tie').innerHTML= tie+'<br>tied';
-                    document.getElementById('loss').innerHTML= loss+'<br>loss';
-                    document.getElementById('challenges').innerHTML= challenges +'<br>challenges';
-                    document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl)*20}xp`;
-                    document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl+1)*20}xp`;
+                    document.getElementById('wins').innerHTML= wins+'<br>Wins';
+                    document.getElementById('tie').innerHTML= tie+'<br>Tied';
+                    document.getElementById('loss').innerHTML= loss+'<br>Loss';
+                    document.getElementById('challenges').innerHTML= challenges +'<br>Challenges';
+                    document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl-1)*20}xp`;
+                    document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl)*20}xp`;
 
                    
                     function drawChart() 
@@ -1537,6 +1577,7 @@
                               color: 'black',
                             },
                             pieHole: 0.4,
+                           chartArea: {  width: "80%", height: "80%" }
                         };
 
                     var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
@@ -1556,6 +1597,17 @@
        $("#home-div").show();
      }
 
+     function share(){
+      if (navigator.share) {
+      navigator.share({
+      title: 'Quizinato',
+      text: 'Join with me in quizinato and let\'s enjoy quizzing!!',
+      url: 'https://quizinato.web.app',
+     })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+        }
+     }
   </script>
 
   <!--  NAV DIV

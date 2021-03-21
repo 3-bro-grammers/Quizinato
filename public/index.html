@@ -324,8 +324,9 @@
    margin-right: 0 !important;
    margin-left: 0 !important;
  }
-
-
+.question_header{
+  background-color: #ecf0f3;
+}
 
 
   </style>
@@ -861,7 +862,7 @@
       accept_chal(chal_obj, key){
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
-        ReactDOM.render(<Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} opp_xp={JSON.parse(chal_obj.opp_resp).reduce((s,e)=>s+e)} />, document.getElementById("answer-chal-div"))
+        ReactDOM.render(<Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} opp_resp={JSON.parse(chal_obj.opp_resp)} />, document.getElementById("answer-chal-div"))
       }
 
       decline_chal(chal_obj, key){
@@ -1302,6 +1303,8 @@
     class Quiz extends React.Component {
 
       response = [];
+      opp_pt=0;
+      user_pt=0;
       constructor(props) {
         super(props);
         this.state = {
@@ -1315,7 +1318,7 @@
           this.my_key = props.my_key;
           this.opp = props.opp;
           this.opp_key = props.opp_key;
-          this.opp_xp = props.opp_xp;
+          this.opp_resp = [...props.opp_resp];
 
         }
         this.data = [...props.data];
@@ -1355,7 +1358,7 @@
             });
             let xp = this.response.reduce((s,e)=>s+e);
             let mode = this.data[0].difficulty=='easy'?1:this.data[0].difficulty=='medium'?2:3;
-            data_update(username,xp,this.opp,this.opp_xp,mode);
+            data_update(username,xp,this.opp,this.opp_resp.reduce((s,e)=>s+e),mode);
             notif_update(this.opp);
             fetch(`https://oq63h3en4g.execute-api.us-east-2.amazonaws.com/default/quizinato-fcm?user=${username}&opp=${this.opp}&categ=${this.data[0].category}&stat=1`)
           }
@@ -1400,9 +1403,11 @@
           search_txt.value = "";
           search_txt.disabled = false;
           change_screen('notif-div');load_challenges();
-
+ 
           return;
         }
+        if((this.accepted) && (this.opp_resp[this.state.qn_no]))
+          this.opp_pt++;
         this.options = [...this.data[this.state.qn_no + 1].incorrect_answers, this.data[this.state.qn_no + 1].correct_answer].sort(() => Math.random() - 0.5)
         this.setState(
           {
@@ -1417,7 +1422,10 @@
 
       validate(user_ans) {
         if (user_ans == unescape(this.data[this.state.qn_no].correct_answer))
-            this.response[this.state.qn_no] = 1;
+        {    
+              this.response[this.state.qn_no] = 1;
+              this.user_pt++;
+        }
         else
           this.response[this.state.qn_no] = 0;  
         this.setState({crct: this.response[this.state.qn_no]});  
@@ -1427,10 +1435,10 @@
             this.clear=0;
             $('.validate').hide();
             this.update();
-            $('.question_container').show();
+            $('.question_container').fadeIn('slow','swing');
             this.timer(20); 
           },1500); 
-        $('.question_container').hide();
+        $('.question_container').fadeOut();
         $(".validate").css( "top", "90vh" );
         $('.validate').show();
         $(".validate").animate({ "top": "50vh" },1000);
@@ -1441,15 +1449,34 @@
         return (
           <div>
             <div className="question_container">
-              <div>
-                Header
-                <div className="progress mx-auto mb-2" >
+              <div className="question_header" >
+                <div className="row justify-content-around p-2">
+                  <div className="col pl-2">
+                    <span className=" badge bg-primary p-2 ">{unescape(this.data[0].category)}</span>
+                  </div>
+                  <div className="col pr-2">
+                    <span className=" badge bg-info  p-2 float-end text-capitalize">{this.data[0].difficulty}</span>
+                  </div>
+                </div>
+                <div className="row justify-content-between m-3">
+                  <div className="col">
+                    <span><b>{username}</b></span>
+                  </div>
+                  <div className="col-6 text-center">
+                    <span className="text-success fw-bold">{this.user_pt}</span>   :  {this.accepted?<span className="text-danger fw-bold">{this.opp_pt}</span>:<span className=" badge bg-secondary">Waiting</span>}
+                  </div>
+                  <div className="col text-center">
+                    <span className="float-end"><b>{this.accepted?this.opp:opponent}</b></span>
+                  </div>
+                </div>  
+                <div className="progress mx-auto" style={{height: '10px'}} >
                     <div className= {`progress-bar ${this.state.progress>50? ' bg-success' :this.state.progress>30?'bg-warning':'bg-danger'}`} role="progressbar"  style={{width: this.state.progress+"%"}} aria-valuenow={20} aria-valuemin={0} aria-valuemax={20}></div>
                 </div>
               </div>
-            <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
-            <br />
-            <div className="options">
+
+              <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
+              <br />
+              <div className="options">
 
                 {
                   this.options.map((item, index) => {
@@ -1464,7 +1491,7 @@
   
             </div>
             <br />
-            <button onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next</button>
+            <button className="btn btn-success float-end" onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next</button>
           </div>
           <div className="validate" style={{color:this.state.crct?'green':'red'}}>
             {this.state.crct?<span>Correct &#10004;</span>:this.state.cur_ind>-1?<span>Wrong &#x274C;</span>:<span>Time up!!</span>}

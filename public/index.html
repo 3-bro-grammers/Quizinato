@@ -83,47 +83,36 @@
    *{
      user-select: none;
      scroll-behavior: smooth;
-   } 
+   }
+   body {
+    margin:0;
+    } 
 
    .home_flex{
      display: flex;
      justify-content: center;
+     flex-direction: column;
      flex-wrap: wrap;
      margin-top: 20px;
-     height: 50vh;
      align-items: center;
    }
-
-   .home_flex_icon {
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    font-size: 30px;
-    border-radius: 50%;
-    padding: 10px;
-    border: 2px solid blue;
-    width:50px;
-    height:50px;
+   #home_btns button {   
+    display: inline-block;
+    padding: 0.35em 0.3em 0 ;
+    border: 0.1em solid #fff;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family:  'Roboto',sans-serif;
+    font-weight: 300;
+    color: #fff;
+    text-align: center;
+    transition: all 0.2s;
    }
-
-   .home_flex>div {
-    border: 2px dashed blue;
-    padding: 10px;
-    width: 200px; 
-    border-radius: 10px;
-    position: relative;
-    margin: 20px;
-
+   #home_btns button :hover , #home_btns button :focus,  #home_btns button :active{
+    background:#fff;
+    color: #000 ;
    }
-
-  .parallax {
-            background-image: url("https://wallpaperaccess.com/full/2384073.jpg");
-            min-height: 500px;
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
   form
   {
       display: flex;
@@ -332,7 +321,83 @@
 .question_header{
   background-color: #ecf0f3;
 }
+#home-div{
+  position:relative;
+  text-align:center;
+  background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
+  color:black;
+}
+.inner-content{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+.flex { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.waves {
+  position: relative;
+  width: 100%;
+  height: 15vh;
+  margin-bottom: -7px; /*Fix for safari gap*/
+  min-height: 100px;
+  max-height: 150px;
+}
+
+.content {
+  position: relative;
+  height: 20vh;
+  text-align: center;
+  background-color: white;
+  color: black;
+}
+
+.parallax > use {
+  animation: wavify 25s cubic-bezier(.55,.5,.45,.5)     infinite;
+}
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+@keyframes wavify {
+  0% {
+   transform: translate3d(-90px,0,0);
+  }
+  100% {
+    transform: translate3d(85px,0,0);
+  }
+}
+
+@media (max-width: 768px) {
+  .waves {
+    height:40px;
+    min-height:40px;
+  }
+  .content {
+    height:20vh;
+  }
+  h1 {
+    font-size:24px;
+  }
+}
 
   </style>
 </head>
@@ -414,36 +479,31 @@
   -->
 
   <div id="home-div" style="display: none;">
-    <div class="container">
+    <div class="inner-content">
         
-      <div style="display:flex; justify-content: center; margin: 20px 0;">
-          <img style="height: 80px; margin-right: 10px;" src="icons/logo-small.png">
+      <div style="display:flex; justify-content: center; padding: 20px 0;">
+          <img style="height: 95px; margin-right: 10px;" src="icons/logo-small.png">
           <div style="display: flex; flex-direction: column;">
-            <h1 class="text-center text-danger" style="font-family: 'Shojumaru', cursive; font-size:2.4rem; margin-bottom: 0;">
-                QUIZINATO
-            </h1>
-            <div style="font-family: monospace; font-size: 1.8rem; font-style: oblique; text-align: center;">Breaking Brain</div>
+            <img style="width: 260px; margin-right: 5px;" src="icons/app_title.png">
+            <div style="font-family: monospace; font-size: 1.8rem; font-style: oblique; text-align: center;color: white;">Breaking Brain</div>
           </div>
       </div>
             
-        
         <div class="home_flex" >
-          <div style="background-color: greenyellow;">
-            <div>
-              <span style="font-weight: bold; font-size: 1.2rem;">LEARN</span>
-              <i class="fa fa-book home_flex_icon text-center" style="background-color: yellow;"></i>
+          <div class="card shadow rounded" style="width: 20rem !important;">
+            <img src="icons/undraw_researching_22gp.png" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title" style="color: rgba(84,58,183,0.9) !important;">Learn</h5>
+              <p class="card-text"> Hone your 
+                <span style="font-weight: bold; font-style: oblique; color: #0d6efd;">SKILLS</span> by practicing Quiz from your genre of interest</p>
             </div>
-            <div>
-              Hone your <span style="font-weight: bold; font-style: oblique;">SKILLS</span> by practicing Quiz from your genre of interest
-            </div>
-          </div>
-          <div style="background-color: lightskyblue;">
-            <div>
-              <span style="font-weight: bold; font-size:1.2rem">CHALLENGE</span>
-              <i class="fa fa-flash home_flex_icon text-center" style="background-color: royalblue;"></i> 
-            </div>
-            <div>
-              Prove your <span style="font-weight: bold; font-style: oblique;">MIGHT</span> by shooting your pals with Quiz challenges
+        </div>
+          <div class="card shadow rounded mt-5" style="width: 20rem !important;">
+            <img src="icons/undraw_online_test_gba7.png" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title" style="color: rgba(84,58,183,0.9) !important;">Challenge</h5>
+              <p class="card-text"> Prove your 
+                <span style="font-weight: bold; font-style: oblique; color: #0d6efd;">MIGHT</span> by shooting your pals with Quiz challenges
             </div>
           </div>
         </div>
@@ -451,17 +511,40 @@
         <br>
         
         <div>
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <span class="btn btn-info" type="button" onclick="$('#home-div').hide(); $('#signin-div').show();">
-              Sign in
-            </span>
-                <span class="btn btn-success" onclick="$('#home-div').hide(); $('#login-div').show();">Log in</span>
+            <div class="d-grid gap-2 col-6 mx-auto" id="home_btns">
+                <button onclick="$('#home-div').hide(); $('#signin-div').show();">Sign in</button>
+                <button onclick="$('#home-div').hide(); $('#login-div').show();">Log in</button>
             </div>
         </div>
-
+      </div>
         <br>
         <!-- <div class="parallax"></div> -->
-    </div>
+        <div>
+          <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+          </g>
+          </svg>
+        </div>
+          
+          <!--footer-->
+          <div class="content flex">
+          <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a> </h3>
+          <br>
+          <h5>Interested ? Let's work together!!
+            <br>
+            <a href="https://github.com/3-bro-grammers"><i class="fa fa-github" aria-hidden="true"></i></a>
+           | <a href="mailto:quizzard.webapp@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+          </h5>
+          </div>
+          
   </div>
 
 

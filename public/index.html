@@ -94,24 +94,33 @@
      flex-direction: column;
      flex-wrap: wrap;
      margin-top: 20px;
-     align-items: center;
+     align-items: center;     
+   }
+   .home_flex>div:hover{
+    transform: translateY(-5px) scale(1.005) translateZ(0);
+    box-shadow: 7px 6px 61px -5px rgba(0,0,0,0.63) !important;
+    -webkit-box-shadow: 7px 6px 61px -5px rgba(0,0,0,0.63) !important;
+    -moz-box-shadow: 7px 6px 61px -5px rgba(0,0,0,0.63) !important;
    }
    #home_btns button {   
     display: inline-block;
     padding: 0.35em 0.3em 0 ;
     border: 0.1em solid #fff;
     margin: 0 0.3em 0.3em 0;
-    border-radius: 5px;
+    border-radius: 3px;
     box-sizing: border-box;
     font-family:  'Roboto',sans-serif;
     font-weight: 300;
     color: #fff;
+    background: transparent;
     text-align: center;
-    transition: all 0.2s;
+    outline: none;
+    transition: all 0.5s;
    }
-   #home_btns button :hover , #home_btns button :focus,  #home_btns button :active{
+   #home_btns button:hover , #home_btns button:focus,  #home_btns button:active{
     background:#fff;
-    color: #000 ;
+    color: #0d6efd;
+    font-weight: bolder;
    }
   form
   {
@@ -482,7 +491,7 @@
     <div class="inner-content">
         
       <div style="display:flex; justify-content: center; padding: 20px 0;">
-          <img style="height: 95px; margin-right: 10px;" src="icons/logo-small.png">
+         <img style="height: 95px; margin-right: 10px;" src="icons/logo-small.png">
           <div style="display: flex; flex-direction: column;">
             <img style="width: 260px; margin-right: 5px;" src="icons/app_title.png">
             <div style="font-family: monospace; font-size: 1.8rem; font-style: oblique; text-align: center;color: white;">Breaking Brain</div>

@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Primary Meta Tags -->
   <title>Quizinato</title>
+  <link rel="shortcut icon" type="image/jpg" href="icons/logo-small.png"/>
   <meta name="title" content="Quizinato">
   <meta name="description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
   <!-- Open Graph / Facebook -->
@@ -510,13 +511,13 @@
       <div>
         <div id="home_btns">
           <div class="col">
-            <button onclick="$('#home-div').hide(); $('#signin-div').show();">Sign in</button>
+            <button onclick="$('#home-div').hide(); $('#signin-div').show();jQuery('html,body').animate({scrollTop:0},0);">Sign in</button>
           </div>
           <div class="col">
-            <button onclick="$('#home-div').hide(); $('#login-div').show();">Log in</button>
+            <button onclick="$('#home-div').hide(); $('#login-div').show();jQuery('html,body').animate({scrollTop:0},0);">Log in</button>
           </div>
           <div class="col">
-            <button><i class="fa fa-download" aria-hidden="true"></i> �Install</button>
+            <button><i class="fa fa-download" aria-hidden="true"></i> &nbsp;Install</button>
           </div>
         </div>
       </div>
@@ -535,14 +536,12 @@
       </g></svg>
     </div><!--footer-->
     <div class="content flex">
-      <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a></h3><br>
-      <h5>Interested ? Let's work together!!<br>
-      <a href="https://github.com/3-bro-grammers">
-        <i class="fa fa-github" aria-hidden="true"></i>
-      </a> | 
-      <a href="mailto:quizzard.webapp@gmail.com">
-        <i class="fa fa-envelope" aria-hidden="true"></i>
-      </a>
+      <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a></h3>
+      <br>
+      <h5>Interested ? Let's work together!!
+      <br>
+      <a href="https://github.com/3-bro-grammers"><i class="fa fa-github" aria-hidden="true"></i></a>
+      | <a href="mailto:quizzard.webapp@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a>
       </h5>
     </div>
   </div>
@@ -554,10 +553,10 @@
   <div id="login-div" style="display: none;">
     <div class='container'>
       <br>
-      <h2 style="text-align: center;color: white;">Welcome Back!</h2><br>
+      <h2 style="text-align: center;color: white;">Welcome Back :)</h2><br>
       <div class="row justify-content-md-center shadow rounded p-3 m-2" style="background-color: white;">
         <div class="col-sm-6" style="background: url('icons/login.png') no-repeat center; background-size: contain;min-height: 158px;"></div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
           <h2 style="text-align: center;">Login</h2>
           <form id='login-form' class="needs-validation p-2" novalidate="" name="login-form">
             <div class="form-floating col-sm|md|lg|xl">
@@ -578,7 +577,7 @@
               <span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login
             </button>
             <br>
-            Don't have an account ? <span onclick="$('#login-div').hide(); $('#signin-div').show();" type="button" class="btn btn-link">Signin</span>
+            <span>Don't have an account ? <a  href="#" onclick="$('#login-div').hide(); $('#signin-div').show();jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Signin</a></span>
           </form>
         </div>
       </div>
@@ -698,7 +697,7 @@
               <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in
             </button>
             <br>
-            Already have an account ? <span onclick="$('#signin-div').hide(); $('#login-div').show();" type="button" class="btn btn-link">Login</span>
+           <span>Already have an account ? <a href="#" onclick="$('#signin-div').hide(); $('#login-div').show();jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Login</a></span> 
           </form>
         </div>
       </div>
@@ -1563,7 +1562,7 @@
   <div id="leader_board-div" style="display: none;">
     <div class='container'>
       <h2 style="text-align: center" class="text_effect">Leaderboard</h2>
-      <div id="leaderboard" style="overflow: auto"></div>
+      <div id="leaderboard" style="overflow: auto;max-height: 85vh;"></div>
     </div>
   </div>
   <script type='text/babel'>
@@ -1594,12 +1593,13 @@
     }
     class Leaderboard extends React.Component {
      length = leaderboard_user.length-1;
+     rank = 0;
      render() {
         return (
-          <table class="table table-hover  table-striped">
+          <table class="table table-hover table-striped align-middle">
             <thead>
               <tr class="table-warning">
-                <th scope="col">Rank</th>
+                <th scope="col">#</th>
                 <th scope="col">Username</th>
                 <th scope="col" className="text-center">Xp</th>
                 <th scope="col" className="text-center">Challenges</th>
@@ -1610,8 +1610,8 @@
             { leaderboard_user.map((value,index) => {
               return (
                 <tr class="table-info">
-                  <th scope="row">#{index+1}</th>
-            <td>{leaderboard_user[this.length-index]}</td>
+                  <th scope="row">{leaderboard_xp[this.length-index]!==leaderboard_xp[this.length-index+1]?++this.rank:this.rank}</th>
+            <td>{leaderboard_user[this.length-index]}<br /><span className="text-muted">Level {Math.floor(leaderboard_xp[this.length-index]/20)==0?1:Math.floor(leaderboard_xp[this.length-index]/20+1)}</span></td>
             <td className="text-center">{leaderboard_xp[this.length-index]}</td>
             <td className="text-center">{leaderboard_challenges[this.length-index]}</td>
             <td className="text-center">{leaderboard_ratio[this.length-index]}%</td>

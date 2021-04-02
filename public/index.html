@@ -1,58 +1,37 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Primary Meta Tags -->
+  <title>Quizinato</title>
+  <meta name="title" content="Quizinato">
+  <meta name="description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!"><!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://quizinato.web.app">
+  <meta property="og:title" content="Quizinato">
+  <meta property="og:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+  <meta property="og:image" content="https://quizinato.web.app/icons/logo-small.png"><!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://quizinato.web.app">
+  <meta property="twitter:title" content="Quizinato">
+  <meta property="twitter:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+  <meta property="twitter:image" content="https://quizinato.web.app/icons/logo-small.png"><!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet"><!--Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script><!--Sweet-alert-->
 
-  <!-- Primary Meta Tags -->
-<title>Quizinato</title>
-<link rel="icon" type="image/png" href="icons/logo-small.png"/>  
-<meta name="title" content="Quizinato">
-<meta name="description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script><!--font-awesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><!--google-charts-->
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://quizinato.web.app">
-<meta property="og:title" content="Quizinato">
-<meta property="og:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
-<meta property="og:image" content="https://quizinato.web.app/icons/logo-small.png">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><!-- The core Firebase JS SDK is always required and must be listed first -->
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://quizinato.web.app">
-<meta property="twitter:title" content="Quizinato">
-<meta property="twitter:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
-<meta property="twitter:image" content="https://quizinato.web.app/icons/logo-small.png">
-
-<!-- Fonts -->
-
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet">
-
-<!--Bootstrap-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-    crossorigin="anonymous"></script>
-    <!--Sweet-alert-->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <!--font-awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!--google-charts-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-messaging.js"></script>
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-messaging.js"></script><!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
 
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
   <script>
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -69,17 +48,14 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-  </script>
+  </script><!--react-js-->
 
-  <!--react-js-->
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!--react-transition-group-->
 
-  <!--react-transition-group-->
   <script src="https://unpkg.com/react-transition-group@4.4.1/dist/react-transition-group.js"></script>
-
   <style>
    *{
      user-select: none;
@@ -87,7 +63,7 @@
    }
    body {
     margin:0;
-    } 
+    }
 
    .home_flex{
      display: flex;
@@ -95,7 +71,7 @@
      flex-direction: column;
      flex-wrap: wrap;
      margin-top: 20px;
-     align-items: center;     
+     align-items: center;
    }
    .home_flex>div:hover{
     transform: translateY(-5px) scale(1.005) translateZ(0);
@@ -103,8 +79,10 @@
     -webkit-box-shadow: 7px 6px 61px -5px rgba(0,0,0,0.63) !important;
     -moz-box-shadow: 7px 6px 61px -5px rgba(0,0,0,0.63) !important;
    }
-   #home_btns button {   
+   #home_btns button {
     display: inline-block;
+    width: 18rem;
+    margin-top: 0.75rem !important;
     padding: 0.35em 0.3em 0 ;
     border: 0.1em solid #fff;
     margin: 0 0.3em 0.3em 0;
@@ -204,7 +182,7 @@
     background-color: #ecf0f3;
     color: blue !important;
   }
-  
+
   .text_effect
   {
     text-shadow: 0 1px 0 #ccc,
@@ -220,32 +198,32 @@
                0 10px 10px rgba(0,0,0,.2),
                0 20px 20px rgba(0,0,0,.15);
   }
-  #effect:hover 
+  #effect:hover
   {
     color: rgb(255,255 ,255 );
     box-shadow: 0 5px 15px rgba(238, 4, 4, 0.4);
   }
-  #effect span:after 
+  #effect span:after
   {
     content: '\00bb';
     position: absolute;
     opacity: 0;
     top: 0;
-    right: -20px;          
+    right: -20px;
     transition: 0.5s;
   }
-  #effect span 
+  #effect span
   {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
   }
-  #effect:hover span 
+  #effect:hover span
   {
     padding-right: 25px;
   }
-  #effect:hover span:after 
+  #effect:hover span:after
   {
     opacity: 1;
     right: 0;
@@ -322,81 +300,81 @@
   }
   .progress-bar {
   transition: width 2s ease !important;
- }
- #stats,
- #lvl{
+  }
+  #stats,
+  #lvl{
    margin-right: 0 !important;
    margin-left: 0 !important;
- }
-.question_header{
+  }
+  .question_header{
   background-color: #ecf0f3;
-}
-#home-div{
+  }
+  #home-div{
   position:relative;
   text-align:center;
   background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
   color:black;
-}
-.inner-content{
+  }
+  .inner-content{
   width: 100%;
   margin: 0;
   padding: 0;
-}
+  }
 
-.flex { 
+  .flex {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   flex-direction: column;
-}
+  }
 
-.waves {
+  .waves {
   position: relative;
   width: 100%;
   height: 15vh;
   margin-bottom: -7px; /*Fix for safari gap*/
   min-height: 100px;
   max-height: 150px;
-}
+  }
 
-.content {
+  .content {
   position: relative;
   height: 20vh;
   text-align: center;
   background-color: white;
   color: black;
-}
+  }
 
-.parallax > use {
+  .parallax > use {
   animation: wavify 25s cubic-bezier(.55,.5,.45,.5)     infinite;
-}
-.parallax > use:nth-child(1) {
+  }
+  .parallax > use:nth-child(1) {
   animation-delay: -2s;
   animation-duration: 7s;
-}
-.parallax > use:nth-child(2) {
+  }
+  .parallax > use:nth-child(2) {
   animation-delay: -3s;
   animation-duration: 10s;
-}
-.parallax > use:nth-child(3) {
+  }
+  .parallax > use:nth-child(3) {
   animation-delay: -4s;
   animation-duration: 13s;
-}
-.parallax > use:nth-child(4) {
+  }
+  .parallax > use:nth-child(4) {
   animation-delay: -5s;
   animation-duration: 20s;
-}
-@keyframes wavify {
+  }
+  @keyframes wavify {
   0% {
    transform: translate3d(-90px,0,0);
   }
   100% {
     transform: translate3d(85px,0,0);
   }
-}
+  }
 
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
   .waves {
     height:40px;
     min-height:40px;
@@ -407,13 +385,15 @@
   h1 {
     font-size:24px;
   }
-}
+  }
+  #signin-div,#login-div{
+  background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
+  min-height: 100vh;
+  }
 
   </style>
 </head>
-
 <body>
-
   <script>
 
     var pswd, username, opponent;
@@ -444,7 +424,7 @@
     });
 
 
-    
+
 
     //LOGIN PERSISTANCE
     window.onload = () =>{
@@ -460,8 +440,8 @@
         db.ref("users/" + username + "/notif").once("value", function(s) {
             if(s.val()>0)
             {
-              $("#notif_badge").show(); 
-              let a = (s.val>9)?'9+':s.val();
+              $("#notif_badge").show();
+              let a = (s.val()>9)?'9+':s.val();
               document.getElementById('notif_badge').innerHTML=a;
             }
             $("#quiz-div").show();
@@ -477,130 +457,101 @@
       }else{
         $("#home-div").show();
       }
-      
-      
-        
-
     }
-  </script>
-
-  <!--  HOME DIV
+  </script> <!--  HOME DIV
   *******************************************************************************************
   -->
-
   <div id="home-div" style="display: none;">
     <div class="inner-content">
-        
       <div style="display:flex; justify-content: center; padding: 20px 0;">
-         <img style="height: 95px; margin-right: 10px;" src="icons/logo-small.png">
-          <div style="display: flex; flex-direction: column;">
-            <img style="width: 260px; margin-right: 5px;" src="icons/app_title.png">
-            <div style="font-family: monospace; font-size: 1.8rem; font-style: oblique; text-align: center;color: white;">Breaking Brain</div>
+        <img style="height: 95px; margin-right: 10px;" src="icons/logo-small.png">
+        <div style="display: flex; flex-direction: column;">
+          <img style="width: 260px; margin-right: 5px;" src="icons/app_title.png">
+          <div style="font-family: monospace; font-size: 1.8rem; font-style: oblique; text-align: center;color: white;">
+            Breaking Brain
           </div>
-      </div>
-            
-        <div class="home_flex" >
-          <div class="card shadow rounded" style="width: 20rem !important;">
-            <img src="icons/undraw_researching_22gp.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title" style="color: rgba(84,58,183,0.9) !important;">Learn</h5>
-              <p class="card-text"> Hone your 
-                <span style="font-weight: bold; font-style: oblique; color: #0d6efd;">SKILLS</span> by practicing Quiz from your genre of interest</p>
-            </div>
-        </div>
-          <div class="card shadow rounded mt-5" style="width: 20rem !important;">
-            <img src="icons/undraw_online_test_gba7.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title" style="color: rgba(84,58,183,0.9) !important;">Challenge</h5>
-              <p class="card-text"> Prove your 
-                <span style="font-weight: bold; font-style: oblique; color: #0d6efd;">MIGHT</span> by shooting your pals with Quiz challenges
-            </div>
-          </div>
-        </div>
-        <!-- <div class="parallax"></div>  -->
-        <br>
-        
-        <div>
-            <div class="d-grid gap-2 col-6 mx-auto" id="home_btns">
-                <button onclick="$('#home-div').hide(); $('#signin-div').show();">Sign in</button>
-                <button onclick="$('#home-div').hide(); $('#login-div').show();">Log in</button>
-            </div>
         </div>
       </div>
-        <br>
-        <!-- <div class="parallax"></div> -->
-        <div>
-          <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-          <defs>
-          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-          </defs>
-          <g class="parallax">
-          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-          </g>
-          </svg>
-        </div>
-          
-          <!--footer-->
-          <div class="content flex">
-          <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a> </h3>
-          <br>
-          <h5>Interested ? Let's work together!!
-            <br>
-            <a href="https://github.com/3-bro-grammers"><i class="fa fa-github" aria-hidden="true"></i></a>
-           | <a href="mailto:quizzard.webapp@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-          </h5>
+      <div class="home_flex">
+        <div class="card shadow rounded" style="width: 20rem !important;">
+          <img src="icons/learn.png" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title" style="color: rgba(84,58,183,0.9) !important;">Learn</h5>
+            <p class="card-text">Hone your <span style="font-weight: bold; font-style: oblique; color: #0d6efd;">SKILLS</span> by practicing Quiz from your genre of interest</p>
           </div>
-          
-  </div>
-
-
-  <!--  LOGIN DIV
+        </div>
+        <div class="card shadow rounded mt-5" style="width: 20rem !important;">
+          <img src="icons/challenge.png" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title" style="color: rgba(84,58,183,0.9) !important;">Challenge</h5>
+            <p class="card-text">Prove your <span style="font-weight: bold; font-style: oblique; color: #0d6efd;">MIGHT</span> by shooting your pals with Quiz challenges</p>
+          </div>
+        </div>
+      </div><!-- <div class="parallax"></div>  -->
+      <br>
+      <div>
+        <div id="home_btns">
+          <div class="col">
+            <button onclick="$('#home-div').hide(); $('#signin-div').show();">Sign in</button>
+          </div>
+          <div class="col">
+            <button onclick="$('#home-div').hide(); $('#login-div').show();">Log in</button>
+          </div>
+          <div class="col">
+            <button><i class="fa fa-download" aria-hidden="true"></i> �Install</button>
+          </div>
+        </div>
+      </div>
+    </div><br>
+    <!-- <div class="parallax"></div> -->
+    <div>
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 24 150 28" preserveaspectratio="none" shape-rendering="auto">
+      <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+      </defs>
+      <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7"></use>
+        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)"></use>
+        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)"></use>
+        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff"></use>
+      </g></svg>
+    </div><!--footer-->
+    <div class="content flex">
+      <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a></h3><br>
+      <h5>Interested ? Let's work together!!<br>
+      <a href="https://github.com/3-bro-grammers"><i class="fa fa-github" aria-hidden="true"></i></a> | <a href="mailto:quizzard.webapp@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a></h5>
+    </div>
+  </div><!--  LOGIN DIV
   *******************************************************************************************
   -->
-
-
   <div id="login-div" style="display: none;">
     <div class='container'>
       <br>
-      <h2 style="text-align: center">Welcome Back!</h2><br>
-      <form id='login-form' class="needs-validation" novalidate="" name="login-form">
-        <div class="form-floating col-sm|md|lg|xl">
-          <input type="text" class="form-control" id="login-username" placeholder="Enter username" required="">
-          <label for="login-username">Username</label>
+      <h2 style="text-align: center;color: white;">Welcome Back!</h2><br>
+      <div class="row justify-content-md-center shadow rounded p-3 m-2" style="background-color: white;">
+        <div class="col-sm-6" style="background: url('icons/login.png') no-repeat center; background-size: contain;min-height: 158px;"></div>
+        <div class="col-sm-6">
+          <h2 style="text-align: center;">Login</h2>
+          <form id='login-form' class="needs-validation p-2" novalidate="" name="login-form">
+            <div class="form-floating col-sm|md|lg|xl">
+              <input type="text" class="form-control" id="login-username" placeholder="Enter username" required=""> <label for="login-username">Username</label>
+            </div><br>
+            <div class="form-floating col-sm|md|lg|xl">
+              <input type="password" class="form-control" id="login-password" placeholder="Enter password" required=""> <label for="login-password">Password</label>
+              <div id="login-feedback" class="invalid-feedback">
+                Incorrect username or password.
+              </div>
+            </div><br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" checked="true" id="notif_option_login"> <label for="notif_option_login">Receive Challenge Notifications</label>
+            </div><br>
+            <button type="submit" class="btn btn-primary"><span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login</button><br>
+            Don't have an account ? <span onclick="$('#login-div').hide(); $('#signin-div').show();" type="button" class="btn btn-link">Signin</span>
+          </form>
         </div>
-         <br>
-        <div class="form-floating col-sm|md|lg|xl">
-          <input type="password" class="form-control" id="login-password" placeholder="Enter password" required="">
-          <label for="login-password">Password</label>
-          <div id="login-feedback" class="invalid-feedback">
-            Incorrect username or password.
-          </div>
-        </div>
-        <br>
-        <div class="form-check">
-          <input class="form-check-input"  type="checkbox" checked="true" id="notif_option_login" >
-          
-          <label for="notif_option_login">Receive Challenge Notifications</label>
-        </div>
-        <br>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="login-check">
-            <label class="form-check-label" for="login-check">
-                Keep me logged in.
-            </label>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary">
-          <span id="login-spinner" class="spinner-border spinner-border-sm"></span>
-          Login</button>
-      </form>
-    </div>
+      </div>
+    </div><br>
   </div>
-
   <script>
     var db = firebase.database();
     var challenges=0,wins=0,loss=0,tie=0,ratio=0.00;
@@ -633,17 +584,13 @@
         }
         if (res == pswd)
         {
-
-          if(document.getElementById("login-check").checked == true)
-          {
             localStorage.setItem("user_name", username);
             localStorage.setItem("user_pass", pswd);
-          }
-          db.ref("users/" + username + "/notif").once("value", function(s) {
+           db.ref("users/" + username + "/notif").once("value", function(s) {
             if(s.val()>0)
             {
-              $("#notif_badge").show(); 
-              let a = (s.val>9)?'9+':s.val();
+              $("#notif_badge").show();
+              let a = (s.val()>9)?'9+':s.val();
               document.getElementById('notif_badge').innerHTML=a;
             }
             $('#login-div').hide();
@@ -655,15 +602,11 @@
         if(notif_option_login.checked){
           messaging.getToken().then((token)=>{
             db.ref("users/" + username + "/fcm_token").set(token);
-          })
-          
-        }
+          });
 
+        }
         db.ref("userlist/"+username).set(true);
         db.ref('userlist/'+username).onDisconnect().set(false);
-
-         
-
         }
 
         document.getElementById('login-spinner').style.display = 'none';
@@ -680,57 +623,46 @@
 
 
 
-  </script>
-
-  <!--  SIGNIN DIV
+  </script> <!--  SIGNIN DIV
   *******************************************************************************************
   -->
-
   <div id="signin-div" style="display: none;">
     <div class='container'>
       <br>
-      <h2 style="text-align: center">Create an account..</h2><br>
-      <form id='signin-form' class="needs-validation" novalidate="" name="sign-form">
-        <div class="form-floating col-sm|md|lg|xl">
-          <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required="">
-          <label for="signin-userame">Username:</label>
-          <div id='signin-feedback' class="invalid-feedback">
-            Username already exists.
-          </div>
+      <h2 style="text-align: center;color: white;">Create Your Account</h2><br>
+      <div class="row justify-content-md-center shadow rounded p-3 m-2" style="background-color: white;">
+        <div class="col-sm-6" style="background: url('icons/signin.png') no-repeat center; background-size: contain;min-height: 158px;"></div>
+        <div class="col-sm-5">
+          <h2 style="text-align: center;">Signin</h2>
+          <form id='signin-form' class="needs-validation mt-2" novalidate="" name="sign-form">
+            <div class="form-floating col-sm|md|lg|xl">
+              <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required=""> <label for="signin-userame">Username:</label>
+              <div id='signin-feedback' class="invalid-feedback">
+                Username already exists.
+              </div>
+            </div><br>
+            <div class="form-floating col-sm|md|lg|xl">
+              <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters" required=""> <label for="signin-password">Password:</label>
+              <div class="invalid-feedback">
+                Use a stronger password.
+              </div>
+            </div><br>
+            <div class="form-floating col-sm|md|lg|xl">
+              <input type="text" class="form-control" id="signin-email" placeholder="Email"> <label for="signin-email">Email (optional):</label>
+              <div class="invalid-feedback">
+                Inappropriate Email ID
+              </div>
+            </div><br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" checked="true" id="notif_option"> <label for="notif_option">Receive Challenge Notifications</label>
+            </div><br>
+            <button type="submit" class="btn btn-primary"><span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in</button><br>
+            Already have an account ? <span onclick="$('#signin-div').hide(); $('#login-div').show();" type="button" class="btn btn-link">Login</span>
+          </form>
         </div>
-        <br>
-        <div class="form-floating col-sm|md|lg|xl">
-          <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters"
-            required="">
-          <label for="signin-password">Password:</label>
-          <div class="invalid-feedback">
-            Use a stronger password.
-          </div>
-        </div>
-        <br>
-        <div class="form-floating col-sm|md|lg|xl">
-          <input type="text" class="form-control" id="signin-email" placeholder="Email">
-          <label for="signin-email">Email (optional): </label>
-          <div class="invalid-feedback">
-            Inappropriate Email ID
-          </div>
-        </div>
-        <br>
-        <div class="form-check">
-          <input class="form-check-input"  type="checkbox" checked="true" id="notif_option" >
-          
-          <label for="notif_option">Receive Challenge Notifications</label>
-        </div>
-
-        <br>
-        <button type="submit" class="btn btn-primary">
-          <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in
-        </button>
-      </form>
-    </div>
+      </div>
+    </div><br>
   </div>
-
-
   <script>
 
     var db = firebase.database();
@@ -819,24 +751,21 @@
 
 
 
-  </script>
-
-  <!--  NOTIFICATION DIV
+  </script> <!--  NOTIFICATION DIV
   *******************************************************************************************
   -->
   <div id="notif-div" style="display: none;">
-      <div class='container'>
-          <h2>Active Challenges</h2>
-          <div id = "active-chal-div" style="max-height:75vh; overflow:auto"></div>
-          <div id = "answer-chal-div"></div>
-      </div>
-
+    <div class='container'>
+      <h2>Active Challenges</h2>
+      <div id="active-chal-div" style="max-height:75vh; overflow:auto"></div>
+      <div id="answer-chal-div"></div>
+    </div>
   </div>
   <script type="text/babel">
 
 
     const ChallengeDiv = ({op_name, date, my_resp, op_resp, status, accept_chal, decline_chal, show_chal, category})=>{
-      
+
       if(status==3){
       var my_resp_arr = JSON.parse(my_resp);
       var op_resp_arr = JSON.parse(op_resp);
@@ -852,7 +781,7 @@
           </div>
           { status==3?
             <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-              <div> 
+              <div>
                 {my_score>op_score?<span className="badge bg-success">WON</span>:null}
                 {my_score<op_score?<span className="badge bg-danger">LOST</span>:null}
                 {my_score==op_score?<span className="badge bg-secondary">TIED</span>:null}
@@ -888,14 +817,14 @@
 
 
     const ChallengeSummary = ({curr_chal,hide_chal})=>{
-      
+
       if(curr_chal && curr_chal.status ==3){
         var ques_details = JSON.parse(curr_chal.ques);
         var my_resp_arr = JSON.parse(curr_chal.my_resp);
         var op_resp_arr = JSON.parse(curr_chal.opp_resp);
         var my_scr = my_resp_arr.reduce((s,e)=>s+e);
         var op_scr = op_resp_arr.reduce((s,e)=>s+e);
-      
+
         return(
           <div style={{display:curr_chal && curr_chal.status==3?"block":"none"}} class="modal" tabindex="-1">
             <div class="modal-dialog">
@@ -921,7 +850,7 @@
                       ques_details.map((e,i)=>(
                         <div style={{borderTop:'2px solid', padding:'2px', background:i%2?'lightblue':'lightskyblue'}}>
                           <div style={{display:'flex'}}>
-                            <span style={{fontWeight:'bold', marginRight:'2px'}}>{(i+1) + ". "}</span> 
+                            <span style={{fontWeight:'bold', marginRight:'2px'}}>{(i+1) + ". "}</span>
                             <span>{unescape(e.question)}</span>
                           </div>
                           <div style={{display:'flex', alignItems:'center'}}>
@@ -951,7 +880,7 @@
           this.keys = Object.keys(props.data).reverse();
           this.data=Object.values(props.data).reverse();
         }
-  
+
         this.state={
           curr_chal:null
         }
@@ -969,7 +898,7 @@
           [chal_obj.opp+"/active/"+chal_obj.opp_key+"/status"]:4
         }).then(load_challenges());
       }
-      
+
       show_chal_summary(e){
         this.setState({curr_chal:e});
       }
@@ -982,12 +911,12 @@
         return (
           <div>
             {this.data.map((e,i)=>(
-              <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp} 
+              <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp}
                 accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} category={e.category} />
             ))}
             <ChallengeSummary curr_chal={this.state.curr_chal} hide_chal={()=>this.hide_chal_summary()} />
           </div>
-          
+
           // this.data.map((e,i)=>(
           //   <tr>
           //   <td>{e.opp}</td>
@@ -998,8 +927,8 @@
           // </tr>
           // ))
 
-            
-          
+
+
         )
       }
     }
@@ -1018,25 +947,19 @@
 
 
 
-  </script>
-
-  <!--  LEARN DIV
+  </script> <!--  LEARN DIV
   *******************************************************************************************
   -->
   <div id="learn-div" style="display: none;">
     <div class='container'>
       <br>
       <div id="learn_page">
-        <div id='learn_catg'>
-        </div>
+        <div id='learn_catg'></div>
       </div>
-      <div id="learn_quiz_area">
-
-      </div>
+      <div id="learn_quiz_area"></div>
     </div>
   </div>
-
-   <script type="text/babel">
+  <script type="text/babel">
     var learn_category = [9, 17, 21, 23];
     var learn_catg, learn_query;
 
@@ -1145,7 +1068,7 @@
       render() {
 
         return (
-          
+
               <div>
                 <ReactTransitionGroup.SwitchTransition>
                   <ReactTransitionGroup.CSSTransition
@@ -1173,9 +1096,9 @@
                 </ReactTransitionGroup.SwitchTransition>
               <br />
               <div className="row ">
-                <div className="col text-center"> 
+                <div className="col text-center">
                   <button className="btn btn-outline-warning" onClick={() => {  $('#learn_quiz_area').hide();$('#learn_page').show() }} >
-                    <i class="fa fa-times-circle-o" aria-hidden="true"></i> Exit 
+                    <i class="fa fa-times-circle-o" aria-hidden="true"></i> Exit
                   </button>
                 </div>
                 <div className="col text-center">
@@ -1191,57 +1114,37 @@
 
 
 
-  </script>
-
-
-
-
-
-  <!--  QUIZ DIV
+  </script> <!--  QUIZ DIV
   *******************************************************************************************
   -->
-
-
   <div id="quiz-div" style="display: none;">
     <div class='container'>
       <br>
       <div id='challenge'>
         <div class="dropdown">
-          <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt"
-            data-bs-toggle="dropdown" autocomplete="off">
-          <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
-          </ul>
-        </div>
-        <br>
-        <div id="diff_mode"> Difficulty:
+          <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt" data-bs-toggle="dropdown" autocomplete="off">
+          <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;"></ul>
+        </div><br>
+        <div id="diff_mode">
+          Difficulty:
           <div class="dropdown">
-            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-              Easy
-            </button>
+            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Easy</button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" onclick="change_diff('easy')">Easy</a>
-              <a class="dropdown-item" onclick="change_diff('medium')">Medium</a>
-              <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
+              <a class="dropdown-item" onclick="change_diff('easy')">Easy</a> <a class="dropdown-item" onclick="change_diff('medium')">Medium</a> <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
             </div>
           </div>
-        </div>
-        <br>  
-        <div id='catg' style="max-height: 60vh; overflow: hidden auto;"></div>
-        <br>
+        </div><br>
+        <div id='catg' style="max-height: 60vh; overflow: hidden auto;"></div><br>
       </div>
-      <div id="quiz_area">
-      </div>
+      <div id="quiz_area"></div>
     </div>
-
-
   </div>
-
   <script>
 
     var all_users;
 
     db.ref("userlist").on("value", function (snap) {
-      all_users = snap.val();      
+      all_users = snap.val();
     })
 
     function search_input() {
@@ -1259,7 +1162,7 @@
         if (x!= username) {
           if(x.toLowerCase().indexOf(search) > -1)
           inn_htm += (`<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}`
-            +(all_users[x]?`<span class="live_status_badge"></span>`:"")+`</a></li>`);
+            +(all_users[x]?`<span class="live_status_badge"><\/span>`:"")+`<\/a><\/li>`);
         }
       }
       search_list.innerHTML = inn_htm;
@@ -1277,8 +1180,8 @@
 
 
   </script>
-
   <script type="text/babel">
+
     var category = [9, 17, 21, 23, 10, 11, 12, 19];
     var catg, query;
     var difficulty = 'easy';
@@ -1295,7 +1198,7 @@
             title: "Oops!",
             text: "No Opponent selected",
             icon: "warning",
-            }); 
+            });
           return;
       }
       catg = category[i];
@@ -1324,8 +1227,8 @@
 
 
   </script>
-
   <script type="text/babel">
+
 
     function notif_update(user)
     {
@@ -1334,9 +1237,9 @@
                 notif: s.val()+1
               });
             });
-            //alert(user);     
-    } 
-    
+            //alert(user);
+    }
+
     function data_update(user,user_xp,opp,opp_xp,mode)
     {
       var winner = (user_xp>opp_xp)?user:opp;
@@ -1347,7 +1250,7 @@
                 challenges: s.val().challenges+1,
                 xp: s.val().xp+(user_xp*mode)
               });
-              //prevent update when tied 
+              //prevent update when tied
               (user_xp!=opp_xp) && db.ref(`users/${winner}/stats`).update({
                 wins: s.val().wins+1
               });
@@ -1359,14 +1262,14 @@
                 challenges: s.val().challenges+1,
                 xp: s.val().xp+(opp_xp*mode)
               });
-              //prevent update when tied 
+              //prevent update when tied
               (user_xp!=opp_xp) && db.ref(`users/${loser}/stats`).update({
                 loss: s.val().loss+1
-              });  
-            }); 
-    
+              });
+            });
+
     }
-    
+
     class Category extends React.Component {
 
       category = ['GK', 'Science', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
@@ -1428,10 +1331,10 @@
 
      timer(time) {
         var interval = setInterval(()=> {
-        let seconds = time; 
-        this.setState({ progress: seconds*100/20});      
+        let seconds = time;
+        this.setState({ progress: seconds*100/20});
         if (--time < 0 || this.clear) {
-          --time < 0 && this.validate($("input[type='radio'][name='option']:checked").val());   
+          --time < 0 && this.validate($("input[type='radio'][name='option']:checked").val());
           clearInterval(interval);
         }
           }, 1000);
@@ -1493,7 +1396,7 @@
             });
             notif_update(opponent);
             fetch(`https://oq63h3en4g.execute-api.us-east-2.amazonaws.com/default/quizinato-fcm?user=${username}&opp=${opponent}&categ=${this.data[0].category}&stat=0`)
-          }    
+          }
           ReactDOM.unmountComponentAtNode(document.getElementById("quiz_area"))
 
           $("#challenge").show();
@@ -1501,7 +1404,7 @@
           search_txt.value = "";
           search_txt.disabled = false;
           change_screen('notif-div');load_challenges();
- 
+
           return;
         }
         if((this.accepted) && (this.opp_resp[this.state.qn_no]))
@@ -1513,20 +1416,20 @@
             cur_ind: -1
           });
       }
-      
+
       check_radio(index){
         this.setState({cur_ind: index});
       }
 
       validate(user_ans) {
         if (user_ans == unescape(this.data[this.state.qn_no].correct_answer))
-        {    
+        {
               this.response[this.state.qn_no] = 1;
               this.user_pt++;
         }
         else
-          this.response[this.state.qn_no] = 0;  
-        this.setState({crct: this.response[this.state.qn_no]});  
+          this.response[this.state.qn_no] = 0;
+        this.setState({crct: this.response[this.state.qn_no]});
         this.clear=1;
         setTimeout(()=> {
             this.setState({ progress: 100});
@@ -1534,13 +1437,13 @@
             $('.validate').hide();
             this.update();
             $('.question_container').fadeIn('slow','swing');
-            this.timer(20); 
-          },1500); 
+            this.timer(20);
+          },1500);
         $('.question_container').fadeOut();
         $(".validate").css( "top", "90vh" );
         $('.validate').show();
         $(".validate").animate({ "top": "50vh" },1000);
-        
+
       }
       render() {
 
@@ -1566,7 +1469,7 @@
                   <div className="col text-center">
                     <span className="float-end"><b>{this.accepted?this.opp:opponent}</b></span>
                   </div>
-                </div>  
+                </div>
                 <div className="progress mx-auto" style={{height: '10px'}} >
                     <div className= {`progress-bar ${this.state.progress>50? ' bg-success' :this.state.progress>30?'bg-warning':'bg-danger'}`} role="progressbar"  style={{width: this.state.progress+"%"}} aria-valuenow={20} aria-valuemin={0} aria-valuemax={20}></div>
                 </div>
@@ -1586,7 +1489,7 @@
 
                   })
                 }
-  
+
             </div>
             <br />
             <button className="btn btn-success float-end" onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next</button>
@@ -1599,19 +1502,14 @@
       }
     }
 
-  </script>
- 
-   <!--  LEADER_BOARDDIV
+  </script> <!--  LEADER_BOARDDIV
   *******************************************************************************************
   -->
   <div id="leader_board-div" style="display: none;">
-      <div class='container' >
-          <h2  style="text-align: center" class="text_effect">Leaderboard</h2>
-           <div id="leaderboard" style="overflow: auto">
-
-           </div>
-      </div>
-
+    <div class='container'>
+      <h2 style="text-align: center" class="text_effect">Leaderboard</h2>
+      <div id="leaderboard" style="overflow: auto"></div>
+    </div>
   </div>
   <script type='text/babel'>
   var leaderboard_user = [];
@@ -1629,7 +1527,7 @@
         s.forEach(function (child) {
             leaderboard_user.push(child.key);
             leaderboard_xp.push(child.val().stats.xp);
-            let a = parseFloat(child.val().stats.wins/child.val().stats.challenges*100); 
+            let a = parseFloat(child.val().stats.wins/child.val().stats.challenges*100);
             a = a?a.toFixed(2):0;
             leaderboard_ratio.push(a);
             leaderboard_challenges.push(child.val().stats.challenges);
@@ -1657,12 +1555,12 @@
             { leaderboard_user.map((value,index) => {
               return (
                 <tr class="table-info">
-                  <th scope="row">#{index+1}</th>     
+                  <th scope="row">#{index+1}</th>
             <td>{leaderboard_user[this.length-index]}</td>
             <td className="text-center">{leaderboard_xp[this.length-index]}</td>
             <td className="text-center">{leaderboard_challenges[this.length-index]}</td>
             <td className="text-center">{leaderboard_ratio[this.length-index]}%</td>
-          </tr>                 
+          </tr>
               )
 
             })
@@ -1677,71 +1575,56 @@
     }
 
 
-  </script>
-
-  <!--  USER DIV
+  </script> <!--  USER DIV
   *******************************************************************************************
   -->
-
-  <div  id ="user-div" style="display: none;">
+  <div id="user-div" style="display: none;">
     <div class='container'>
-        <h1 class="text-center text_effect">Account Summary</h1>
-        <br>
-        <div class='row justify-content-end '>
-          <div id="header" class="col" style="position: relative;left: 5%;"></div>
-          <div class="col ">
-              <button id="effect" class= "btn btn-danger float-end ml-3" onclick="logout_user()">
-              <i class="fa fa-sign-out" aria-hidden="true"></i>
-              <span>Logout</span>
-            </button>
-          </div> 
+      <h1 class="text-center text_effect">Account Summary</h1><br>
+      <div class='row justify-content-end'>
+        <div id="header" class="col" style="position: relative;left: 5%;"></div>
+        <div class="col">
+          <button id="effect" class="btn btn-danger float-end ml-3" onclick="logout_user()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span></button>
         </div>
-        <br>
-        <div style="max-height: 65vh; overflow: auto" class="p-3"> 
-          <div id="stats" class="row shadow rounded p-2 mt-2 " >
-            <div class="col text-center">
-              <span id="challenges"> </span>
-            </div>
-            <div class="col text-center">
-              <span id="wins"> </span>
-            </div>
-            <div class="col text-center">
-              <span id="tie"> </span>
-            </div>
-            <div class="col text-center">
-              <span id="loss"> </span>
-            </div>
+      </div><br>
+      <div style="max-height: 65vh; overflow: auto" class="p-3">
+        <div id="stats" class="row shadow rounded p-2 mt-2">
+          <div class="col text-center">
+            <span id="challenges"></span>
           </div>
-          <br>
-          <div id="lvl" class="row align-items-center shadow rounded p-2">
-            <div id="min_lvl" class="col text-center"></div>
-            <div class="col">
+          <div class="col text-center">
+            <span id="wins"></span>
+          </div>
+          <div class="col text-center">
+            <span id="tie"></span>
+          </div>
+          <div class="col text-center">
+            <span id="loss"></span>
+          </div>
+        </div><br>
+        <div id="lvl" class="row align-items-center shadow rounded p-2">
+          <div id="min_lvl" class="col text-center"></div>
+          <div class="col">
             <div class="progress" style="margin: 0 auto;">
-              <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%"  aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
+              <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
             </div>
           </div>
           <div id="max_lvl" class="col text-center"></div>
-          </div> 
-          <br>    
-          <div id="stats_chart" class="shadow rounded " >
-            <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto;"></div>
-          </div>
-          <br>
-          <div id="share" class="shadow rounded p-3">
-            Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges.
-            <span class="float-end p-1" onclick="share()" >
-              <i class="fa fa-share-alt"  style="color: skyblue;font-size: 16px;" aria-hidden="true"></i>
-            </span>
-          </div>
+        </div><br>
+        <div id="stats_chart" class="shadow rounded">
+          <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto;"></div>
+        </div><br>
+        <div id="share" class="shadow rounded p-3">
+          Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges. <span class="float-end p-1" onclick="share()"><i class="fa fa-share-alt" style="color: skyblue;font-size: 16px;" aria-hidden="true"></i></span>
+        </div>
       </div>
-    </div>  
+    </div>
   </div>
-
   <script>
      function load_userdata(){
 
           db.ref("users/" + username + "/stats").once("value", function(s) {
-                   
+
                     var lvl,progress;
                     google.charts.load("current", {packages:["corechart"]});
                     google.charts.setOnLoadCallback(drawChart);
@@ -1753,7 +1636,7 @@
                     xp = s.val().xp;
                     lvl= Math.floor(xp/20)==0?1:Math.floor(xp/20)+1;
                     progress=xp%20;
-                    
+
                     document.getElementById('xp_progress').setAttribute('aria-valuenow',progress);
                     document.getElementById('xp_progress').setAttribute('style','width:'+Number(progress*5)+'%');
                     document.getElementById('xp_progress').innerHTML= `${xp}xp`;
@@ -1764,8 +1647,8 @@
                     document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl-1)*20}xp`;
                     document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl)*20}xp`;
 
-                   
-                    function drawChart() 
+
+                    function drawChart()
                     {
                         var data = google.visualization.arrayToDataTable([
                         ['stats', 'Value'],
@@ -1786,7 +1669,7 @@
                     var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
                     chart.draw(data, options);
                   }
-                   
+
                     });
 
          document.getElementById('header').innerHTML= username;
@@ -1812,33 +1695,15 @@
         }
      }
   </script>
-
   <!--  NAV DIV
   *******************************************************************************************
   -->
-    <div  id = "navbar" class="navbar" style="display: none" >
-        <a id="nav-learn-div" onclick = "change_screen('learn-div')">
-         <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
-        </a>
-        <a  id='nav-notif-div'class="position-relative" onclick = "change_screen('notif-div');load_challenges();">
-            <i class="fa fa-bell" style="font-size: inherit; color: inherit">
-              <span id="notif_badge" class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger"></span>
-            </i>
-        </a>
-        <a id='nav-quiz-div' onclick = "change_screen('quiz-div')" class="active">
-            <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
-        </a>
-        <a  id='nav-leader_board-div' onclick = "change_screen('leader_board-div');leaderboard();">
-            <i class="fa fa-bar-chart" style="font-size: inherit; color: inherit"></i>
-        </a>
-        <a  id='nav-user-div' onclick = "change_screen('user-div');load_userdata();">
-            <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>
-        </a>
-    </div>
-
-    <script>
+  <div id="navbar" class="navbar" style="display: none">
+    <a id="nav-learn-div" onclick="change_screen('learn-div')"><i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i></a> <a id='nav-notif-div' class="position-relative" onclick="change_screen('notif-div');load_challenges();"><i class="fa fa-bell" style="font-size: inherit; color: inherit"><span id="notif_badge" class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger"></span></i></a> <a id='nav-quiz-div' onclick="change_screen('quiz-div')" class="active"><i class="fa fa-flash" style="font-size: inherit; color: inherit"></i></a> <a id='nav-leader_board-div' onclick="change_screen('leader_board-div');leaderboard();"><i class="fa fa-bar-chart" style="font-size: inherit; color: inherit"></i></a> <a id='nav-user-div' onclick="change_screen('user-div');load_userdata();"><i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i></a>
+  </div>
+  <script>
        function change_screen(selection){
-         
+
            var screens = [ 'learn-div' , 'notif-div' , 'quiz-div' ,'leader_board-div' ,'user-div']
            for (x of screens)
            {
@@ -1852,10 +1717,6 @@
            $('#'+selection).show();
            document.getElementById('nav-'+selection).classList.add("active");
        }
-    </script>
-
-
-
+  </script>
 </body>
-
 </html>

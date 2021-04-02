@@ -1,34 +1,45 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Primary Meta Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Primary Meta Tags -->
   <title>Quizinato</title>
   <meta name="title" content="Quizinato">
-  <meta name="description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!"><!-- Open Graph / Facebook -->
+  <meta name="description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://quizinato.web.app">
   <meta property="og:title" content="Quizinato">
   <meta property="og:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
-  <meta property="og:image" content="https://quizinato.web.app/icons/logo-small.png"><!-- Twitter -->
+  <meta property="og:image" content="https://quizinato.web.app/icons/logo-small.png">
+  <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://quizinato.web.app">
   <meta property="twitter:title" content="Quizinato">
   <meta property="twitter:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
-  <meta property="twitter:image" content="https://quizinato.web.app/icons/logo-small.png"><!-- Fonts -->
+  <meta property="twitter:image" content="https://quizinato.web.app/icons/logo-small.png">
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet"><!--Bootstrap-->
+  <link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet">
+  <!--Bootstrap-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script><!--Sweet-alert-->
 
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script><!--font-awesome-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><!--google-charts-->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <!--font-awesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--google-charts-->
 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
 
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-messaging.js"></script><!-- TODO: Add SDKs for Firebase products that you want to use
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-messaging.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
@@ -48,14 +59,17 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-  </script><!--react-js-->
+  </script>
+  <!--react-js-->
 
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!--react-transition-group-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!--react-transition-group-->
 
   <script src="https://unpkg.com/react-transition-group@4.4.1/dist/react-transition-group.js"></script>
+  
   <style>
    *{
      user-select: none;
@@ -393,6 +407,7 @@
 
   </style>
 </head>
+
 <body>
   <script>
 
@@ -458,9 +473,12 @@
         $("#home-div").show();
       }
     }
-  </script> <!--  HOME DIV
+  </script> 
+  
+  <!--  HOME DIV
   *******************************************************************************************
   -->
+  
   <div id="home-div" style="display: none;">
     <div class="inner-content">
       <div style="display:flex; justify-content: center; padding: 20px 0;">
@@ -519,11 +537,20 @@
     <div class="content flex">
       <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a></h3><br>
       <h5>Interested ? Let's work together!!<br>
-      <a href="https://github.com/3-bro-grammers"><i class="fa fa-github" aria-hidden="true"></i></a> | <a href="mailto:quizzard.webapp@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a></h5>
+      <a href="https://github.com/3-bro-grammers">
+        <i class="fa fa-github" aria-hidden="true"></i>
+      </a> | 
+      <a href="mailto:quizzard.webapp@gmail.com">
+        <i class="fa fa-envelope" aria-hidden="true"></i>
+      </a>
+      </h5>
     </div>
-  </div><!--  LOGIN DIV
+  </div>
+  
+  <!--  LOGIN DIV
   *******************************************************************************************
   -->
+  
   <div id="login-div" style="display: none;">
     <div class='container'>
       <br>
@@ -534,10 +561,12 @@
           <h2 style="text-align: center;">Login</h2>
           <form id='login-form' class="needs-validation p-2" novalidate="" name="login-form">
             <div class="form-floating col-sm|md|lg|xl">
-              <input type="text" class="form-control" id="login-username" placeholder="Enter username" required=""> <label for="login-username">Username</label>
+              <input type="text" class="form-control" id="login-username" placeholder="Enter username" required=""> 
+              <label for="login-username">Username</label>
             </div><br>
             <div class="form-floating col-sm|md|lg|xl">
-              <input type="password" class="form-control" id="login-password" placeholder="Enter password" required=""> <label for="login-password">Password</label>
+              <input type="password" class="form-control" id="login-password" placeholder="Enter password" required=""> 
+              <label for="login-password">Password</label>
               <div id="login-feedback" class="invalid-feedback">
                 Incorrect username or password.
               </div>
@@ -545,7 +574,10 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" checked="true" id="notif_option_login"> <label for="notif_option_login">Receive Challenge Notifications</label>
             </div><br>
-            <button type="submit" class="btn btn-primary"><span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login</button><br>
+            <button type="submit" class="btn btn-primary">
+              <span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login
+            </button>
+            <br>
             Don't have an account ? <span onclick="$('#login-div').hide(); $('#signin-div').show();" type="button" class="btn btn-link">Signin</span>
           </form>
         </div>
@@ -623,9 +655,12 @@
 
 
 
-  </script> <!--  SIGNIN DIV
+  </script> 
+  
+  <!--  SIGNIN DIV
   *******************************************************************************************
   -->
+  
   <div id="signin-div" style="display: none;">
     <div class='container'>
       <br>
@@ -636,19 +671,22 @@
           <h2 style="text-align: center;">Signin</h2>
           <form id='signin-form' class="needs-validation mt-2" novalidate="" name="sign-form">
             <div class="form-floating col-sm|md|lg|xl">
-              <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required=""> <label for="signin-userame">Username:</label>
+              <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required=""> 
+              <label for="signin-userame">Username:</label>
               <div id='signin-feedback' class="invalid-feedback">
                 Username already exists.
               </div>
             </div><br>
             <div class="form-floating col-sm|md|lg|xl">
-              <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters" required=""> <label for="signin-password">Password:</label>
+              <input type="password" class="form-control" id="signin-password" placeholder="Minimum 6 characters" required=""> 
+              <label for="signin-password">Password:</label>
               <div class="invalid-feedback">
                 Use a stronger password.
               </div>
             </div><br>
             <div class="form-floating col-sm|md|lg|xl">
-              <input type="text" class="form-control" id="signin-email" placeholder="Email"> <label for="signin-email">Email (optional):</label>
+              <input type="text" class="form-control" id="signin-email" placeholder="Email"> 
+              <label for="signin-email">Email (optional):</label>
               <div class="invalid-feedback">
                 Inappropriate Email ID
               </div>
@@ -656,7 +694,10 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" checked="true" id="notif_option"> <label for="notif_option">Receive Challenge Notifications</label>
             </div><br>
-            <button type="submit" class="btn btn-primary"><span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in</button><br>
+            <button type="submit" class="btn btn-primary">
+              <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in
+            </button>
+            <br>
             Already have an account ? <span onclick="$('#signin-div').hide(); $('#login-div').show();" type="button" class="btn btn-link">Login</span>
           </form>
         </div>
@@ -751,9 +792,12 @@
 
 
 
-  </script> <!--  NOTIFICATION DIV
+  </script> 
+  
+  <!--  NOTIFICATION DIV
   *******************************************************************************************
   -->
+  
   <div id="notif-div" style="display: none;">
     <div class='container'>
       <h2>Active Challenges</h2>
@@ -947,9 +991,12 @@
 
 
 
-  </script> <!--  LEARN DIV
+  </script>
+  
+  <!--  LEARN DIV
   *******************************************************************************************
   -->
+  
   <div id="learn-div" style="display: none;">
     <div class='container'>
       <br>
@@ -1114,9 +1161,12 @@
 
 
 
-  </script> <!--  QUIZ DIV
+  </script>
+  
+  <!--  QUIZ DIV
   *******************************************************************************************
   -->
+  
   <div id="quiz-div" style="display: none;">
     <div class='container'>
       <br>
@@ -1130,7 +1180,9 @@
           <div class="dropdown">
             <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Easy</button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" onclick="change_diff('easy')">Easy</a> <a class="dropdown-item" onclick="change_diff('medium')">Medium</a> <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
+              <a class="dropdown-item" onclick="change_diff('easy')">Easy</a> 
+              <a class="dropdown-item" onclick="change_diff('medium')">Medium</a> 
+              <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
             </div>
           </div>
         </div><br>
@@ -1502,9 +1554,12 @@
       }
     }
 
-  </script> <!--  LEADER_BOARDDIV
+  </script> 
+  
+  <!--  LEADER_BOARDDIV
   *******************************************************************************************
   -->
+  
   <div id="leader_board-div" style="display: none;">
     <div class='container'>
       <h2 style="text-align: center" class="text_effect">Leaderboard</h2>
@@ -1575,16 +1630,22 @@
     }
 
 
-  </script> <!--  USER DIV
+  </script> 
+  
+  <!--  USER DIV
   *******************************************************************************************
   -->
+  
   <div id="user-div" style="display: none;">
     <div class='container'>
       <h1 class="text-center text_effect">Account Summary</h1><br>
       <div class='row justify-content-end'>
         <div id="header" class="col" style="position: relative;left: 5%;"></div>
         <div class="col">
-          <button id="effect" class="btn btn-danger float-end ml-3" onclick="logout_user()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span></button>
+          <button id="effect" class="btn btn-danger float-end ml-3" onclick="logout_user()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i> 
+            <span>Logout</span>
+          </button>
         </div>
       </div><br>
       <div style="max-height: 65vh; overflow: auto" class="p-3">
@@ -1615,7 +1676,10 @@
           <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto;"></div>
         </div><br>
         <div id="share" class="shadow rounded p-3">
-          Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges. <span class="float-end p-1" onclick="share()"><i class="fa fa-share-alt" style="color: skyblue;font-size: 16px;" aria-hidden="true"></i></span>
+          Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges. 
+          <span class="float-end p-1" onclick="share()">
+            <i class="fa fa-share-alt" style="color: skyblue;font-size: 16px;" aria-hidden="true"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -1695,11 +1759,29 @@
         }
      }
   </script>
+  
   <!--  NAV DIV
   *******************************************************************************************
   -->
+  
   <div id="navbar" class="navbar" style="display: none">
-    <a id="nav-learn-div" onclick="change_screen('learn-div')"><i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i></a> <a id='nav-notif-div' class="position-relative" onclick="change_screen('notif-div');load_challenges();"><i class="fa fa-bell" style="font-size: inherit; color: inherit"><span id="notif_badge" class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger"></span></i></a> <a id='nav-quiz-div' onclick="change_screen('quiz-div')" class="active"><i class="fa fa-flash" style="font-size: inherit; color: inherit"></i></a> <a id='nav-leader_board-div' onclick="change_screen('leader_board-div');leaderboard();"><i class="fa fa-bar-chart" style="font-size: inherit; color: inherit"></i></a> <a id='nav-user-div' onclick="change_screen('user-div');load_userdata();"><i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i></a>
+    <a id="nav-learn-div" onclick="change_screen('learn-div')">
+      <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
+    </a> 
+    <a id='nav-notif-div' class="position-relative" onclick="change_screen('notif-div');load_challenges();">
+      <i class="fa fa-bell" style="font-size: inherit; color: inherit">
+        <span id="notif_badge" class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger"></span>
+      </i>
+    </a> 
+    <a id='nav-quiz-div' onclick="change_screen('quiz-div')" class="active">
+      <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
+    </a> 
+    <a id='nav-leader_board-div' onclick="change_screen('leader_board-div');leaderboard();">
+      <i class="fa fa-bar-chart" style="font-size: inherit; color: inherit"></i>
+    </a> 
+    <a id='nav-user-div' onclick="change_screen('user-div');load_userdata();">
+      <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>
+    </a>
   </div>
   <script>
        function change_screen(selection){

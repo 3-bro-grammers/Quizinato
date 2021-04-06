@@ -152,8 +152,15 @@
       display: flex;
       flex-direction: row;
       justify-content: center;
+      color: #ffffff; font-family: 'Raleway',sans-serif; font-size: 40px; font-weight: 700; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase;
   }
 
+  #dropdown
+  {
+      color: rgb(6, 228, 36);
+      font-weight: 500;
+      font-size: 20px;
+  }
   .navbar
   {
       height: 10vh;
@@ -1175,9 +1182,9 @@
           <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;"></ul>
         </div><br>
         <div id="diff_mode">
-          Difficulty:
+          Difficulty: &nbsp;
           <div class="dropdown">
-            <button id='dropdown' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Easy</button>
+            <button id='dropdown' type="button" class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">EASY</button>
             <div class="dropdown-menu">
               <a class="dropdown-item" onclick="change_diff('easy')">Easy</a> 
               <a class="dropdown-item" onclick="change_diff('medium')">Medium</a> 
@@ -1238,8 +1245,19 @@
     var difficulty = 'easy';
     function change_diff(mode) {
       difficulty = mode;
-      document.getElementById('dropdown').innerText = mode;
-
+      if(mode == "easy") {
+        document.getElementById('dropdown').innerText = "EASY";
+        document.getElementById('dropdown').style.color = "rgb(6, 228, 36)";
+      }
+      else if(mode == "medium") {
+        document.getElementById('dropdown').innerText = "MEDIUM";
+        document.getElementById('dropdown').style.color = "rgb(223, 238, 10)";
+      }
+      else if(mode == "hard") {
+        document.getElementById('dropdown').innerText = "HARD";
+        document.getElementById('dropdown').style.color = "rgb(243, 7, 7)";
+      }
+      
     }
 
     function change_catg(i) {

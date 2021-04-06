@@ -79,6 +79,15 @@
    body {
     margin:0;
     }
+    #signin-div,
+  #login-div,
+  #quiz-div,
+  #user-div,
+  #notif-div,
+  #learn-div{
+  background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
+  min-height: 100vh;
+  } 
 
    .home_flex{
      display: flex;
@@ -109,12 +118,13 @@
     background: transparent;
     text-align: center;
     outline: none;
-    transition: all 0.5s;
+    transition: all cubic-bezier(.4,.64,.76,.67) 0.5s;
    }
-   #home_btns button:hover , #home_btns button:focus,  #home_btns button:active{
+   #home_btns button:hover {
     background:#fff;
     color: #0d6efd;
     font-weight: bolder;
+    width: 15rem;
    }
   form
   {
@@ -159,6 +169,7 @@
       bottom: 0;
       width: 100%;
       background: #ecf0f3;
+      color: black;
   }
 
   .navbar a
@@ -168,36 +179,23 @@
       text-align: center;
       padding: 12px 14px;
       font-size: 20px;
-      color: blue;
-  }
-
-  .navbar a:hover
-  {
-      background: #f1f1f1;
       color: black;
   }
-
   .navbar a.active
   {
-      border-radius: 15px;
-      background-color: skyblue;
-  }
-  .board_data :hover
-  {
-    background-color: skyblue;
-    z-index: -1;
+      color:  #0d6efd;
+      font-size: 25px;
   }
   .catg_cards
   {
-    background-color: #f2f2 ;
-    color: #676788 !important;
+    background-color: white ;
+    color: #676788 ;
   }
-  .catg_cards :hover
+  .catg_cards:hover
   {
-    background-color: #ecf0f3;
-    color: blue !important;
+    background-color: white ;
+    color: #0d6efd; 
   }
-
   .text_effect
   {
     text-shadow: 0 1px 0 #ccc,
@@ -401,10 +399,6 @@
     font-size:24px;
   }
   }
-  #signin-div,#login-div{
-  background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
-  min-height: 100vh;
-  }
 
   </style>
 </head>
@@ -571,7 +565,8 @@
               </div>
             </div><br>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" checked="true" id="notif_option_login"> <label for="notif_option_login">Receive Challenge Notifications</label>
+              <input class="form-check-input" type="checkbox" checked="true" id="notif_option_login"> 
+              <label for="notif_option_login">Receive Challenge Notifications</label>
             </div><br>
             <button type="submit" class="btn btn-primary">
               <span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login
@@ -799,7 +794,7 @@
   
   <div id="notif-div" style="display: none;">
     <div class='container'>
-      <h2>Active Challenges</h2>
+      <h2 style="color: white;">Active Challenges</h2>
       <div id="active-chal-div" style="max-height:75vh; overflow:auto"></div>
       <div id="answer-chal-div"></div>
     </div>
@@ -816,7 +811,7 @@
       var op_score = op_resp_arr.reduce((s,e)=>s+e);
       }
       return(
-        <div onClick={show_chal} style={{display:"flex",alignItems:"center",minHeight:"75px", borderRadius:"15px", border:"2px solid black", margin:"5px", padding:"5px 15px"}}>
+        <div onClick={show_chal} style={{display:"flex",alignItems:"center",minHeight:"75px",background:"white" ,borderRadius:"15px", border:"1px solid black", margin:"5px", padding:"5px 15px"}}>
           <div style={{flex:1}}>
             <div style={{fontWeight:"bold"}}>{op_name}</div>
             {/*<div style={{fontSize:"small"}}>{new Date(date||1615221254809).toLocaleDateString("en-IN")}</div>*/}
@@ -953,11 +948,22 @@
       render() {
         return (
           <div>
-            {this.data.map((e,i)=>(
-              <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp}
-                accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} category={e.category} />
-            ))}
-            <ChallengeSummary curr_chal={this.state.curr_chal} hide_chal={()=>this.hide_chal_summary()} />
+            {
+               typeof this.data == "undefined"? 
+                <div style={{textAlign: 'center', margin: '1rem',padding: '15px',borderRadius: '5px',background: 'white'}} className="shadow" >
+                 <img src='icons/empty.png' style={{height: '50vh', resizeMode: 'contain',width: '70%',margin: '0.75rem'}} /> 
+                 <br />
+                 <div>No Active challenges , <a href="#" onClick={()=>{change_screen('quiz-div')}}>Click</a> to start a new one </div>
+                </div>
+            :
+             <div>   
+              {this.data.length && this.data.map((e,i)=>(
+                <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp}
+                  accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} category={e.category} />
+              ))}
+              <ChallengeSummary curr_chal={this.state.curr_chal} hide_chal={()=>this.hide_chal_summary()} />
+            </div>
+            } 
           </div>
 
           // this.data.map((e,i)=>(
@@ -998,6 +1004,7 @@
   
   <div id="learn-div" style="display: none;">
     <div class='container'>
+      <h2 style="color: white;">Learn</h2>
       <br>
       <div id="learn_page">
         <div id='learn_catg'></div>
@@ -1006,7 +1013,7 @@
     </div>
   </div>
   <script type="text/babel">
-    var learn_category = [9, 17, 21, 23];
+    var learn_category = [9, 17, 21, 23, 11, 12];
     var learn_catg, learn_query;
 
 
@@ -1033,8 +1040,8 @@
 
     class LearnCategory extends React.Component {
 
-      category = ['GK', 'Science', 'Sports', 'History'];
-      icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' ,'fa fa-university'];
+      category = ['GK', 'Science', 'Sports', 'History', 'Films' ,'Music'];
+      icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' , 'fa fa-book' ,'fa fa-film' , 'fa fa-music'];
       render() {
         return (
           <div className="row row-cols-2 row-cols-md-4 g-3">
@@ -1493,14 +1500,14 @@
         $('.question_container').fadeOut();
         $(".validate").css( "top", "90vh" );
         $('.validate').show();
-        $(".validate").animate({ "top": "50vh" },1000);
+        $(".validate").animate({ "top": "50vh" },1200,'swing');
 
       }
       render() {
 
         return (
           <div>
-            <div className="question_container">
+            <div className="question_container rounded shadow " style={{background: 'white'}}>
               <div className="question_header" >
                 <div className="row justify-content-around p-2">
                   <div className="col pl-2">
@@ -1526,27 +1533,26 @@
                 </div>
               </div>
 
-              <div className="question">{unescape(this.data[this.state.qn_no].question)}</div>
+              <div className="question p-2">{unescape(this.data[this.state.qn_no].question)}</div>
               <br />
               <div className="options">
-
                 {
                   this.options.map((item, index) => {
                     return (
-                      <div  onClick={() => {this.check_radio(index)}}>
+                      <div  onClick={() => {this.check_radio(index)}} className="mr-5 p-1" style={{position: 'relative', left: '5%'}}>
                         <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" value={unescape(item)} />
                         <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
                       </div>)
 
                   })
                 }
-
             </div>
             <br />
-            <button className="btn btn-success float-end" onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next</button>
-          </div>
+            <button className="btn btn-success" style={{position: 'relative',left: '75vw'}} onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next</button>
+            <br /><br />
+            </div>
           <div className="validate" style={{color:this.state.crct?'green':'red'}}>
-            {this.state.crct?<span>Correct &#10004;</span>:this.state.cur_ind>-1?<span>Wrong &#x274C;</span>:<span>Time up!!</span>}
+            {this.state.crct?<span>Correct &#10004;</span>:this.state.progress>0?<span>Wrong &#x274C;</span>:<span>Time up!!</span>}
           </div>
           </div>
         )
@@ -1561,8 +1567,8 @@
   
   <div id="leader_board-div" style="display: none;">
     <div class='container'>
-      <h2 style="text-align: center" class="text_effect">Leaderboard</h2>
-      <div id="leaderboard" style="overflow: auto;max-height: 85vh;"></div>
+      <h2 style="text-align: center ;margin-bottom: 15px  !important;" class="text_effect">Leaderboard</h2>
+      <div id="leaderboard" style="overflow: auto;max-height: 80vh;"></div>
     </div>
   </div>
   <script type='text/babel'>
@@ -1611,7 +1617,10 @@
               return (
                 <tr class="table-info">
                   <th scope="row">{leaderboard_xp[this.length-index]!==leaderboard_xp[this.length-index+1]?++this.rank:this.rank}</th>
-            <td>{leaderboard_user[this.length-index]}<br /><span className="text-muted">Level {Math.floor(leaderboard_xp[this.length-index]/20)==0?1:Math.floor(leaderboard_xp[this.length-index]/20+1)}</span></td>
+            <td>
+              {leaderboard_user[this.length-index]}<br />
+                <span className="text-muted">Level {Math.floor(leaderboard_xp[this.length-index]/20)==0?1:Math.floor(leaderboard_xp[this.length-index]/20+1)}</span>
+            </td>
             <td className="text-center">{leaderboard_xp[this.length-index]}</td>
             <td className="text-center">{leaderboard_challenges[this.length-index]}</td>
             <td className="text-center">{leaderboard_ratio[this.length-index]}%</td>
@@ -1639,17 +1648,17 @@
   <div id="user-div" style="display: none;">
     <div class='container'>
       <h1 class="text-center text_effect">Account Summary</h1><br>
-      <div class='row justify-content-end'>
-        <div id="header" class="col" style="position: relative;left: 5%;"></div>
+      <div class='row justify-content-end align-items-center shadow rounded p-2 m-2' style="background: white;">
+        <div id="header" class="col" style="position: relative;left: 5%; font-size: 1.25rem; font-weight: 500;"></div>
         <div class="col">
           <button id="effect" class="btn btn-danger float-end ml-3" onclick="logout_user()">
             <i class="fa fa-sign-out" aria-hidden="true"></i> 
             <span>Logout</span>
           </button>
         </div>
-      </div><br>
+      </div>
       <div style="max-height: 65vh; overflow: auto" class="p-3">
-        <div id="stats" class="row shadow rounded p-2 mt-2">
+        <div id="stats" class="row shadow rounded p-2 mt-2" style="background: white;">
           <div class="col text-center">
             <span id="challenges"></span>
           </div>
@@ -1663,7 +1672,7 @@
             <span id="loss"></span>
           </div>
         </div><br>
-        <div id="lvl" class="row align-items-center shadow rounded p-2">
+        <div id="lvl" class="row align-items-center shadow rounded p-2" style="background: white;">
           <div id="min_lvl" class="col text-center"></div>
           <div class="col">
             <div class="progress" style="margin: 0 auto;">
@@ -1672,13 +1681,15 @@
           </div>
           <div id="max_lvl" class="col text-center"></div>
         </div><br>
-        <div id="stats_chart" class="shadow rounded">
-          <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto;"></div>
+        <div id="stats_chart" class="shadow rounded" style="background: white;">
+           <h6 class="p-3"> &nbsp;Your stats :</h6>
+          <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto; text-align: center;">
+          </div>
         </div><br>
-        <div id="share" class="shadow rounded p-3">
+        <div id="share" class="shadow rounded p-3" style="background: white;">
           Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges. 
           <span class="float-end p-1" onclick="share()">
-            <i class="fa fa-share-alt" style="color: skyblue;font-size: 16px;" aria-hidden="true"></i>
+            <i class="fa fa-share-alt" style="color:#0d6efd;font-size: 1.25rem;" aria-hidden="true"></i>
           </span>
         </div>
       </div>
@@ -1688,10 +1699,8 @@
      function load_userdata(){
 
           db.ref("users/" + username + "/stats").once("value", function(s) {
-
+                    
                     var lvl,progress;
-                    google.charts.load("current", {packages:["corechart"]});
-                    google.charts.setOnLoadCallback(drawChart);
                     challenges = s.val().challenges;
                     wins = s.val().wins;
                     loss = s.val().loss;
@@ -1711,31 +1720,32 @@
                     document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl-1)*20}xp`;
                     document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl)*20}xp`;
 
-
-                    function drawChart()
-                    {
-                        var data = google.visualization.arrayToDataTable([
-                        ['stats', 'Value'],
-                        ['Wins',  wins],
-                        ['Loss',  loss],
-                        ['Tie',  tie]
+                    if(challenges){
+                    google.charts.load("current", {packages:["corechart"]});
+                    google.charts.setOnLoadCallback(drawChart);
+                    function drawChart(){
+                    var data = google.visualization.arrayToDataTable([
+                      ['stats', 'Value'],
+                      ['Wins',  wins],
+                      ['Loss',  loss],
+                      ['Tie',  tie]
                         ]);
-
-                        var options = {
-                            title: username+'\'s Stats',
-                            pieSliceTextStyle: {
-                              color: 'black',
-                            },
-                            pieHole: 0.4,
-                           chartArea: {  width: "80%", height: "80%" }
+                    var options = {
+                        pieSliceTextStyle: {
+                        color: 'black',
+                        },
+                        pieHole: 0.4,
+                        chartArea: {  width: "80%", height: "80%" }
                         };
 
                     var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
                     chart.draw(data, options);
+                    }
                   }
-
+                    else
+                      document.getElementById('donutchart').innerHTML='<img src="icons/void.png" style="object-fit: contain; height: 70%; width:80%;"><br>Insufficient data <br>Start a new <a href="#" onclick = \'change_screen("quiz-div")\'>challenge</a> to see your stats';
                     });
-
+                  
          document.getElementById('header').innerHTML= username;
      }
 

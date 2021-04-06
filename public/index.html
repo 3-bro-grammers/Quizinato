@@ -78,15 +78,8 @@
    }
    body {
     margin:0;
-    }
-    #signin-div,
-  #login-div,
-  #quiz-div,
-  #user-div,
-  #notif-div,
-  #learn-div{
-  background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
-  min-height: 100vh;
+    background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
+    min-height: 100vh;
   } 
 
    .home_flex{
@@ -1122,7 +1115,7 @@
 
         return (
 
-              <div>
+              <div className="shadow rounded p-4" style={{background: 'white'}}>
                 <ReactTransitionGroup.SwitchTransition>
                   <ReactTransitionGroup.CSSTransition
                     key={this.state.qn_no}

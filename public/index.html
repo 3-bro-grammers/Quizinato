@@ -1860,12 +1860,12 @@
            {
               if(x != selection)
               {
-               $('#'+x).hide();
+               $('#'+x).hide(500);
                if(document.getElementById('nav-'+x).classList.contains("active"))
                  document.getElementById('nav-'+x).classList.remove("active");
               }
            }
-           $('#'+selection).show();
+           $('#'+selection).show(500);
            document.getElementById('nav-'+selection).classList.add("active");
        }
   </script>

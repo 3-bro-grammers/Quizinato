@@ -152,7 +152,7 @@
       display: flex;
       flex-direction: row;
       justify-content: center;
-      color: #ffffff; font-family: 'Raleway',sans-serif; font-size: 40px; font-weight: 700; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase;
+      color: #ffffff; font-family: 'Raleway',sans-serif; font-size: 35px; font-weight: 700; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase;
   }
 
   #dropdown
@@ -1177,10 +1177,10 @@
     <div class='container'>
       <br>
       <div id='challenge'>
-        <div class="dropdown">
+        <!-- <div class="dropdown">
           <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt" data-bs-toggle="dropdown" autocomplete="off">
           <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;"></ul>
-        </div><br>
+        </div><br> -->
         <div id="diff_mode">
           Difficulty: &nbsp;
           <div class="dropdown">
@@ -1194,6 +1194,30 @@
         </div><br>
         <div id='catg' style="max-height: 60vh; overflow: hidden auto;"></div><br>
       </div>
+
+      <!-- Select Opponent Modal -->
+      <div class="modal fade" id="SelectOpponentModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Select Opponent</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input placeholder="Search Opponent" oninput="search_input()" type="text" id="search_txt" autocomplete="off">
+              <br><br>
+              <ul style="height: 45vh; overflow-y: scroll;" class="list-group" id="search_list">
+                
+              </ul>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="setRandomOpponent()">Random Opponent</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="quiz_area"></div>
     </div>
   </div>
@@ -1208,10 +1232,10 @@
     function search_input() {
 
       var search = search_txt.value.toLowerCase();
-      if (!search) {
-        search_list.innerHTML = "";
-        return;
-      }
+      // if (!search) {
+      //   search_list.innerHTML = "";
+      //   return;
+      // }
 
       var inn_htm = "";
 
@@ -1219,8 +1243,8 @@
       for (x in all_users) {
         if (x!= username) {
           if(x.toLowerCase().indexOf(search) > -1)
-          inn_htm += (`<li><a class="dropdown-item" href="#" onclick='set_opponent("${x}")'>${x}`
-            +(all_users[x]?`<span class="live_status_badge"><\/span>`:"")+`<\/a><\/li>`);
+          inn_htm += (`<li class="list-group-item" href="#" onclick='set_opponent("${x}")'>${x}`
+            +(all_users[x]?`<span class="live_status_badge"><\/span>`:"")+`<\/li>`);
         }
       }
       search_list.innerHTML = inn_htm;
@@ -1228,15 +1252,7 @@
 
     }
 
-    function set_opponent(opp) {
-      opponent = opp;
-      search_txt.value = opp;
-      search_txt.disabled = true;
-    }
-
-
-
-
+    
   </script>
   <script type="text/babel">
 
@@ -1260,25 +1276,60 @@
       
     }
 
+    var bs_selectOpp_modal;
+
     function change_catg(i) {
-      if(search_txt.value =='')
-      {
-        swal({
-            title: "Oops!",
-            text: "No Opponent selected",
-            icon: "warning",
-            });
-          return;
-      }
+      // if(search_txt.value =='')
+      // {
+      //   swal({
+      //       title: "Oops!",
+      //       text: "No Opponent selected",
+      //       icon: "warning",
+      //       });
+      //     return;
+      // }
+
+
+
       catg = category[i];
+      bs_selectOpp_modal = new bootstrap.Modal(document.getElementById('SelectOpponentModal'));
+      bs_selectOpp_modal.show();
+      search_txt.value = "";
+      search_txt.disabled = false;
+      search_input();
+      return;
+      
+    }
+
+    function set_opponent(opp) {
+      opponent = opp;
+      showQuiz();
+    }
+
+    function setRandomOpponent(){
+
+      // Remove current user from all_users
+      var all_users_array = Object.keys(all_users)
+      var index = all_users_array.indexOf(username);
+      if (index !== -1) {
+        all_users_array.splice(index, 1);
+      }
+      //select random user
+      opponent = all_users_array[parseInt(Math.random()*all_users_array.length)];
+
+      showQuiz();
+    }
+
+    function showQuiz(){
+      bs_selectOpp_modal.hide();
       quiz_fetch();
       document.getElementById('challenge').style.display = 'none';
       document.getElementById('navbar').style.display = 'none';
       ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
       ReactDOM.render(<Quiz data={query} />, document.getElementById('quiz_area'));
       document.getElementById('quiz_area').style.display = 'block';
-
     }
+
 
 
     function quiz_fetch() {

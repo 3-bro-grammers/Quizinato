@@ -154,7 +154,7 @@
       justify-content: center;
       color: #ffffff; 
       font-family: 'Raleway',sans-serif; 
-      font-size: 35px; font-weight: 700;  
+      font-size: 30px; font-weight: 700;  
       margin: 0 0 24px; 
       text-align: center; 
       text-transform: uppercase;
@@ -1008,7 +1008,8 @@
     </div>
   </div>
   <script type="text/babel">
-    var learn_category = [9, 17, 21, 23, 11, 12];
+  
+    var learn_category = [9, 17, 21, 23, 10, 11, 12, 19];
     var learn_catg, learn_query;
 
 
@@ -1034,9 +1035,10 @@
     }
 
     class LearnCategory extends React.Component {
-
-      category = ['GK', 'Science', 'Sports', 'History', 'Films' ,'Music'];
-      icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' , 'fa fa-book' ,'fa fa-film' , 'fa fa-music'];
+      category = ['GK', 'Science', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
+      icons =[ 'fa fa-globe ','fa fa-flask','fa fa-futbol-o' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fa fa-list-ol']
+      // category = ['GK', 'Science', 'Sports', 'History', 'Films' ,'Music'];
+      // icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' , 'fa fa-book' ,'fa fa-film' , 'fa fa-music'];
       render() {
         return (
           <div className="row row-cols-2 row-cols-md-2 g-3">

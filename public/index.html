@@ -468,6 +468,12 @@
   <!--  HOME DIV
   *******************************************************************************************
   -->
+
+  <div id = "SpinnerModal" class="modal fade show" >
+    <div class="modal-dialog" style="display: flex;height: 100%;align-items: center;justify-content: center;">
+      <div class="spinner-grow text-primary"></div>
+    </div>
+  </div>
   
   <div id="home-div" style="display: none;">
     <div class="inner-content">
@@ -641,6 +647,8 @@
       , false);
 
 
+
+      var bs_spinnerModal = new bootstrap.Modal(document.getElementById('SpinnerModal'));
 
 
 
@@ -1020,17 +1028,22 @@
 
 
     function learn_fetch() {
+      bs_spinnerModal.show();
+      
       var url = 'https://opentdb.com/api.php?amount=30&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, false);
-      xhr.send();
-      var res = JSON.parse(xhr.response);
-      learn_query = res.results;
-      ReactDOM.unmountComponentAtNode(document.getElementById('learn_quiz_area'));
-      ReactDOM.render(<LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area'));
-      document.getElementById('learn_page').style.display = 'none';
-      document.getElementById('quiz_area').style.display = 'none';
-      document.getElementById('learn_quiz_area').style.display = 'block';
+      
+      fetch(url).then((res)=>res.json()).then(data=>{
+        console.log(data);
+        learn_query = data.results;
+        ReactDOM.unmountComponentAtNode(document.getElementById('learn_quiz_area'));
+        ReactDOM.render(<LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area'));
+        document.getElementById('learn_page').style.display = 'none';
+        document.getElementById('quiz_area').style.display = 'none';
+        document.getElementById('learn_quiz_area').style.display = 'block';
+        bs_spinnerModal.hide();
+      })
+      
+      
 
     }
 
@@ -1321,27 +1334,30 @@
 
     function showQuiz(){
       bs_selectOpp_modal.hide();
-      quiz_fetch();
-      document.getElementById('challenge').style.display = 'none';
-      document.getElementById('navbar').style.display = 'none';
-      ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
-      ReactDOM.render(<Quiz data={query} />, document.getElementById('quiz_area'));
-      document.getElementById('quiz_area').style.display = 'block';
-    }
+      bs_spinnerModal.show();
 
-
-
-    function quiz_fetch() {
       var url = 'https://opentdb.com/api.php?amount=5&category=' + catg + '&difficulty=' + difficulty + '&type=multiple&encode=url3986';
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, false);
-      xhr.send();
-      var res = JSON.parse(xhr.response);
-      query = res.results;
-      document.getElementById('challenge').style.display = 'none';
-      document.getElementById('quiz_area').style.display = 'none';
+      fetch(url).then((res)=>res.json()).then((data)=>{
+        query = data.results;
+        
+        document.getElementById('challenge').style.display = 'none';
+        document.getElementById('quiz_area').style.display = 'none';
+        document.getElementById('navbar').style.display = 'none';
 
+
+        ReactDOM.unmountComponentAtNode(document.getElementById('quiz_area'));
+        ReactDOM.render(<Quiz data={query} />, document.getElementById('quiz_area'));
+        document.getElementById('quiz_area').style.display = 'block';
+
+        bs_spinnerModal.hide();
+      })
+
+      
     }
+
+
+
+    
 
 
 

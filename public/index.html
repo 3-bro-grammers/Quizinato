@@ -400,7 +400,6 @@
 
 <body>
   <script>
-
     var pswd, username, opponent;
 
     const messaging = firebase.messaging();
@@ -433,6 +432,12 @@
 
     //LOGIN PERSISTANCE
     window.onload = () =>{
+            if (navigator.onLine)
+               document.getElementById("online").style.display = "block";
+            else {
+               document.getElementById("offline").style.display = "flex";
+               throw new Error("No Internet :(");
+            }
       username = localStorage.getItem("user_name");
       pswd = localStorage.getItem("user_pass");
 
@@ -468,7 +473,7 @@
   <!--  HOME DIV
   *******************************************************************************************
   -->
-
+<div id="online" style="display: none;">
   <div id = "SpinnerModal" class="modal fade show" >
     <div class="modal-dialog" style="display: flex;height: 100%;align-items: center;justify-content: center;">
       <div class="spinner-grow text-primary"></div>
@@ -1893,5 +1898,16 @@
            document.getElementById('nav-'+selection).classList.add("active");
        }
   </script>
+ </div>
+ <div id="offline" style="display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center;padding: 4px;">
+  <div style="background-color: white; width: 75%; padding: 2rem; border-radius: 5px; text-align: center;font-size: 1.5rem;" >  
+    <img src="icons/offline.png" style="object-fit: contain; width: 50vw; height: 50vh;">
+    <br>
+    Oooops!<br> 
+    No internet :(
+    <br />
+    <a href="">Retry</a>
+  </div>
+ </div> 
 </body>
 </html>

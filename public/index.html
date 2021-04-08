@@ -531,12 +531,12 @@
       </g></svg>
     </div><!--footer-->
     <div class="content flex">
-      <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app">3-bro-grammers</a></h3>
+      <h3>Developed by: <a href="https://github.com/3-bro-grammers/Quizz_app" target="_blank">3-bro-grammers</a></h3>
       <br>
       <h5>Interested ? Let's work together!!
       <br>
-      <a href="https://github.com/3-bro-grammers"><i class="fa fa-github" aria-hidden="true"></i></a>
-      | <a href="mailto:quizzard.webapp@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+      <a href="https://github.com/3-bro-grammers" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a>
+      | <a href="mailto:quizzard.webapp@gmail.com" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
       </h5>
     </div>
   </div>
@@ -1018,7 +1018,7 @@
   <script type="text/babel">
   
     var learn_category = [9, 17, 21, 23, 10, 11, 12, 19];
-    var learn_catg, learn_query;
+    var learn_catg, learn_query,learn_amnt;
 
 
     function change_learn_catg(i) {
@@ -1029,11 +1029,11 @@
 
     function learn_fetch() {
       bs_spinnerModal.show();
-      
-      var url = 'https://opentdb.com/api.php?amount=30&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
+      learn_amnt = learn_catg==10 ? 20 : learn_catg==19 ? 8 : 30;
+      var url = 'https://opentdb.com/api.php?amount='+learn_amnt+'&category=' + learn_catg + '&difficulty=easy'+ '&type=multiple&encode=url3986';
       
       fetch(url).then((res)=>res.json()).then(data=>{
-        console.log(data);
+        //console.log(data);
         learn_query = data.results;
         ReactDOM.unmountComponentAtNode(document.getElementById('learn_quiz_area'));
         ReactDOM.render(<LearnQuiz data={learn_query} />, document.getElementById('learn_quiz_area'));
@@ -1054,7 +1054,7 @@
       // icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' , 'fa fa-book' ,'fa fa-film' , 'fa fa-music'];
       render() {
         return (
-          <div className="row row-cols-2 row-cols-md-2 g-3">
+          <div className="row row-cols-2 row-cols-md-4 g-3">
             { this.category.map((data, i) => {
               return (
                 <div onClick={() => change_learn_catg(i)} className="col" >
@@ -1103,7 +1103,7 @@
          this.button[i].disabled = false;
        }
 
-        if (this.state.qn_no == 29) {
+        if (this.state.qn_no == learn_amnt-1) {
 
           return;
         }
@@ -1166,7 +1166,7 @@
                   </button>
                 </div>
                 <div className="col text-center">
-                  <button className="btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == 29}>
+                  <button className="btn btn-success text-white" onClick={() => { this.update() }} disabled={this.state.qn_no == learn_amnt-1}>
                     Next <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -1595,14 +1595,14 @@
                   </div>
                 </div>
                 <div className="row justify-content-between m-3">
-                  <div className="col">
+                  <div className="col" style={{whiteSpace: 'nowrap', overflow: 'hidden',textOverflow: 'ellipsis'}}>
                     <span><b>{username}</b></span>
                   </div>
                   <div className="col-6 text-center">
                     <span className="text-success fw-bold">{this.user_pt}</span>   :  {this.accepted?<span className="text-danger fw-bold">{this.opp_pt}</span>:<span className=" badge bg-secondary">Waiting</span>}
                   </div>
-                  <div className="col text-center">
-                    <span className="float-end"><b>{this.accepted?this.opp:opponent}</b></span>
+                  <div className="col text-center" style={{whiteSpace: 'nowrap', overflow: 'hidden',textOverflow: 'ellipsis'}}>
+                    <span><b>{this.accepted?this.opp:opponent}</b></span>
                   </div>
                 </div>
                 <div className="progress mx-auto" style={{height: '10px'}} >
@@ -1625,7 +1625,13 @@
                 }
             </div>
             <br />
-            <button className="btn btn-success" style={{position: 'relative',left: '75vw'}} onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next</button>
+            <div className=" row row-cols-2 row-cols-md-4 justify-content-end">
+             <div className="col text-center"> 
+              <button className="btn btn-success" onClick={() => {this.validate($("input[type='radio'][name='option']:checked").val()) }}> Next
+                &nbsp;<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>  
+              </button>
+             </div> 
+            </div>
             <br /><br />
             </div>
           <div className="validate" style={{color:this.state.crct?'green':'red'}}>

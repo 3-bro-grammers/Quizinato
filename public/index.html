@@ -27,11 +27,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <!--Bootstrap-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script><!--Sweet-alert-->
-
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
   <!--font-awesome-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/6b08127ac9.js" crossorigin="anonymous"></script>
   <!--google-charts-->
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -78,7 +76,7 @@
    }
    body {
     margin:0;
-    background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
+    background: linear-gradient(60deg, rgb(84, 58, 183) 0%, rgba(0,172,193,1) 100%);
     min-height: 100vh;
   } 
 
@@ -137,7 +135,6 @@
   {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
   }
 
@@ -173,8 +170,11 @@
       position: fixed;
       bottom: 0;
       width: 100%;
-      background: #ecf0f3;
-      color: black;
+      padding: 0 !important;
+      background: #fff;
+      color:#676788 ;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25),
+                  0 8px  32px rgba(0,0,0,0.25);
   }
 
   .navbar a
@@ -184,7 +184,7 @@
       text-align: center;
       padding: 12px 14px;
       font-size: 20px;
-      color: black;
+      color:#676788 ;
   }
   .navbar a.active
   {
@@ -201,10 +201,14 @@
     background-color: white ;
     color: #0d6efd; 
   }
+  .board_cards:hover{
+    transform: translateY(-5px) scale(1.005) translateZ(0);
+  }
   .text_effect
   {
     font-family: 'Poppins', sans-serif;
     color: white;
+    padding-top: 1rem;
   }
   #effect:hover
   {
@@ -802,8 +806,8 @@
   
   <div id="notif-div" style="display: none;">
     <div class='container'>
-      <h2 style="color: white;">Active Challenges</h2>
-      <div id="active-chal-div" style="max-height:75vh; overflow:auto;padding-bottom: 1rem;"></div>
+      <h2 class="text_effect">Active Challenges</h2>
+      <div id="active-chal-div" style="overflow:auto;padding-bottom: 11vh;"></div>
       <div id="answer-chal-div"></div>
     </div>
   </div>
@@ -853,7 +857,7 @@
           { status==2?
             <div>
               <button className="btn btn-primary btn-sm" onClick={accept_chal}>ACCEPT</button>
-              <button className="btn btn-danger btn-sm" onClick={decline_chal}>DECLINE</button>
+              &nbsp;<button className="btn btn-danger btn-sm" onClick={decline_chal}>DECLINE</button>
             </div>
           :null}
 
@@ -991,6 +995,7 @@
     }
 
     function load_challenges(){
+      bs_spinnerModal.show();
       db.ref(`users/${username}/active`).once('value',(snap)=>{
         ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
@@ -1000,6 +1005,7 @@
       db.ref(`users/${username}`).update({
                 notif : 0
               });
+      bs_spinnerModal.hide();        
     }
 
 
@@ -1054,7 +1060,7 @@
 
     class LearnCategory extends React.Component {
       category = ['GK', 'Science', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
-      icons =[ 'fa fa-globe ','fa fa-flask','fa fa-futbol-o' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fa fa-list-ol']
+      icons =[ 'fas fa-globe-americas ','fas fa-vial','fas fa-volleyball-ball' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fas fa-square-root-alt']
       // category = ['GK', 'Science', 'Sports', 'History', 'Films' ,'Music'];
       // icons =['fa fa-globe ','fa fa-flask','fa fa-futbol-o' , 'fa fa-book' ,'fa fa-film' , 'fa fa-music'];
       render() {
@@ -1066,7 +1072,7 @@
                 <div className="card  h-100 shadow rounded catg_cards" >
                   <div className="card-body fs-4 d-flex flex-column align-items-center justify-content-center ">
                     <i  className={this.icons[i]}  aria-hidden="true"></i>
-                    <div  className="card-title fs-6 p-2">{data}</div>
+                    <div  className="card-title fs-6 fw-bold p-2">{data}</div>
                   </div>
                 </div>
               </div>
@@ -1192,8 +1198,8 @@
   
   <div id="quiz-div" style="display: none;">
     <div class='container'>
-      <br>
       <div id='challenge'>
+        <h2 style="margin-bottom: 15px  !important;position: sticky;" class="text_effect">Challenge</h2>
         <!-- <div class="dropdown">
           <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt" data-bs-toggle="dropdown" autocomplete="off">
           <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;"></ul>
@@ -1208,8 +1214,8 @@
               <a class="dropdown-item" onclick="change_diff('hard')">Hard</a>
             </div>
           </div>
-        </div><br>
-        <div id='catg' style="max-height: 65vh; overflow: hidden auto;padding: 1rem 0;"></div><br>
+        </div>
+        <div id='catg' style="overflow: hidden auto;padding-bottom: 11vh;"></div><br>
       </div>
 
       <!-- Select Opponent Modal -->
@@ -1235,7 +1241,7 @@
         </div>
       </div>
 
-      <div id="quiz_area"></div>
+      <div id="quiz_area" style="padding-top: 5vh;"></div>
     </div>
   </div>
   <script>
@@ -1413,17 +1419,17 @@
     class Category extends React.Component {
 
       category = ['GK', 'Science', 'Sports', 'History','Books' , 'Films' ,'Music', 'Maths'];
-      icons =[ 'fa fa-globe ','fa fa-flask','fa fa-futbol-o' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fa fa-list-ol']
+      icons =[ 'fas fa-globe-americas ','fas fa-vial','fas fa-volleyball-ball' ,'fa fa-university', 'fa fa-book' ,'fa fa-film' , 'fa fa-music', 'fa fa-square-root-alt']
       render() {
         return (
           <div className="row row-cols-2 row-cols-md-4 g-3">
             { this.category.map((data, i) => {
               return (
                 <div onClick={() => change_catg(i)} className="col" >
-                <div className="card  h-100 shadow-sm rounded catg_cards" >
+                <div className="card  h-100 shadow rounded catg_cards" >
                   <div className="card-body fs-4 d-flex flex-column align-items-center justify-content-center ">
                     <i  className={this.icons[i]}  aria-hidden="true"></i>
-                    <div  className="card-title fs-6 p-2">{data}</div>
+                    <div  className="card-title fs-6 fw-bold p-2">{data}</div>
                   </div>
                 </div>
               </div>
@@ -1623,7 +1629,7 @@
                     return (
                       <div  onClick={() => {this.check_radio(index)}} className="p-1 shadow-sm mb-2" style={{position: 'relative', left: '5%',width: '80%'}}>
                         <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" value={unescape(item)} />
-                        <span class="form-check-label" for="flexRadioDefault1">{unescape(item)}</span>
+                        <span class="form-check-label" for="flexRadioDefault1">&nbsp;{unescape(item)}</span>
                       </div>)
 
                   })
@@ -1655,8 +1661,8 @@
   
   <div id="leader_board-div" style="display: none;">
     <div class='container'>
-      <h2 style="text-align: center ;margin-bottom: 15px  !important;" class="text_effect">Leaderboard</h2>
-      <div id="leaderboard" style="overflow: auto;max-height: 80vh;"></div>
+      <h2 style="margin-bottom: 15px  !important;" class="text_effect">Leaderboard</h2>
+      <div id="leaderboard" style="overflow: auto;padding-bottom: 11vh;"></div>
     </div>
   </div>
   <script type='text/babel'>
@@ -1664,23 +1670,23 @@
   var leaderboard_xp =[];
   var leaderboard_ratio =[];
   var leaderboard_challenges =[];
-  function leaderboard(){
+  function leaderboard(){ 
    leaderboard_user = [];
    leaderboard_xp =[];
    leaderboard_ratio =[];
    leaderboard_challenges =[];
    ReactDOM.unmountComponentAtNode(document.getElementById('leaderboard'));
-
+   bs_spinnerModal.show();
     db.ref('users').orderByChild('stats/xp').once("value", function (s) {
         s.forEach(function (child) {
             leaderboard_user.push(child.key);
             leaderboard_xp.push(child.val().stats.xp);
             let a = parseFloat(child.val().stats.wins/child.val().stats.challenges*100);
-            a = a?a.toFixed(2):0;
+            a = a?a.toFixed(2):'0.00';
             leaderboard_ratio.push(a);
             leaderboard_challenges.push(child.val().stats.challenges);
         });
-
+    bs_spinnerModal.hide();
     ReactDOM.render(<Leaderboard />, document.getElementById('leaderboard'));
     });
 
@@ -1690,37 +1696,34 @@
      rank = 0;
      render() {
         return (
-          <table class="table table-hover table-striped align-middle">
-            <thead>
-              <tr class="table-warning">
-                <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col" className="text-center">Xp</th>
-                <th scope="col" className="text-center">Challenges</th>
-                <th scope="col" className="text-center">Win%</th>
-              </tr>
-            </thead>
-            <tbody>
+        
+           <div className="p-2">
             { leaderboard_user.map((value,index) => {
               return (
-                <tr class="table-info">
-                  <th scope="row">{leaderboard_xp[this.length-index]!==leaderboard_xp[this.length-index+1]?++this.rank:this.rank}</th>
-            <td>
-              {leaderboard_user[this.length-index]}<br />
-                <span className="text-muted">Level {Math.floor(leaderboard_xp[this.length-index]/20)==0?1:Math.floor(leaderboard_xp[this.length-index]/20+1)}</span>
-            </td>
-            <td className="text-center">{leaderboard_xp[this.length-index]}</td>
-            <td className="text-center">{leaderboard_challenges[this.length-index]}</td>
-            <td className="text-center">{leaderboard_ratio[this.length-index]}%</td>
-          </tr>
+            <div className="p-3 shadow rounded mb-3 board_cards" style={{background:'#fff', display: 'flex',flexDirection: 'row',flex : 1,justifyContent: 'center',alignItems: 'center' }}>
+              <div style={{flex: 0.15,flexDirection: 'column',textAlign: 'center'}}>
+                  <div><i className="fas fa-medal fs-4 fw-bold" 
+                      style={{color: (leaderboard_xp[this.length-index]!==leaderboard_xp[this.length-index+1]?++this.rank:this.rank)&&(this.rank==1)?'gold':this.rank==2?'silver':this.rank==3?'#cd7f32':'#000' }} ></i></div> 
+                  <div style={{fontWeight: 500}}>{this.rank}</div> 
+              </div>
+             <div style={{flex: 0.5, flexDirection: 'column'}}>
+               <div className="fw-bold" style={{fontFamily: 'Poppins,sansSerif'}}>{leaderboard_user[this.length-index]}</div>
+               <div className="text-muted">Level {Math.floor(leaderboard_xp[this.length-index]/20)==0?1:Math.floor(leaderboard_xp[this.length-index]/20+1)}</div>
+             </div>
+             <div style={{flex: 0.35, flexDirection: 'column',textAlign: 'right'}}> 
+               <div className="fw-bold" style={{color: '#0d6efd'}}>{leaderboard_xp[this.length-index]} XP</div>
+               <div>
+                win: {leaderboard_ratio[this.length-index]}%
+               </div>
+             </div>  
+            </div>
               )
 
             })
             }
+          </div>
 
-
-            </tbody>
-          </table>
+            
         )
       }
 
@@ -1735,7 +1738,7 @@
   
   <div id="user-div" style="display: none;">
     <div class='container'>
-      <h1 class="text-center text_effect">Account Summary</h1><br>
+      <h2 class="text_effect">Account Summary</h2><br>
       <div class='row justify-content-end align-items-center shadow rounded p-2 m-2' style="background: white;">
         <div id="header" class="col" style="position: relative;left: 5%; font-size: 1.25rem; font-weight: 500;"></div>
         <div class="col">
@@ -1785,7 +1788,7 @@
   </div>
   <script>
      function load_userdata(){
-
+          bs_spinnerModal.show();
           db.ref("users/" + username + "/stats").once("value", function(s) {
                     
                     var lvl,progress;
@@ -1835,6 +1838,7 @@
                     });
                   
          document.getElementById('header').innerHTML= username;
+         bs_spinnerModal.hide();
      }
 
      function logout_user(){
@@ -1864,21 +1868,21 @@
   
   <div id="navbar" class="navbar" style="display: none">
     <a id="nav-learn-div" onclick="change_screen('learn-div')">
-      <i class="fa fa-newspaper-o" style="font-size: inherit; color: inherit"></i>
+      <i class="fab fa-leanpub" style="font-size: inherit; color: inherit"></i>
     </a> 
     <a id='nav-notif-div' class="position-relative" onclick="change_screen('notif-div');load_challenges();">
-      <i class="fa fa-bell" style="font-size: inherit; color: inherit">
+      <i class="fas fa-bell" style="font-size: inherit; color: inherit">
         <span id="notif_badge" class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger"></span>
       </i>
     </a> 
     <a id='nav-quiz-div' onclick="change_screen('quiz-div')" class="active">
-      <i class="fa fa-flash" style="font-size: inherit; color: inherit"></i>
+      <i class="fas fa-bolt" style="font-size: inherit; color: inherit"></i>
     </a> 
     <a id='nav-leader_board-div' onclick="change_screen('leader_board-div');leaderboard();">
-      <i class="fa fa-bar-chart" style="font-size: inherit; color: inherit"></i>
+      <i class="fas fa-chart-bar" style="font-size: inherit; color: inherit"></i>
     </a> 
     <a id='nav-user-div' onclick="change_screen('user-div');load_userdata();">
-      <i class="fa fa-user-circle-o" style="font-size: inherit; color: inherit"></i>
+      <i class="fas fa-user" style="font-size: inherit; color: inherit"></i>
     </a>
   </div>
   <script>

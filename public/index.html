@@ -1001,11 +1001,12 @@
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.render(<ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div"));
         $("#notif_badge").hide();
+        setTimeout(()=>bs_spinnerModal.hide(),1000);  
       });
       db.ref(`users/${username}`).update({
                 notif : 0
               });
-      bs_spinnerModal.hide();        
+            
     }
 
 
@@ -1835,10 +1836,13 @@
                   }
                     else
                       document.getElementById('donutchart').innerHTML='<img src="icons/void.png" style="object-fit: contain; height: 70%; width:80%;"><br>Insufficient data <br>Start a new <a href="#" onclick = \'change_screen("quiz-div")\'>challenge</a> to see your stats';
+
+                    
+                    setTimeout(()=>bs_spinnerModal.hide(),1000);
                     });
                   
          document.getElementById('header').innerHTML= username;
-         bs_spinnerModal.hide();
+         
      }
 
      function logout_user(){

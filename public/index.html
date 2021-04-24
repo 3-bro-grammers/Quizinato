@@ -22,6 +22,8 @@
   <meta property="twitter:title" content="Quizinato">
   <meta property="twitter:description" content="Are you a quiz freak? then enter into the world of quizinators and break your brain!">
   <meta property="twitter:image" content="https://quizinato.web.app/icons/logo-small.png">
+  <!--manifest-->
+  <link rel="manifest" href="manifest.json">
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
@@ -434,8 +436,34 @@
         });
 
     });
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').then(function(registration) {
+        // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+    });
+    }
 
-
+    var install = document.querySelector('#install');
+    install.style.display = 'none';
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      install.style.display = 'block';
+      addBtn.addEventListener('click', (e) => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            addBtn.style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      });
+    });
 
 
     //LOGIN PERSISTANCE
@@ -465,15 +493,21 @@
             $("#quiz-div").show();
             $('#navbar').show();
             change_screen('quiz-div');
-
-            var url = new URLSearchParams(location.search);
+             var url = new URLSearchParams(location.search);
             if (url.get("notif")){
               change_screen('notif-div');
               load_challenges();
             }
         });
-      }else{
-        $("#home-div").show();
+      }
+      else{
+        var url = new URLSearchParams(location.search);
+        if (url.get("login"))
+          $("#login-div").show();
+        else if (url.get("signin"))
+          $("#signin-div").show();    
+        else
+          $("#home-div").show();
       }
     }
   </script> 
@@ -525,7 +559,7 @@
             <button onclick="$('#home-div').hide(500); $('#login-div').show(500);jQuery('html,body').animate({scrollTop:0},0);">Log in</button>
           </div>
           <div class="col">
-            <button><i class="fa fa-download" aria-hidden="true"></i> &nbsp;Install</button>
+            <button id="install"><i class="fa fa-download"  aria-hidden="true"></i> &nbsp;Install</button>
           </div>
         </div>
       </div>
@@ -1854,6 +1888,9 @@
      }
 
      function logout_user(){
+      db.ref('userlist').update({
+             [username]: JSON.stringify([0,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()])
+          });
        localStorage.removeItem("user_pass");
        localStorage.removeItem("user_name");
        $("#navbar").hide();

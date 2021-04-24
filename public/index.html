@@ -202,7 +202,7 @@
     color: #0d6efd; 
   }
   .board_cards:hover{
-    transform: translateY(-5px) scale(1.005) translateZ(0);
+    transform: translateY(-5px) scale(1.005) translateZ(0); 
   }
   .text_effect
   {
@@ -324,7 +324,6 @@
   #home-div{
   position:relative;
   text-align:center;
-  background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
   color:black;
   }
   .inner-content{
@@ -398,14 +397,19 @@
     font-size:24px;
   }
   }
+  input[type="radio"]:checked + label {
+   color: #0d6efd !important;
+  }
 
   </style>
 </head>
 
 <body>
   <script>
-    var pswd, username, opponent;
-
+    var pswd, username, opponent,date,month,year;
+    date = new Date().getDate();
+    month = new Date().getMonth()+1;
+    year = new Date().getFullYear();
     const messaging = firebase.messaging();
 
     navigator.serviceWorker.register('firebase-messaging-sw.js', {
@@ -447,9 +451,9 @@
 
       if(username && pswd){
 
-        db.ref("userlist/"+username).set(true);
+        db.ref("userlist/"+username).set(JSON.stringify([1,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()]));
 
-        db.ref('userlist/'+username).onDisconnect().set(false);
+        db.ref('userlist/'+username).onDisconnect().set(JSON.stringify([0,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()]));
 
         db.ref("users/" + username + "/notif").once("value", function(s) {
             if(s.val()>0)
@@ -515,10 +519,10 @@
       <div>
         <div id="home_btns">
           <div class="col">
-            <button onclick="$('#home-div').hide(); $('#signin-div').show();jQuery('html,body').animate({scrollTop:0},0);">Sign in</button>
+            <button onclick="$('#home-div').hide(500); $('#signin-div').show(500);jQuery('html,body').animate({scrollTop:0},0);">Sign in</button>
           </div>
           <div class="col">
-            <button onclick="$('#home-div').hide(); $('#login-div').show();jQuery('html,body').animate({scrollTop:0},0);">Log in</button>
+            <button onclick="$('#home-div').hide(500); $('#login-div').show(500);jQuery('html,body').animate({scrollTop:0},0);">Log in</button>
           </div>
           <div class="col">
             <button><i class="fa fa-download" aria-hidden="true"></i> &nbsp;Install</button>
@@ -582,7 +586,7 @@
               <span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login
             </button>
             <br>
-            <span>Don't have an account ? <a  href="#" onclick="$('#login-div').hide(); $('#signin-div').show();jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Signin</a></span>
+            <span>Don't have an account ? <a  href="#" onclick="$('#login-div').hide(500); $('#signin-div').show(500);jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Signin</a></span>
           </form>
         </div>
       </div>
@@ -641,8 +645,8 @@
           });
 
         }
-        db.ref("userlist/"+username).set(true);
-        db.ref('userlist/'+username).onDisconnect().set(false);
+        db.ref("userlist/"+username).set(JSON.stringify([1,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()]));
+        db.ref('userlist/'+username).onDisconnect().set(JSON.stringify([0,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()]));
         }
 
         document.getElementById('login-spinner').style.display = 'none';
@@ -704,7 +708,7 @@
               <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in
             </button>
             <br>
-           <span>Already have an account ? <a href="#" onclick="$('#signin-div').hide(); $('#login-div').show();jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Login</a></span> 
+           <span>Already have an account ? <a href="#" onclick="$('#signin-div').hide(500); $('#login-div').show(500);jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Login</a></span> 
           </form>
         </div>
       </div>
@@ -776,10 +780,10 @@
           });
 
           db.ref('userlist').update({
-             [username]:true
+             [username]: JSON.stringify([1,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()])
           });
 
-          db.ref('userlist/'+username).onDisconnect().set(false);
+          db.ref('userlist/'+username).onDisconnect().set(JSON.stringify([0,new Date().getDate(),new Date().getMonth()+1,new Date().getFullYear()]));
 
           localStorage.setItem("user_name", username);
           localStorage.setItem("user_pass", pswd);
@@ -937,6 +941,7 @@
       }
 
       accept_chal(chal_obj, key){
+        $('#navbar').hide();
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
         ReactDOM.render(<Quiz data={JSON.parse(chal_obj.ques)} accepted my_key={key} opp={chal_obj.opp} opp_key={chal_obj.opp_key} opp_resp={JSON.parse(chal_obj.opp_resp)} />, document.getElementById("answer-chal-div"))
@@ -1200,7 +1205,7 @@
   <div id="quiz-div" style="display: none;">
     <div class='container'>
       <div id='challenge'>
-        <h2 style="margin-bottom: 15px  !important;position: sticky;" class="text_effect">Challenge</h2>
+        <h2 style="margin-bottom: 15px  !important;" class="text_effect">Challenge</h2>
         <!-- <div class="dropdown">
           <input placeholder="Select Opponent" oninput="search_input()" type="text" id="search_txt" data-bs-toggle="dropdown" autocomplete="off">
           <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;"></ul>
@@ -1240,10 +1245,9 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div id="quiz_area" style="padding-top: 5vh;"></div>
-    </div>
+      </div>    
+       <div id="quiz_area" style="padding-top: 5vh;"></div>
+     </div>
   </div>
   <script>
 
@@ -1252,7 +1256,7 @@
     db.ref("userlist").on("value", function (snap) {
       all_users = snap.val();
     })
-
+    
     function search_input() {
 
       var search = search_txt.value.toLowerCase();
@@ -1267,8 +1271,13 @@
       for (x in all_users) {
         if (x!= username) {
           if(x.toLowerCase().indexOf(search) > -1)
+          var status = JSON.parse(all_users[x]);
           inn_htm += (`<li class="list-group-item" href="#" onclick='set_opponent("${x}")'>${x}`
-            +(all_users[x]?`<span class="live_status_badge"><\/span>`:"")+`<\/li>`);
+            +(status[0]?`<span class="live_status_badge"><\/span>&nbsp;&nbsp;<span class='text-muted'>active now</span>`
+            :(status[3]==year&&status[2]==month&&status[1]==date)?`&nbsp;<span class="text-muted">active today</span>`
+            :(status[3]==year&&status[2]==month&&status[1]==date-1)?`&nbsp;<span class="text-muted">active yesterday</span>`
+            :`&nbsp;<span class="text-muted">active ${status[1]}/${status[2]}/${status[3]}</span>`)
+            +`<\/li>`);
         }
       }
       search_list.innerHTML = inn_htm;
@@ -1596,7 +1605,7 @@
 
         return (
           <div>
-            <div className="question_container rounded shadow " style={{background: 'white'}}>
+            <div className="question_container rounded shadow" style={{background: 'white'}}>
               <div className="question_header" >
                 <div className="row justify-content-around p-2">
                   <div className="col pl-2">
@@ -1628,7 +1637,7 @@
                 {
                   this.options.map((item, index) => {
                     return (
-                      <div  onClick={() => {this.check_radio(index)}} className="p-1 shadow-sm mb-2" style={{position: 'relative', left: '5%',width: '80%'}}>
+                      <div onClick={() => {this.check_radio(index)}} className="p-1 shadow-sm mb-2" style={{position: 'relative', left: '5%',width: '80%'}}>
                         <input checked={index == this.state.cur_ind} class="form-check-input" type="radio" name="option" id="flexRadioDefault1" value={unescape(item)} />
                         <span class="form-check-label" for="flexRadioDefault1">&nbsp;{unescape(item)}</span>
                       </div>)
@@ -1646,8 +1655,8 @@
             </div>
             <br /><br />
             </div>
-          <div className="validate" style={{color:this.state.crct?'green':'red'}}>
-            {this.state.crct?<span>Correct &#10004;</span>:this.state.progress>0?<span>Wrong &#x274C;</span>:<span>Time up!!</span>}
+          <div className="validate" style={{color:this.state.crct?'green':'red',background: '#fff',borderRadius: '5px'}}>
+            <div className='p-3 shadow'>{this.state.crct?<span>Correct &#10004;</span>:this.state.progress>0?<span>Wrong &#x274C;</span>:<span>Time up!!</span>}</div>
           </div>
           </div>
         )
@@ -1750,7 +1759,7 @@
         </div>
       </div>
       <div style="max-height: 65vh; overflow: auto" class="p-3">
-        <div id="stats" class="row shadow rounded p-2 mt-2" style="background: white;">
+        <div id="stats" class="row shadow rounded p-2 mt-2" style="background: white;font-weight: 600;">
           <div class="col text-center">
             <span id="challenges"></span>
           </div>
@@ -1765,16 +1774,16 @@
           </div>
         </div><br>
         <div id="lvl" class="row align-items-center shadow rounded p-2" style="background: white;">
-          <div id="min_lvl" class="col text-center"></div>
+          <div id="min_lvl" class="col text-center" style="font-weight: 600;"></div>
           <div class="col">
             <div class="progress" style="margin: 0 auto;">
               <div id="xp_progress" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
             </div>
           </div>
-          <div id="max_lvl" class="col text-center"></div>
+          <div id="max_lvl" class="col text-center" style="font-weight: 600;"></div>
         </div><br>
         <div id="stats_chart" class="shadow rounded" style="background: white;">
-           <h6 class="p-3"> &nbsp;Your stats :</h6>
+           <h6 class="p-3" style='color: rgb(84,58,183);font-weight: bold'> &nbsp;Your stats :</h6>
           <div id="donutchart" style="width: 60vw; height: 50vh; display:block;margin: 0 auto; text-align: center;">
           </div>
         </div><br>
@@ -1805,12 +1814,12 @@
                     document.getElementById('xp_progress').setAttribute('aria-valuenow',progress);
                     document.getElementById('xp_progress').setAttribute('style','width:'+Number(progress*5)+'%');
                     document.getElementById('xp_progress').innerHTML= `${xp}xp`;
-                    document.getElementById('wins').innerHTML= wins+'<br>Wins';
-                    document.getElementById('tie').innerHTML= tie+'<br>Tied';
-                    document.getElementById('loss').innerHTML= loss+'<br>Loss';
-                    document.getElementById('challenges').innerHTML= challenges +'<br>Challenges';
-                    document.getElementById('min_lvl').innerHTML= `Level ${lvl}<br>${(lvl-1)*20}xp`;
-                    document.getElementById('max_lvl').innerHTML= `Level ${lvl+1}<br>${(lvl)*20}xp`;
+                    document.getElementById('wins').innerHTML= wins+"<br><span style='color: rgb(84,58,183);font-weight: bold'>Wins</span>";
+                    document.getElementById('tie').innerHTML= tie+"<br><span style='color: rgb(84,58,183);font-weight: bold'>Tied</span>";
+                    document.getElementById('loss').innerHTML= loss+"<br><span style='color: rgb(84,58,183);font-weight: bold'>Loss</span>";
+                    document.getElementById('challenges').innerHTML= challenges +"<br><span style='color: rgb(84,58,183);font-weight: bold'>Challenges</span>";
+                    document.getElementById('min_lvl').innerHTML= `<span style='color: rgb(84,58,183);font-weight: bold'>Level ${lvl}</span><br>${(lvl-1)*20}xp`;
+                    document.getElementById('max_lvl').innerHTML= `<span style='color: rgb(84,58,183);font-weight: bold'>Level ${lvl+1}</span><br>${(lvl)*20}xp`;
 
                     if(challenges){
                     google.charts.load("current", {packages:["corechart"]});
@@ -1837,7 +1846,6 @@
                     else
                       document.getElementById('donutchart').innerHTML='<img src="icons/void.png" style="object-fit: contain; height: 70%; width:80%;"><br>Insufficient data <br>Start a new <a href="#" onclick = \'change_screen("quiz-div")\'>challenge</a> to see your stats';
 
-                    
                     setTimeout(()=>bs_spinnerModal.hide(),1000);
                     });
                   

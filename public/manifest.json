@@ -1,0 +1,45 @@
+{
+  "short_name": "Quizinato",
+  "name": "Quizinato",
+  "icons": [
+    {
+      "src": "icons/icon_192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icons/icon_512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#fff",
+  "display": "standalone",
+  "scope": ".",
+  "theme_color": "#fff",
+  "shortcuts": [
+    {
+      "name": "Login",
+      "short_name": "Login",
+      "description": "Login to your account to start a challenge",
+      "url": "index.html?login=1",
+      "icons": [{ "src": "icons/sht_login.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Signin",
+      "short_name": "Signin",
+      "description": "New user? create a account",
+      "url": "index.html?signin=1",
+      "icons": [{ "src": "icons/sht_signin.png", "sizes": "512x512" }]
+    },
+    {
+        "name": "Challenge",
+        "short_name": "challenge",
+        "description": "prove your might with a challenge",
+        "url": "index.html",
+        "icons": [{ "src": "icons/sht_chl.png", "sizes": "512x512" }]
+      }
+  ],
+  "description": "A multiplayer Quiz app"
+}

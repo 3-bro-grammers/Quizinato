@@ -496,7 +496,7 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      install.style.display = 'block';
+      install.style.display = 'inline-block';
       install.addEventListener('click', (e) => {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {

@@ -448,24 +448,6 @@
     });
     }
 
-    var install = document.querySelector('#install');
-    install.style.display = 'none';
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      install.style.display = 'block';
-      addBtn.addEventListener('click', (e) => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            addBtn.style.display = 'none';
-          }
-          deferredPrompt = null;
-        });
-      });
-    });
-
-
     //LOGIN PERSISTANCE
     window.onload = () =>{
             if (navigator.onLine)
@@ -509,6 +491,22 @@
         else
           $("#home-div").show();
       }
+      var install = document.querySelector('#install');
+    install.style.display = 'none';
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      install.style.display = 'block';
+      addBtn.addEventListener('click', (e) => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            addBtn.style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      });
+    });
     }
   </script> 
   

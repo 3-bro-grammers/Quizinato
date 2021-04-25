@@ -399,8 +399,9 @@
     font-size:24px;
   }
   }
-  input[type="radio"]:checked + label {
-   color: #0d6efd !important;
+  input[type="radio"]:checked + span{
+   color: #0d6efd;
+   font-weight: 600;
   }
 
   </style>
@@ -1302,7 +1303,7 @@
 
       for (x in all_users) {
         if (x!= username) {
-          if(x.toLowerCase().indexOf(search) > -1)
+          if(x.toLowerCase().indexOf(search) > -1){
           var status = JSON.parse(all_users[x]);
           inn_htm += (`<li class="list-group-item" href="#" onclick='set_opponent("${x}")'>${x}`
             +(status[0]?`<span class="live_status_badge"><\/span>&nbsp;&nbsp;<span class='text-muted'>active now</span>`
@@ -1310,6 +1311,7 @@
             :(status[3]==year&&status[2]==month&&status[1]==date-1)?`&nbsp;<span class="text-muted">active yesterday</span>`
             :`&nbsp;<span class="text-muted">active ${status[1]}/${status[2]}/${status[3]}</span>`)
             +`<\/li>`);
+          }
         }
       }
       search_list.innerHTML = inn_htm;

@@ -963,14 +963,15 @@
 
       constructor(props){
         super(props);
-        if(props.data){
-          this.keys = Object.keys(props.data).reverse();
-          this.data=Object.values(props.data).reverse();
+        this.state={
+          curr_chal:null,
+          keys: props.data ? Object.keys(props.data).reverse() : null,
+          data: props.data ? Object.values(props.data).reverse() : null,
+          canLoadMore: true
         }
 
-        this.state={
-          curr_chal:null
-        }
+
+        
       }
 
       accept_chal(chal_obj, key){
@@ -995,11 +996,25 @@
         this.setState({curr_chal:null});
       }
 
+      load_more_chal(){
+        var last_key = this.state.keys[this.state.keys.length-1];
+        db.ref(`users/${username}/active`).orderByKey().endBefore(last_key).limitToLast(5).once("value").then(
+            (snap)=>{
+              var new_data = snap.val();
+              console.log(new_data);
+              this.setState({
+                keys:[...this.state.keys,...Object.keys(new_data).reverse()],
+                data:[...this.state.data,...Object.values(new_data).reverse()],
+                canLoadMore: Object.keys(new_data).length==5
+              })
+          })
+      }
+
       render() {
         return (
           <div>
             {
-               typeof this.data == "undefined"? 
+               typeof this.state.data == null? 
                 <div style={{textAlign: 'center', margin: '1rem',padding: '15px',borderRadius: '5px',background: 'white'}} className="shadow" >
                  <img src='icons/empty.png' style={{height: '50vh', resizeMode: 'contain',width: '70%',margin: '0.75rem'}} /> 
                  <br />
@@ -1007,10 +1022,11 @@
                 </div>
             :
              <div>   
-              {this.data.length && this.data.map((e,i)=>(
+              {this.state.data.length && this.state.data.map((e,i)=>(
                 <ChallengeDiv show_chal={()=>this.show_chal_summary(e)} op_name={e.opp} status={e.status} date={e.date} my_resp={e.my_resp} op_resp={e.opp_resp}
-                  accept_chal={()=>this.accept_chal(e,this.keys[i])} decline_chal={()=>this.decline_chal(e,this.keys[i])} category={e.category} />
+                  accept_chal={()=>this.accept_chal(e,this.state.keys[i])} decline_chal={()=>this.decline_chal(e,this.state.keys[i])} category={e.category} />
               ))}
+              <div className={"btn btn-success" + (this.state.canLoadMore?"":" disabled") } disabled={!this.state.canLoadMore} style={{display:'block'}} onClick={()=>this.load_more_chal()}>LOAD MORE</div>
               <ChallengeSummary curr_chal={this.state.curr_chal} hide_chal={()=>this.hide_chal_summary()} />
             </div>
             } 
@@ -1034,7 +1050,7 @@
 
     function load_challenges(){
       bs_spinnerModal.show();
-      db.ref(`users/${username}/active`).once('value',(snap)=>{
+      db.ref(`users/${username}/active`).orderByKey().limitToLast(10).once('value',(snap)=>{
         ReactDOM.unmountComponentAtNode(document.getElementById("answer-chal-div"));
         ReactDOM.unmountComponentAtNode(document.getElementById("active-chal-div"));
         ReactDOM.render(<ActiveChallenges data={snap.val()} /> ,document.getElementById("active-chal-div"));

@@ -410,6 +410,9 @@
   #search_list li span.text-muted {
     float: right;
   }
+  #navbar>a{
+    cursor: pointer;
+  }
 
   </style>
 </head>
@@ -559,7 +562,7 @@
       <div>
         <div id="home_btns">
           <div class="col">
-            <button onclick="$('#home-div').hide(500); $('#signin-div').show(500);jQuery('html,body').animate({scrollTop:0},0);">Sign in</button>
+            <button onclick="$('#home-div').hide(500); $('#signin-div').show(500);jQuery('html,body').animate({scrollTop:0},0);">Sign Up</button>
           </div>
           <div class="col">
             <button onclick="$('#home-div').hide(500); $('#login-div').show(500);jQuery('html,body').animate({scrollTop:0},0);">Log in</button>
@@ -626,7 +629,7 @@
               <span id="login-spinner" class="spinner-border spinner-border-sm"></span> Login
             </button>
             <br>
-            <span>Don't have an account ? <a  href="#" onclick="$('#login-div').hide(500); $('#signin-div').show(500);jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Signin</a></span>
+            <span>Don't have an account ? <a  href="#" onclick="$('#login-div').hide(500); $('#signin-div').show(500);jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Sign Up</a></span>
           </form>
         </div>
       </div>
@@ -718,7 +721,7 @@
       <div class="row justify-content-md-center shadow rounded p-3 m-2" style="background-color: white;">
         <div class="col-sm-6" style="background: url('icons/signin.png') no-repeat center; background-size: contain;min-height: 158px;"></div>
         <div class="col-sm-5">
-          <h2 style="text-align: center;">Signin</h2>
+          <h2 style="text-align: center;">Sign Up</h2>
           <form id='signin-form' class="needs-validation mt-2" novalidate="" name="sign-form">
             <div class="form-floating col-sm|md|lg|xl">
               <input type="text" class="form-control" id="signin-username" placeholder="Enter username" required=""> 
@@ -745,7 +748,7 @@
               <input class="form-check-input" type="checkbox" checked="true" id="notif_option"> <label for="notif_option">Receive Challenge Notifications</label>
             </div><br>
             <button type="submit" class="btn btn-primary">
-              <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign in
+              <span id="signin-spinner" class="spinner-border spinner-border-sm"></span> Sign Up
             </button>
             <br>
            <span>Already have an account ? <a href="#" onclick="$('#signin-div').hide(500); $('#login-div').show(500);jQuery('html,body').animate({scrollTop:0},0);" class="fw-bold">Login</a></span> 
@@ -1008,12 +1011,16 @@
         db.ref(`users/${username}/active`).orderByKey().endBefore(last_key).limitToLast(5).once("value").then(
             (snap)=>{
               var new_data = snap.val();
-              console.log(new_data);
-              this.setState({
-                keys:[...this.state.keys,...Object.keys(new_data).reverse()],
-                data:[...this.state.data,...Object.values(new_data).reverse()],
-                canLoadMore: Object.keys(new_data).length==5
-              })
+              if(new_data)
+              {
+                this.setState({
+                  keys:[...this.state.keys,...Object.keys(new_data).reverse()],
+                  data:[...this.state.data,...Object.values(new_data).reverse()],
+                  canLoadMore: Object.keys(new_data).length==5
+                });
+              }
+              else
+                this.setState({canLoadMore: false});
           })
       }
 
@@ -1845,9 +1852,9 @@
           </div>
         </div><br>
         <div id="share" class="shadow rounded p-3" style="background: white;">
-          Quizzinato is awesome is with friends. Try inviting your friends and shower them with challenges. 
+          Quizinato is awesome  with friends. Try inviting your friends and shower them with challenges. 
           <span class="float-end p-1" onclick="share()">
-            <i class="fa fa-share-alt" style="color:#0d6efd;font-size: 1.25rem;" aria-hidden="true"></i>
+            <i class="fa fa-share-alt" style="color:#0d6efd;font-size: 1.25rem;cursor: pointer;" aria-hidden="true"></i>
           </span>
         </div>
       </div>

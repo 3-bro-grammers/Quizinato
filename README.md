@@ -1,8 +1,8 @@
 # QUIZINATO
-## A multiplayer quizz app
+## A Multiplayer Quiz App
 ### Live Link : https://quizinato.web.app
 
-<p>
+<p align="center">
 <img src="public\icons\icon_512x512.png" width=200 style="margin:15px">
 </p>
 
@@ -17,3 +17,8 @@
 <img src="screenshots\4.png" width=200 style="margin:15px"><br>
 <img src="screenshots\5.png" width=200 style="margin:15px">
 </p>
+
+## Contributors
+<a href="https://github.com/3-bro-grammers/Quizz_app/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=3-bro-grammers/Quizz_app" />
+</a>
